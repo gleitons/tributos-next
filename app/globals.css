@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.corrego {
+  /*
+    background: url('https://tailwindadmin.netlify.app/dist/images/login-new.jpeg');
+  */
+  background: url("/corrego-seco.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.lapa {
+  background: url("/lapa-dagua.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.sumidouro {
+  background: url("/sumidouro.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.lagoa {
+  background: url("https://www.salamineira.com/imagens-sala/2022/01/ultimas-noticias-lagoa-dos-patos-mg.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.brasao {
+  width: 100%;
+  text-align: center;
+  margin: auto;
+}
+.backMac {
+  background: rgba(0, 197, 237, 0.548);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.brasao img {
+  margin: auto;
+  border-radius: 8px;
+}
