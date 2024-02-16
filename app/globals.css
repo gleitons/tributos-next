@@ -31,12 +31,21 @@
   margin: auto;
 }
 .backMac {
-  background: rgba(0, 197, 237, 0.548);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  background: rgba(159, 210, 220, 0.144);
+  box-shadow: 0 8px 32px 0 rgba(83, 91, 197, 0.37);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
+  box-shadow: inset rgb(122, 182, 215) 0px 5px 8px 4px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  animation: aparece 400ms normal    linear;
+}
+@keyframes aparece {
+  from {
+    scale: .4;
+    opacity: .3;
+    filter: blur(1);
+  }
 }
 .brasao img {
   margin: auto;

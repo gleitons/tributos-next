@@ -13,22 +13,24 @@ export default function InputLogin() {
     }
     const entrar = () => {
         setInco('Conectando...')
-        const verifica = passw == 'salamineira' ? router.push('https://dapper-panda-e60101.netlify.app/verifica-login.html') : setInco('Senha incorreta - Tente Novamente')
+        const verifica = passw == 'salamineira' ? router.push('https://dapper-panda-e60101.netlify.app/verifica-login.html') : setInco('SENHA INCORRETA')
         verifica
 
     }
     return (
         <>
             <div className="mt-2">
-                <label className="block text-sm text-white" >Insira a senha</label>
-                <input onChange={handleLoad} className="w-full px-5 py-1 text-gray-700 bg-gray-300 rounded focus:outline-none focus:bg-white" type="password" />
+                {/* <label className="block text-sm text-white" >Insira a senha</label> */}
+                <input onChange={handleLoad} placeholder="Insira a Senha" className="w-full px-5 py-1 text-black-400 bg-gray-300 rounded focus:outline-none  focus:bg-white" type="password" />
             </div>
             <div className="mt-4 items-center flex justify-between">
                 <button className="px-4 py-1 text-white font-light tracking-wider bg-gray-900 hover:bg-gray-800 rounded"
                     onClick={entrar} >Entrar</button>
             </div>
             <div>
-                {inco}
+                <div className="bg-white p-1 my-5 rounded-md">
+                    {inco}
+                </div>
             </div>
         </>
     )
