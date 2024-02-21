@@ -1,11 +1,21 @@
 'use client'
 import { FaRegEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 export default function InputLogin() {
+    const esconderSenha = () => {
+        setVer('password')
+        setOicon(<FaEyeSlash className="hover:cursor-pointer" onClick={mostraSenha} />)
+    }
+    const mostraSenha = () => {
+        setVer('text')
+        setOicon(<FaRegEye className="hover:cursor-pointer" onClick={esconderSenha} />)
+    }
     const [passw, setPassw] = useState('')
     const [inco, setInco] = useState('')
     const [ver, setVer] = useState('password')
+    const [oIcon, setOicon] = useState(<FaEyeSlash className="hover:cursor-pointer" onClick={mostraSenha} />)
     const router = useRouter()
     const pathName = usePathname()
 
@@ -13,6 +23,7 @@ export default function InputLogin() {
         setPassw(event.target.value)
         setInco('')
     }
+
     const entrar = () => {
         setInco('Conectando...')
         const verifica = passw == 'salamineira' ? router.push('https://dapper-panda-e60101.netlify.app/verifica-login.html') : setInco('SENHA INCORRETA')
@@ -25,7 +36,8 @@ export default function InputLogin() {
                 {/* <label className="block text-sm text-white" >Insira a senha</label> */}
                 <div className="flex items-center w-full px-5 py-1 text-black-400 bg-gray-300 rounded focus:outline-none  focus:bg-white	">
                     <input onChange={handleLoad} placeholder="Insira a Senha" className="w-full px-5 py-1 text-black-400 bg-gray-300 rounded focus:outline-none  focus:bg-white" type={ver} />
-                    <FaRegEye className="hover:cursor-pointer" onClick={() => setVer('text')} />
+                    {oIcon}
+
                 </div>
             </div>
             <div className="mt-4 items-center flex justify-between">
@@ -33,7 +45,7 @@ export default function InputLogin() {
                     onClick={entrar} >Entrar</button>
             </div>
             <div>
-                <div className="bg-white  my-5 rounded-md">
+                <div className="bg-white  my-5 rounded-md anim">
                     {inco}
                 </div>
             </div>

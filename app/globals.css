@@ -24,6 +24,22 @@
   background: url("https://www.salamineira.com/imagens-sala/2022/01/ultimas-noticias-lagoa-dos-patos-mg.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
+  animation: zoo 10s linear;
+  filter: saturate(1.1);
+}
+@keyframes zoo {
+  from {
+       filter: saturate(1);
+  }
+}
+.anim {
+  animation: entra 400ms normal linear;
+}
+@keyframes entra {
+  from {
+    opacity: 0;
+       transform: scale(0.5);
+  }
 }
 .brasao {
   width: 100%;
