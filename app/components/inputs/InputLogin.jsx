@@ -3,6 +3,7 @@
 import { FaRegEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
+import styles from './load.module.css'
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 export default function InputLogin({pass, access}) {
     const esconderSenha = () => {
@@ -26,14 +27,12 @@ export default function InputLogin({pass, access}) {
     }
 
     const entrar = () => {
-        setInco('Conectando...')      
+        setInco(<p className={styles.load}>Carregando...</p>)      
        
-        const verifica = passw == pass ? router.push(access) : setInco('SENHA INCORRETA')
+        const verifica = passw == pass ? router.push(access) : setInco(<p className={styles.load}>SENHA INCORRETA!</p>)
         verifica
 
-        // const verifica = passw == process.env.pass ? router.push(process.env.endereco) : setInco('SENHA INCORRETA')
-        // verifica
-
+     
     }
     return (
         <>
@@ -42,6 +41,7 @@ export default function InputLogin({pass, access}) {
                 <div className="flex items-center w-full px-5 py-1 text-black-400 bg-gray-300 rounded focus:outline-none  focus:bg-white	">
                     <input onChange={handleLoad} placeholder="Insira a Senha" className="w-full px-5 py-1 text-black-400 bg-gray-300 rounded focus:outline-none  focus:bg-white" type={ver} />
                     {oIcon}
+                   
 
                 </div>
             </div>

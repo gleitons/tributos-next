@@ -22,7 +22,7 @@ export default function Login() {
                         </div>
                     </div>
                     <div className="shado"></div>
-
+        
                 </div>
             </div>
         </div>

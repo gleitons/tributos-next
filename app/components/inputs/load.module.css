@@ -1,0 +1,9 @@
+.load {
+    animation: loadd 400ms linear   ;
+}
+@keyframes loadd {
+    from {
+        transform: scale(.9);
+        opacity: 0;
+    }
+}
