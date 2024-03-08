@@ -1,9 +1,10 @@
 'use client'
+// import "dotenv/config"
 import { FaRegEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-export default function InputLogin() {
+export default function InputLogin({pass, access}) {
     const esconderSenha = () => {
         setVer('password')
         setOicon(<FaEyeSlash className="hover:cursor-pointer" onClick={mostraSenha} />)
@@ -25,9 +26,13 @@ export default function InputLogin() {
     }
 
     const entrar = () => {
-        setInco('Conectando...')
-        const verifica = passw == 'salamineira' ? router.push('https://dapper-panda-e60101.netlify.app/verifica-login.html') : setInco('SENHA INCORRETA')
+        setInco('Conectando...')      
+       
+        const verifica = passw == pass ? router.push(access) : setInco('SENHA INCORRETA')
         verifica
+
+        // const verifica = passw == process.env.pass ? router.push(process.env.endereco) : setInco('SENHA INCORRETA')
+        // verifica
 
     }
     return (
