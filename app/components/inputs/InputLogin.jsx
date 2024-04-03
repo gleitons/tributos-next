@@ -22,8 +22,8 @@ export default function InputLogin({pass, access}) {
     const pathName = usePathname()
 
     const handleLoad = (event) => {
-        
-        console.log(event.target.value)
+        setPassw(event.target.value)
+       
         setInco('')
     }
 
