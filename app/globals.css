@@ -21,6 +21,13 @@
   background-size: cover;
 }
 .lagoa {
+  background: url("/ultimas-noticias-lagoa-dos-patos-mg-min-blur-min.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  filter: saturate(1.1);
+}
+.lagoa2 {
   background: url("/ultimas-noticias-lagoa-dos-patos-mg.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
