@@ -1,4 +1,4 @@
 export default function LinkValidador() {
-    return "https://dapper-panda-e60101.netlify.app/validador.html"
+    return "/validador"
     // "https://dapper-panda-e60101.netlify.app/validador.html"
 };
