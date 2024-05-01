@@ -11,7 +11,7 @@ export default function Login() {
                 <div className="leading-loose">
                     <div className="max-w-sm m-4 p-5 backMac rounded shadow-xl h-82 ">
                         <div className="brasao">
-                            <Image src={brasaoLagoa} quality={10} width={150} height={200} priority className="hover:scale-105  " alt="brasao Lagoa dos Patos MG" />
+                            <Image src={brasaoLagoa} quality={10} width={150} height={200} priority alt="brasao Lagoa dos Patos MG" />
                         </div>
                         <p className="text-white font-medium text-center text-lg font-bold">TRIBUTOS LAGOA DOS PATOS-MG</p>
 
@@ -21,6 +21,7 @@ export default function Login() {
                         </div>
                     </div>
                     <div className="shado"></div>
+                   
 
                 </div>
             </div>

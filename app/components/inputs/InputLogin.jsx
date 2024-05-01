@@ -5,7 +5,7 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
 import styles from './load.module.css'
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-export default function InputLogin({pass, access}) {
+export default function InputLogin({ pass, access }) {
     const esconderSenha = () => {
         setVer('password')
         setOicon(<FaEyeSlash className="hover:cursor-pointer" onClick={mostraSenha} />)
@@ -23,26 +23,26 @@ export default function InputLogin({pass, access}) {
 
     const handleLoad = (event) => {
         setPassw(event.target.value)
-       
+
         setInco('')
     }
 
     const entrar = () => {
-        setInco(<p className={styles.load}>Carregando...</p>)      
-       
-        const verifica = passw == pass ? router.push(access) : setInco(<p className={styles.load}>SENHA INCORRETA!</p>)
+        setInco(<p className={styles.load}>Carregando...</p>)
+
+        const verifica = passw == pass ? router.push(access) : setInco(<p className={styles.load}>Incorreta, tente novamente</p>)
         verifica
 
-     
+
     }
     return (
         <>
             <div className="mt-2">
                 {/* <label className="block text-sm text-white" >Insira a senha</label> */}
-                <div className="flex items-center w-full px-5 py-1 text-black-400 bg-gray-300 rounded focus:outline-none  focus:bg-white	">
-                    <input onChange={handleLoad} placeholder="Insira a Senha" className="w-full px-5 py-1 text-black-400 bg-gray-300 rounded focus:outline-none  focus:bg-white" type={ver} />
+                <div className="flex items-center w-full px-5 py-1 text-black-400 bg-white rounded focus:outline-none  focus:bg-white	">
+                    <input onChange={handleLoad} placeholder="Insira a Senha" className="w-full px-5 py-1 text-black-400 bg-white rounded focus:outline-none  focus:bg-white" type={ver} />
                     {oIcon}
-                   
+
 
                 </div>
             </div>
@@ -54,6 +54,7 @@ export default function InputLogin({pass, access}) {
                 <div className="bg-white  my-5 rounded-md anim">
                     {inco}
                 </div>
+                
             </div>
         </>
     )

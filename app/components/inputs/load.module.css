@@ -1,5 +1,6 @@
 .load {
-    animation: loadd 400ms linear   ;
+    animation: loadd 100ms linear   ;
+    text-align: center;
 }
 @keyframes loadd {
     from {

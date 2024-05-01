@@ -21,11 +21,16 @@
   background-size: cover;
 }
 .lagoa {
-  background: url("/ultimas-noticias-lagoa-dos-patos-mg-min-blur-min.jpg");
+  background: url("https://www.salamineira.com/imagens-sala/2022/01/ultimas-noticias-lagoa-dos-patos-mg.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
  
   filter: saturate(1.1);
+}
+.lagoa > div > button {
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 .lagoa2 {
   background: url("/ultimas-noticias-lagoa-dos-patos-mg.jpeg");
