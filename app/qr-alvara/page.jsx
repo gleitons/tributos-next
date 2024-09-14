@@ -2,42 +2,22 @@
 import React from 'react';
 import { useState } from 'react';
 import BotoesQrAlvara from '../components/botoes/BotoesQrAlvara';
+import enderecosPdf from '../components/botoes/enderecosPdf';
 
 export default function QrAlvara() {
-    const [local, setLocal] = useState('/pdf/codigo-tributario-lagoa-dos-patos-mg.pdf')
+    const [local, setLocal] = useState(enderecosPdf(2))
     
-    const issqn = () => {
-        setLocal('/pdf/lei-issqn-lagoa-dos-patos-mg.pdf')
-        
-    } 
-    const codigoTributario =  () => {
-       
-        setLocal('/pdf/codigo-tributario-lagoa-dos-patos-mg.pdf')
-    }
-    const outrasLeis = () => {
-        setLocal('https://lagoadospatos.mg.gov.br/leis/')
-    }    
-    
+    const handleChangePdf = (cod) => {
+        setLocal(enderecosPdf(cod)); // Define o PDF baseado no código
+    };
+
     return (
         <div className="p-6 bg-gray-100 min-h-screen flex flex-col items-center">
             <div className="flex justify-between mb-6 space-x-4">
-
-                <BotoesQrAlvara funcao={() => codigoTributario()}  tituloBtn="Código tributário" cod="1" cor="bg-blue-500 hover:bg-blue-600"/>
-
-
-                {/* <button onClick={() => codigoTributario()} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow-lg">
-                
-                </button> */}
-                <button onClick={() => issqn()} className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg">
-                Código ISSQN
-                    
-                </button>
-                <button onClick={() => outrasLeis()} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded shadow-lg">
-                    Outras Leis
-                </button>
-                <button onClick={() => outrasLeis()} className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg">
-                    Contato
-                </button>
+                <BotoesQrAlvara funcao={() => handleChangePdf(2)} tituloBtn="Código Tributário" cor="bg-blue-500 hover:bg-blue-600"/>
+                <BotoesQrAlvara funcao={() => handleChangePdf(1)} tituloBtn="Código ISSQN" cor="bg-green-500 hover:bg-green-600"/>
+                <BotoesQrAlvara funcao={() => handleChangePdf(3)} tituloBtn="Outras Leis" cor="bg-red-500 hover:bg-red-600"/>
+                <BotoesQrAlvara funcao={() => handleChangePdf(4)} tituloBtn="Contato" cor="bg-green-900 hover:bg-green-600"/>
             </div>
             <div className="w-full h-full flex justify-center items-center">
                 <iframe 
@@ -47,5 +27,6 @@ export default function QrAlvara() {
                 </iframe>
             </div>
         </div>
+    
     );
 }
