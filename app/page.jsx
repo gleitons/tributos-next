@@ -3,6 +3,7 @@ import Login from "./components/login/Login";
 export default function Home() {
   
   let fundos = []
+
   for (let i = 0; i <= 6; i++) {
     let add = 'lagoa' + i
     fundos.push(add)
@@ -14,9 +15,10 @@ export default function Home() {
 
   return (
     <div >
-      <div className={`${fundos[lagoa]} h-screen font-sans  bg-cover`} id="login">
-        <Login />
+      <div className={`${fundos[2]} h-screen font-sans  bg-cover`} id="login">
+        
        
+      <Login />
       </div>
 
     </div>
