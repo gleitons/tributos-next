@@ -1,4 +1,5 @@
 export default function enderecosPdf(cod) {
+    console.log('servidor')
     if(cod === 1){
         return '/pdf/lei-issqn-lagoa-dos-patos-mg.pdf';
     }
@@ -12,4 +13,5 @@ export default function enderecosPdf(cod) {
         return 'https://lagoadospatos.mg.gov.br/secretarias/fazenda/';
     }
     return '';
+
 }

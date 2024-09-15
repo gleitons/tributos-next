@@ -20,8 +20,50 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
-.lagoa {
+.lagoa0 {
   background: url("https://www.salamineira.com/imagens-sala/2022/01/ultimas-noticias-lagoa-dos-patos-mg.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  filter: saturate(1.1);
+}
+.lagoa1 {
+  background: url("/img/balneario-2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  filter: saturate(1.1);
+}
+.lagoa2 {
+  background: url("/img/balneario-lagoa-coco-2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  filter: saturate(1.1);
+}
+.lagoa3 {
+  background: url("/img/balneario-lagoa-cocos.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  filter: saturate(1.1);
+}
+.lagoa4 {
+  background: url("/img/barragem-linda.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  filter: saturate(1.1);
+}
+.lagoa5 {
+  background: url("/img/cristo-barragem-lagoa.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  filter: saturate(1.1);
+}
+.lagoa6 {
+  background: url("/img/pau-barriga.jpg");
   background-repeat: no-repeat;
   background-size: cover;
  
