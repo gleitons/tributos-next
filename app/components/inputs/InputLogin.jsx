@@ -3,6 +3,7 @@
 import { FaRegEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
+import Image from "next/image";
 import styles from './load.module.css'
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 export default function InputLogin({ pass, access }) {
@@ -28,8 +29,9 @@ export default function InputLogin({ pass, access }) {
     }
 
     const entrar = () => {
-        setInco(<p className={styles.load}>Carregando...</p>)
-
+        setInco(<Image className={styles.cimg} src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif" width={100} height={100} alt="" />)
+        // <p className={styles.load}>Carregando... </p>
+        
         const verifica = passw == pass ? router.push(access) : setInco(<p className={styles.load}>Incorreta, tente novamente</p>)
         verifica
 
