@@ -74,13 +74,18 @@
   top: 0px;
   left: 0px;
 }
-.lagoa2 {
+/* .lagoa2 {
   background: url("/ultimas-noticias-lagoa-dos-patos-mg.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   animation: zoo 10s linear;
   filter: saturate(1.1);
-}
+} */
+ .btnTroca {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+ }
 @keyframes zoo {
   from {
        filter: saturate(1);
