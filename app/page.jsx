@@ -1,4 +1,5 @@
 import Login from "./components/login/Login";
+import Inicial from "./components/Inicial";
 
 export default function Home() {
   
@@ -15,6 +16,7 @@ export default function Home() {
 
   return (
     <div >
+      {/* <Inicial /> */}
       <div className={`${fundos[2]} h-screen font-sans  bg-cover`} id="login">
         
        

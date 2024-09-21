@@ -1,3 +1,4 @@
+
 import Image from "next/image"
 import InputLogin from "../inputs/InputLogin"
 import brasaoLagoa from '@/app/components/imagens/brasao-lagoa-dos-patos-mg.webp'
