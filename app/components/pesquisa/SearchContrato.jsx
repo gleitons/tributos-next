@@ -13,7 +13,7 @@ export default function SearchContrato({ dados }) {
             setContratoEncontrado(<InsiraContrato />)
             return;
         }
-        console.log(dados)
+        
         setIsLoading(true); // Ativa o spinner
 
         const resultado = dados.find((dado) => dado.codigo == searchQuery);

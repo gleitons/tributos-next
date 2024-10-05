@@ -1,4 +1,4 @@
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaTicketAlt } from "react-icons/fa";
 
 const ContratoValido = ( {data, horario}) => {
   return (
@@ -26,11 +26,11 @@ const ContratoInvalido = () => {
 };
 const InsiraContrato = () => {
   return (
-    <div className="flex items-center justify-center p-4 mt-10 bg-red-100 rounded-lg border border-red-400">
-      <FaTimesCircle className="text-red-600 text-4xl mr-4" />
+    <div className="flex items-center justify-center p-4 mt-10 bg-blue-100 rounded-lg border border-blue-400">
+      <FaTicketAlt className="text-blue-600 text-4xl mr-4" />
       <div>
-        <h2 className="text-red-700 font-bold text-xl">ATENÇÃO, DIGITE CORRETAMENTE</h2>
-        <p className="text-red-600">Informe o número do contrato no campo em branco.</p>
+        <h2 className="text-blue-700 font-bold text-xl text-center">ATENÇÃO, DIGITE CORRETAMENTE</h2>
+        <p className="text-blue-600 text-center">Informe o número do contrato no campo em branco.</p>
       </div>
     </div>
   );

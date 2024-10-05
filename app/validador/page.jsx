@@ -1,11 +1,10 @@
 import SearchContrato from "../components/pesquisa/SearchContrato";
 import { GrDocumentLocked } from "react-icons/gr";
 import Image from "next/image";
-import { revalidatePath } from "next/cache";
 
 const fetchData = async () => {
     const url = 'https://script.google.com/macros/s/AKfycbz7ErSj70haP8AkH2TiciA3BkY2vJhdek0fYPp0N_vtjyGZn4ziey1e08kB3tHH_fTUyA/exec'
-    const resp = await fetch(url, { next: {revalidate: 5} }); // Corrigido: adicionado chaves para o segundo argumento
+    const resp = await fetch(url, { next: {revalidate: 600} }); // Corrigido: adicionado chaves para o segundo argumento
     const data = await resp.json()
     return data.saida
 }
@@ -38,13 +37,13 @@ const SearchComponent = async () => {
 
             <SearchContrato dados={await fetchData()} />
             {/* Botão de busca */}
-            <div className="flex items-center justify-center fixed bottom-0 left-0 right-0">
+            <div className="flex items-center justify-center w-full fixed bottom-0 left-0 right-0">
                 <Image
-                    className="m-auto"
+                    className="m-auto w-[200px]"
                     src='https://dapper-panda-e60101.netlify.app/src/img/futuro-consultoria-horizonte.png'
                     alt="Futuro Consultoria"
                     width={200}
-                    height={300}
+                    height={50}
                 />
             </div>
 
