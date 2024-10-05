@@ -17,8 +17,7 @@ export default function Home() {
   return (
     <div >
       {/* <Inicial /> */}
-      <div className={`${fundos[2]} h-screen font-sans  bg-cover`} id="login">
-        
+      <div className={`${fundos[2]} h-screen font-sans  bg-cover`} id="login">   
        
       <Login />
       </div>

@@ -5,6 +5,7 @@ export const metadata = {
 };
 
 export default function LayoutDashboad({ children }) {
+  
   return (
     <html lang="pt-BR">
       <body className="flex">
