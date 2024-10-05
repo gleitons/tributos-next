@@ -24,5 +24,16 @@ const ContratoInvalido = () => {
     </div>
   );
 };
+const InsiraContrato = () => {
+  return (
+    <div className="flex items-center justify-center p-4 mt-10 bg-red-100 rounded-lg border border-red-400">
+      <FaTimesCircle className="text-red-600 text-4xl mr-4" />
+      <div>
+        <h2 className="text-red-700 font-bold text-xl">ATENÇÃO, DIGITE CORRETAMENTE</h2>
+        <p className="text-red-600">Informe o número do contrato no campo em branco.</p>
+      </div>
+    </div>
+  );
+};
 
-export { ContratoValido, ContratoInvalido };
+export { ContratoValido, ContratoInvalido, InsiraContrato };

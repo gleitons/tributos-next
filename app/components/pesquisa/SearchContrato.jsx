@@ -1,14 +1,19 @@
 'use client';
 import { useState } from 'react';
 import LoadingSpinner from '../loading/LoadingSpinner';
-import { ContratoValido, ContratoInvalido } from './ContratosIV';
+import { ContratoValido, ContratoInvalido, InsiraContrato } from './ContratosIV';
 
 export default function SearchContrato({ dados }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [contratoEncontrado, setContratoEncontrado] = useState(null);
     const [isLoading, setIsLoading] = useState(false); // Para controlar o loading
 
-    const handleSearch = () => {
+    const handleSearch = () => {    
+        if (searchQuery.trim() === '') {
+            setContratoEncontrado(<InsiraContrato />)
+            return;
+        }
+        console.log(dados)
         setIsLoading(true); // Ativa o spinner
 
         const resultado = dados.find((dado) => dado.codigo == searchQuery);

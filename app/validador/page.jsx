@@ -1,13 +1,18 @@
-
 import SearchContrato from "../components/pesquisa/SearchContrato";
 import { GrDocumentLocked } from "react-icons/gr";
 import Image from "next/image";
+import { revalidatePath } from "next/cache";
+
+const fetchData = async () => {
+    const url = 'https://script.google.com/macros/s/AKfycbz7ErSj70haP8AkH2TiciA3BkY2vJhdek0fYPp0N_vtjyGZn4ziey1e08kB3tHH_fTUyA/exec'
+    const resp = await fetch(url, { next: {revalidate: 5} }); // Corrigido: adicionado chaves para o segundo argumento
+    const data = await resp.json()
+    return data.saida
+}
+
 
 const SearchComponent = async () => {
-    const url = 'https://script.google.com/macros/s/AKfycbz7ErSj70haP8AkH2TiciA3BkY2vJhdek0fYPp0N_vtjyGZn4ziey1e08kB3tHH_fTUyA/exec'
-    const resp = await fetch(url);
-    const data = await resp.json()
-
+   
     return (
         <div className="max-w-lg mx-auto p-4 bg-white shadow-lg rounded-lg h-screen ">
             {/* Imagem */}
@@ -31,7 +36,7 @@ const SearchComponent = async () => {
 
             {/* Input de pesquisa */}
 
-            <SearchContrato dados={data.saida} />
+            <SearchContrato dados={await fetchData()} />
             {/* Botão de busca */}
             <div className="flex items-center justify-center fixed bottom-0 left-0 right-0">
                 <Image
