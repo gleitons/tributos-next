@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div >
       {/* <Inicial /> */}
-      <div className={` lagoa7 h-screen font-sans  bg-cover`} id="login">   
+      <div className={` lagoa8 h-screen font-sans  bg-cover`} id="login">   
        
       <Login />
       </div>
