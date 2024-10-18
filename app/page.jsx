@@ -13,11 +13,11 @@ export default function Home() {
   // const fundos = ['lagoa0', 'lagoa1', 'lagoa2', 'lagoa3', 'lagoa4', 'lagoa5', 'lagoa6']
   let lagoa = Math.floor(Math.random() * fundos.length)
  
-
+//${fundos[6]}
   return (
     <div >
       {/* <Inicial /> */}
-      <div className={`${fundos[2]} h-screen font-sans  bg-cover`} id="login">   
+      <div className={` lagoa7 h-screen font-sans  bg-cover`} id="login">   
        
       <Login />
       </div>

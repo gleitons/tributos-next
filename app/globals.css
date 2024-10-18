@@ -69,6 +69,13 @@
  
   filter: saturate(1.1);
 }
+.lagoa7 {
+  background: url("/img/balne-lagoa-dp-min.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  filter: saturate(1.1);
+}
 .lagoa > div > button {
   position: absolute;
   top: 0px;
@@ -106,14 +113,14 @@
   margin: auto;
 }
 .backMac {
-  background: rgba(159, 210, 220, 0.144);
+  background: #3d73b6d2;
   box-shadow: 0 8px 32px 0 rgba(83, 91, 197, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  /* backdrop-filter: blur(4px); */
+  /* -webkit-backdrop-filter: blur(4px); */
   border-radius: 10px;
-  box-shadow: inset rgb(122, 182, 215) 0px 5px 8px 4px;
+  box-shadow: inset #70a8ed 0px 5px 8px 4px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  animation: aparece 400ms normal    linear;
+  /* animation: aparece 400ms normal    linear; */
 }
 @keyframes aparece {
   from {

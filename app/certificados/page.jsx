@@ -21,7 +21,7 @@ export default function Page() {
       
       {certifico.map((certificado) => (
         <div key={certificado.id} className="m-4 text-center max-w-[360px] p-4 bg-white rounded-lg shadow-lg">
-          <h1>{certificado.title.toLocaleUpperCase()}</h1>
+          <h1>{certificado.title?.toLocaleUpperCase()}</h1>
           <p>{certificado.horas} horas</p>
           {certificado.image.map((image, index) => (
             <div key={index} className="py-2">
