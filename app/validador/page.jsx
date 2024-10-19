@@ -40,7 +40,7 @@ const SearchComponent = async () => {
             <div className="flex items-center justify-center w-full fixed bottom-0 left-0 right-0">
                 <Image
                     className="m-auto w-[200px]"
-                    src='https://dapper-panda-e60101.netlify.app/src/img/futuro-consultoria-horizonte.png'
+                    src='/img/futuro-consultoria-horizonte.png'
                     alt="Futuro Consultoria"
                     width={200}
                     height={50}

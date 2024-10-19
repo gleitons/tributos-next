@@ -5,6 +5,8 @@ import InputLogin from "../inputs/InputLogin"
 export default function Login() {
     const pass = process.env.PASS
     const access = process.env.ADRESS
+
+
    
     return (
         <div className="container mx-auto h-full flex flex-1 justify-center items-center">
@@ -16,7 +18,7 @@ export default function Login() {
                         </div>
                         <p className="text-white text-center text-lg font-bold">TRIBUTOS LAGOA DOS PATOS-MG</p>
 
-                        <InputLogin pass={pass} access={access} />
+                        <InputLogin />
 
                         <div className="text-center">
                         </div>
