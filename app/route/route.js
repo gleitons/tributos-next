@@ -5,8 +5,7 @@ export async function POST(req) {
     const { password } = await req.json();
     const serverPass = process.env.PASS;
     const linkPass = process.env.ADRESS;
-    console.log(serverPass)
-    console.log(password)
+   
     if (password == serverPass) {
         return NextResponse.json({ success: true, message: linkPass }, { status: 200 });
     } else {

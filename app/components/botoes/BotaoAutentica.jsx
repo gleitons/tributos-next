@@ -6,6 +6,7 @@ export default function BotaoAutentica() {
    
     const route = useRouter()
     const link = LinkValidador()   
+    
     function validador(link) {                
         route.push(link)
         document.querySelector('#carrega').classList.remove('hidden')

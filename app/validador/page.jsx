@@ -35,7 +35,7 @@ const SearchComponent = async () => {
 
             {/* Input de pesquisa */}
 
-            <SearchContrato dados={await fetchData()} />
+            <SearchContrato  />
             {/* Botão de busca */}
             <div className="flex items-center justify-center w-full fixed bottom-0 left-0 right-0">
                 <Image
