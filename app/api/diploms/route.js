@@ -1,4 +1,5 @@
-[
+import { NextResponse } from "next/server"
+const diplomas = [
     {
       "id": 1,
       "title": "MONTAGEM E MANUTENÇÃO DE COMPUTADORES",
@@ -172,6 +173,23 @@
       "pontuacao": "10",
       "informacoes": "",
       "link": ["https://udemy-certificate.s3.amazonaws.com/image/UC-M78VB7A6.jpg"]
+    },
+    {
+      "id": 0,
+      "title": "OUTRO CONTRATO",
+      "codigo": "6564e1a492439b797a244810",
+      "pdf": "/certificados/lideranca.pdf",
+      "image": ["https://udemy-certificate.s3.amazonaws.com/image/UC-M78VB7A6.jpg"],
+      "inicio": "28/09/2024",
+      "fim": "29/09/2024",
+      "horas": "2",
+      "escola": "SEBRAE CURSOS",
+      "pontuacao": "10",
+      "informacoes": "",
+      "link": ["https://udemy-certificate.s3.amazonaws.com/image/UC-M78VB7A6.jpg"]
     }
   ]
   
+export async function POST(req) {
+  return NextResponse.json({diplomas})
+}

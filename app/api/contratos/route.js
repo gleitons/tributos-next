@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 
 // Função para lidar com requisições POST
-export async function POST(req) {
-    
+export async function POST(req) {    
     const fetchData = async () => {
         const url = 'https://script.google.com/macros/s/AKfycbz7ErSj70haP8AkH2TiciA3BkY2vJhdek0fYPp0N_vtjyGZn4ziey1e08kB3tHH_fTUyA/exec'
         const resp = await fetch(url, { next: { revalidate: 600 } }); // Corrigido: adicionado chaves para o segundo argumento

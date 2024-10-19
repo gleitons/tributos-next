@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
 import styles from './load.module.css';
+import Erromessage from '../inputs/Erromenssage'
 
 export default function InputLogin() {
     const [passw, setPassw] = useState('');
@@ -50,7 +51,7 @@ export default function InputLogin() {
             if (data.success) {
                 router.push(data.message);
             } else {
-                setInco(<p className={styles.load}>Incorreta, tente novamente</p>);
+                setInco( <span onClick={() => setInco('')}><Erromessage  /></span> );
             }
         } catch (error) {
             setInco(<p className={styles.load}>Erro na verificação, tente novamente mais tarde</p>);

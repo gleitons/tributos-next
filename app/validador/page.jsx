@@ -1,22 +1,11 @@
 import SearchContrato from "../components/pesquisa/SearchContrato";
-import { GrDocumentLocked } from "react-icons/gr";
+import IconeContrato from "../components/parts/IconeContrato"
 import Image from "next/image";
 
 const SearchComponent = async () => {   
     return (
         <div className="max-w-lg mx-auto p-4 bg-white shadow-lg rounded-lg h-screen ">
-            {/* Imagem */}
-            <div className='bg-gradient-to-r text-white from-blue-400 via-blue-500 to-blue-600 h-30 py-5 w-full flex items-center justify-center gap-2'>
-                <div>
-                    < GrDocumentLocked className='text-6xl' />
-                </div>
-                <div className='text-center p-2 text-lg font-bold'>
-                    <h2>VERIFICAR AUTENTICIDADE DE DOCUMENTOS</h2>
-                </div>
-            </div>
-
-
-            {/* Título */}
+           <IconeContrato />
             <h2 className="text-2xl font-bold text-center mb-2">Buscar Documento</h2>
 
             {/* Texto descritivo */}
