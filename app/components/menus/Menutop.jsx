@@ -10,11 +10,11 @@ const Menutop = () => {
         {/* Logo e Nome da Empresa */}
         <Link href={'/dashboard'} className="flex items-center space-x-3">
           <Image 
-            src="https://dapper-panda-e60101.netlify.app/src/img/futuro-consultoria-horizonte.svg" // Caminho para o seu logo
+            src="/img/futuro-consultoria-horizonte.png" // Caminho para o seu logo
             alt="Logo Futuro Consultoria"
-            width={40}
-            height={40}
-            className="h-10 w-10"
+            width={80}
+            height={80}
+            // className="h-10 w-10"
           />
           <span className="text-white font-bold text-xl text-center">
             FUTURO CONSULTORIA

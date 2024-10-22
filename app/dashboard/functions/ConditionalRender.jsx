@@ -1,6 +1,6 @@
 'use client'
 import MenuLateral from "@/app/components/menus/MenuLateral";
-import Menutop from "@/app/components/menus/Menutop";;
+import Menutop from "@/app/components/menus/Menutop";
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { colectCookie } from '../components/Cookie';
@@ -26,12 +26,13 @@ const ConditionalRender = ({  children }) => {
     if (isAuthenticated() || null) {
         return ( // Garantindo que a estrutura HTML corresponda
             <div>
+                
                 <Menutop />
                 <div className="flex">
                     <div>
                         <MenuLateral />
                     </div>
-                    <div className="p-2">
+                    <div className="p-2 w-full h-full">
                         {children}
                     </div>
                 </div>
