@@ -1,6 +1,6 @@
 'use client'
-import MenuLateral from "../../components/menus/MenuLateral";
-import Menutop from "../../components/menus/MenuTop";
+import MenuLateral from "@/app/components/menus/MenuLateral";
+import Menutop from "@/app/components/menus/Menutop";;
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { colectCookie } from '../components/Cookie';
