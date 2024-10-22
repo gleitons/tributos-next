@@ -4,7 +4,14 @@ const LinkMenus = [
         portugues: 'inicio',
         ingles: 'home',
         espanhol: 'initio',
-        link: '/',
+        link: './',
+
+    }, 
+    {
+        portugues: 'Dados',
+        ingles: 'date',
+        espanhol: 'dada',
+        link: '/dashboard/dados',
 
     },
 

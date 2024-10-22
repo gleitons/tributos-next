@@ -5,6 +5,7 @@ import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
 import styles from './load.module.css';
 import Erromessage from '../inputs/Erromenssage'
+import { insertCookie } from '../../dashboard/components/Cookie'
 
 export default function InputLogin() {
     const [passw, setPassw] = useState('');
@@ -49,6 +50,7 @@ export default function InputLogin() {
             const data = await response.json(); 
 
             if (data.success) {
+                insertCookie();
                 router.push(data.message);
             } else {
                 setInco( <span onClick={() => setInco('')}><Erromessage  /></span> );

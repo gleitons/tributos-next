@@ -1,5 +1,5 @@
 import Login from "./components/login/Login";
-import Inicial from "./components/Inicial";
+
 
 export default function Home() {
   
