@@ -13,7 +13,7 @@ export default function LayoutDashboad({ children }) {
   const pathname = usePathname();
   const isPrivatePage = checkIsPrivate(pathname)
 
-  console.log(isPrivatePage + ' rota privada')
+  
 
   return (
     <html lang="pt-BR">

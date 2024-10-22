@@ -1,7 +1,7 @@
 // components/Header.js
 import Link from 'next/link';
 import Image from 'next/image';
-import Loggout from '../../dashboard/components/Loggout';
+import Loggout from '@/app/dashboard/components/Loggout';
 
 const Menutop = () => {
   return (

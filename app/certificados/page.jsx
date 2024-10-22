@@ -18,7 +18,7 @@ export default function Page() {
         }
       );
       const dataResp = await resp.json()
-      console.log(dataResp.diplomas)
+    
       setOsDiplomas(Array.isArray(dataResp.diplomas) ? dataResp.diplomas : []);
 
     } catch (error) {
@@ -34,7 +34,7 @@ export default function Page() {
     certifico()
   }, []);
 
-  console.log(osDiplomas)
+
   return (
     <div className="container m-auto bg-gray-100 flex justify-center items-center flex-wrap">
       {fullImageUrl && <FullScreenImage imageUrl={fullImageUrl} close={() => setFullImageUrl(null)} />}

@@ -1,7 +1,7 @@
 export default function handler(req, res) {
     const { method } = req;
     const { password } = req.body;
-    console.log(password)
+  
     if (method === 'POST') {
         const serverPass = process.env.PASS;
 

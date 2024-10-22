@@ -32,7 +32,7 @@ export default function SearchContrato() {
 
 
             if (datea.success) {
-                console.log(datea.message)
+               
                 setContratoEncontrado(<ContratoValido data={datea.message.split('T')[0].split('-').reverse().join('/')} horario={datea.message.split('T')[1].split('.')[0]} />);
             } else {
                 setContratoEncontrado(<ContratoInvalido />);

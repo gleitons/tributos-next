@@ -1,6 +1,6 @@
 'use client'
-import MenuLateral from "../../../app/components/menus/MenuLateral";
-import Menutop from "../../../app/components/menus/MenuTop";
+import MenuLateral from "../../components/menus/MenuLateral";
+import Menutop from "../../components/menus/MenuTop";
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { colectCookie } from '../components/Cookie';
@@ -15,7 +15,7 @@ const ConditionalRender = ({  children }) => {
         }
 
     };
-    console.log(verifica + ' autenticado')
+    
 
     useEffect(() => {
         if (!isAuthenticated()) {

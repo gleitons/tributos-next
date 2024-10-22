@@ -6,6 +6,7 @@ import Image from "next/image";
 import styles from './load.module.css';
 import Erromessage from '../inputs/Erromenssage'
 import { insertCookie } from '../../dashboard/components/Cookie'
+import LoadingSpinner from "../loading/LoadingSpinner";
 
 export default function InputLogin() {
     const [passw, setPassw] = useState('');
@@ -36,7 +37,7 @@ export default function InputLogin() {
     };
 
     const entrar = async () => {
-        setInco(<Image className={styles.cimg} src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif" width={100} height={100} alt="Loading" />);
+        setInco(<LoadingSpinner />);       
 
         try {
             const response = await fetch('/route/', {                

@@ -1,5 +1,4 @@
 export default function enderecosPdf(cod) {
-    console.log('servidor')
     if(cod === 1){
         return '/pdf/lei-issqn-lagoa-dos-patos-mg.pdf';
     }

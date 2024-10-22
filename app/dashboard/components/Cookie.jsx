@@ -11,9 +11,9 @@ export const insertCookie = () => {
 export const colectCookie = () => {
     const pullC = getCookie('dn');
     const myTok = process.env.NEXT_PUBLIC_TOKEN
-    console.log(myTok)
+
     if(pullC == myTok) {
-        console.log(123)
+     
         return true
     }
     return false
