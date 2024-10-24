@@ -16,7 +16,6 @@ const ConditionalRender = ({  children }) => {
 
     };
     
-
     useEffect(() => {
         if (!isAuthenticated()) {
             pullAdrees.push('/');

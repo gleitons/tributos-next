@@ -1,9 +1,9 @@
 export default function page(params) {
-    return (
-        <div className=" p-8 rounded-lg shadow-md">
+  return (
+    <div className=" p-8  w-3/4 mx-auto ">
       <h1 className="text-3xl font-bold text-gray-800 mb-4">FUTURO CONSULTORIA</h1>
       <p className="text-gray-700 mb-4">
-        <strong>Futuro Consultoria</strong> é uma empresa fundada por Gleiton Aparecido Soares de Souza, com o objetivo de oferecer serviços de consultoria personalizados para pequenos e médios negócios. Desde a sua criação, em 2016, a empresa vem se destacando pela abordagem prática e eficiente, ajudando empresários a enfrentarem desafios financeiros e administrativos.
+        <strong>Futuro Consultoria</strong> é uma empresa fundada por <a href="https://gleiton.vercel.app"><strong>Gleiton Aparecido Soares de Souza</strong></a>, com o objetivo de oferecer serviços de consultoria personalizados para pequenos e médios negócios. Desde a sua criação, em 2016, a empresa vem se destacando pela abordagem prática e eficiente, ajudando empresários a enfrentarem desafios financeiros e administrativos.
       </p>
       <p className="text-gray-700 mb-4">
         Inicialmente voltada para o comércio de cosméticos e produtos de higiene, a Futuro Consultoria expandiu sua atuação para outras áreas, como minimercados, equipamentos de telefonia e serralheria, sempre mantendo o foco em agregar valor aos seus clientes.
@@ -18,5 +18,5 @@ export default function page(params) {
         A visão é clara: contribuir para o sucesso sustentável dos seus parceiros, proporcionando ferramentas eficazes para superar desafios e alcançar objetivos.
       </p>
     </div>
-    )
+  )
 };

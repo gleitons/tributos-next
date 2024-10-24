@@ -6,6 +6,7 @@ export const APP_ROUTES =  {
             '/dashboard/servicos',
             '/dashboard/contato',
             '/dashboard/itbi',
+            '/dashboard/registros-imobiliarios'
         ]
     },
     public: [

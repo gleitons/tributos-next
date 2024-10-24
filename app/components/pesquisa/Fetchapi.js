@@ -17,14 +17,15 @@ export async function pega({ endereco }) {
 
         const dadosEmpresas = await response.json();
 
+
         const dados = dadosEmpresas.osDados
 
-        dados.sort((a, b) => {
-           
+
+        dados.sort((a, b) => {           
             return a.empresa.localeCompare(b.empresa);
         });       
 
-        return dados
+        return dados;
 
     } catch (error) {
         return error;

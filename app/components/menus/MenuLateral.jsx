@@ -23,6 +23,7 @@ const MenuLateral = () => {
       icone: <BsDatabaseFillLock />,
       submenus: [
         { nome: 'Dados Contribuites', link: '/dashboard/dados' },
+        { nome: 'Registros Imobiliarios', link: '/dashboard/registros-imobiliarios' },
         
       ],
     },
