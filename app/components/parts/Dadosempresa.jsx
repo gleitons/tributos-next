@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 
 const DadosEmpresa = ({ dados }) => {
@@ -6,7 +7,7 @@ const DadosEmpresa = ({ dados }) => {
     // Função para copiar o conteúdo para a área de transferência
     const copiarTexto = (texto, titulo) => {
         navigator.clipboard.writeText(texto);
-        setCopiado(`${titulo} copiado!`);
+        setCopiado(`${titulo.toUpperCase()} - (${texto}) copiado!`);
         setTimeout(() => setCopiado(''), 2000); // Remove a mensagem após 2 segundos
     };
 
@@ -20,11 +21,11 @@ const DadosEmpresa = ({ dados }) => {
                 if (valor) { // Se o valor não for vazio, exibe o campo
                     return (
                         <div key={chave} className="flex justify-between  gap-4 border border-gray-500 m-1 p-1 w-[400px] relative border-b-4 border-b-black border-r-4 border-r-black bg-aliceblue">
-                            <strong>{chave.charAt(0).toUpperCase() + chave.slice(1)}:</strong>{' '}
+                            <strong>{chave.toUpperCase()}</strong>{' '}
                             <p>|</p>
                             <span
                                 onClick={() => copiarTexto(valor, chave)}
-                                className="cursor-pointer text-blue-500 underline"
+                                className="cursor-pointer   text-blue-500 hover:text-blue-800"
                             >
                                 
                                 {valor}

@@ -51,8 +51,8 @@ export default function Page() {
             <br />
             <div className="flex ">
                 <div className="border border-sky-500 ">
-                    <h2 className="text-lg font-bold  bg-slate-400 text-center ">Contribuintes</h2>
-                    <ul className="h-[600px] w-[410px] overflow-auto p-2">
+                    <h2 className="text-lg font-bold    bg-slate-700 text-center text-white ">Contribuintes</h2>
+                    <ul className="h-[600px] w-[410px] shadow-inner overflow-auto p-2">
                         {dadosC}
                     </ul>
                 </div>
