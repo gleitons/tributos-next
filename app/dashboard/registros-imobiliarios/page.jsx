@@ -2,12 +2,12 @@
 import React from 'react';
 
 async function fetchImoveisData() {
-  // const baseUrl = process.env.VERCEL_URL 
-  //   ? `https://${process.env.VERCEL_URL}` 
-  //   : 'http://localhost:3000'; // Ajuste a porta conforme seu ambiente de desenvolvimento
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : 'http://localhost:3000'; // Ajuste a porta conforme seu ambiente de desenvolvimento
 
   //   console.log('baseUrl:', baseUrl);
-  const res = await fetch(`http://localhost:3000/api/imoveis`);
+  const res = await fetch(`${baseUrl}/api/imoveis`);
   if (!res.ok) {
     throw new Error('Erro ao carregar dados');
   }
