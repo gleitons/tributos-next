@@ -6,8 +6,8 @@ async function fetchImoveisData() {
     ? `https://${process.env.VERCEL_URL}` 
     : 'http://localhost:3000'; 
 
-  //   console.log('baseUrl:', baseUrl);
-  const res = await fetch(`${baseUrl}/api/imoveis/`);
+  //   console.log('baseUrl:', baseUrl);${baseUrl}
+  const res = await fetch(`http://localhost:3000/api/imoveis/`);
   if (!res.ok) {
     throw new Error('Erro ao carregar dados');
   }

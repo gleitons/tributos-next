@@ -2,6 +2,7 @@
 import ConditionalRender from './functions/ConditionalRender';
 import { usePathname } from 'next/navigation';
 import { checkIsPrivate } from './functions/check-is-private/index'
+import  { GoogleAnalytics } from '@next/third-parties/google'
 
 const metadata = {
   title: "Sistema - Setor de Tributos - Lagoa dos Patos MG",
@@ -20,7 +21,9 @@ export default function LayoutDashboad({ children }) {
       <body >       
           <ConditionalRender conditionFunction={isPrivatePage}>
             {children}
+            <GoogleAnalytics gaId="G-EKP341VD46" />
           </ConditionalRender>
+          <GoogleAnalytics gaId="G-EKP341VD46" />
        
       </body>
     </html>
