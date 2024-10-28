@@ -7,7 +7,7 @@ async function fetchImoveisData() {
     : 'http://localhost:3000'; 
 
   //   console.log('baseUrl:', baseUrl);${baseUrl}
-  const res = await fetch(`${baseUrl}/api/imoveis/`);
+  const res = await fetch(`https://tributos.netlify.app/api/imoveis/`);
   if (!res.ok) {
     throw new Error('Erro ao carregar dados');
   }
