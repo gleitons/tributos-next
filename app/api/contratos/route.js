@@ -5,18 +5,22 @@ export async function POST(req) {
 
     const fetchData = async () => {
         const url = 'https://script.google.com/macros/s/AKfycbz7ErSj70haP8AkH2TiciA3BkY2vJhdek0fYPp0N_vtjyGZn4ziey1e08kB3tHH_fTUyA/exec'
-        const resp = await fetch(url, { next: { revalidate: 600 } }); // Corrigido: adicionado chaves para o segundo argumento
+        const resp = await fetch(url, { next: { revalidate: 10 } }); // Corrigido: adicionado chaves para o segundo argumento
         const data = await resp.json()
         return data.saida
     }
 
     const { codigoC } = await req.json();  
 
+    console.log(codigoC);
+
     const dataE = await fetchData();    
+
+    
     
     for (const e of dataE) {
        
-        if (codigoC === e.codigo) {
+        if (codigoC == e.codigo) {
             return NextResponse.json({ success: true, message: e.dataCadastro });
         }
     }
