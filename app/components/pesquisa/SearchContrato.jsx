@@ -14,26 +14,33 @@ export default function SearchContrato() {
         setIsLoading(true);
 
         if (searchQuery.trim() === '') {
-                    setContratoEncontrado(<InsiraContrato />)
-                    setIsLoading(false);
-                    return;
-                }
+            setContratoEncontrado(<InsiraContrato />)
+            setIsLoading(false);
+            return;
+        }
 
         try {
-            const response = await fetch('/api/contratos/', {                
+            const response = await fetch('/api/contratos/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ codigoC: searchQuery }),
             });
-            
-            const datea = await response.json(); 
+
+            const datea = await response.json();
+
+
 
 
             if (datea.success) {
                
-                setContratoEncontrado(<ContratoValido data={datea.message.split('T')[0].split('-').reverse().join('/')} horario={datea.message.split('T')[1].split('.')[0]} />);
+
+                setContratoEncontrado(<ContratoValido
+                    down={datea.metadata}
+                    data={datea.message.split('T')[0].split('-').reverse().join('/')}
+                    horario={datea.message.split('T')[1].split('.')[0]} />
+                );
             } else {
                 setContratoEncontrado(<ContratoInvalido />);
             }
@@ -48,11 +55,11 @@ export default function SearchContrato() {
     //         setContratoEncontrado(<InsiraContrato />)
     //         return;
     //     }
-        
+
     //     setIsLoading(true); // Ativa o spinner
 
     //     const resultado = dados.find((dado) => dado.codigo == searchQuery);
-    
+
     //     // Simulação de tempo de carregamento
     //     setTimeout(() => {
     //         if (resultado) {

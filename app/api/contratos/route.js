@@ -16,12 +16,13 @@ export async function POST(req) {
 
     const dataE = await fetchData();    
 
-    
+  
     
     for (const e of dataE) {
-       
+        
         if (codigoC == e.codigo) {
-            return NextResponse.json({ success: true, message: e.dataCadastro });
+         
+            return NextResponse.json({ success: true, message: e.dataCadastro, metadata: e.arraySix });
         }
     }
     return NextResponse.json({ success: false });
