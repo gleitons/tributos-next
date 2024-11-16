@@ -9,20 +9,27 @@ import SkeletonList from "../components/SkeletonList";
 
 
 
+
 export default function Page() {
     const [dadosC, setDadosC] = useState(<SkeletonList />)
     const [infoContribuinte, setInfoContribuinte] = useState(<LoadingSpinner />)
-    const [nEmpresa, setNEmpresa] = useState('Empresa')
+    const [nEmpresa, setNEmpresa] = useState('Empresa');
+    const [visivel, setVisivel] = useState(false);
+
+
 
 
 
 
     const rota = useRouter()
 
+    const mostraVisivel = () => {
+        setVisivel(true)
+    }
+
     const mostraDados = async (objeto) => {
         setNEmpresa(objeto.empresa)
         setInfoContribuinte(<Dadosempresa dados={objeto} />)
-
 
     }
 
@@ -45,10 +52,14 @@ export default function Page() {
 
     return (
         <div>        
+            
             <h2 className="text-xl">Dados Fiscais de Contribuintes - Sala Mineira do Empreendedor</h2> 
             <p>Para novo Cadastro - <button className="bg-green-800 px-1 rounded-sm text-white" onClick={() => rota.push('https://docs.google.com/spreadsheets/d/12BlFnJ-jdrLi_JQPBYvHervxePaX5lHMEjIh4eDVkXQ/edit?gid=0#gid=0')} >Clique aqui</button></p> 
             <p>*Os dados sao atualizados de 10 em 10 minutos</p>
             <br />
+            <button onClick={() => mostraVisivel()}  className="inline-block bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">Mostrar Dados</button>
+
+            {visivel &&
             <div className="flex ">
                 <div className="border border-sky-500 ">
                     <h2 className="text-lg font-bold    bg-slate-700 text-center text-white ">Contribuintes</h2>
@@ -63,7 +74,8 @@ export default function Page() {
                     </ul>
                 </div>
             </div>
-            {/* <pre>{JSON.stringify(dadosC, null, 2)}</pre> */}
+             }
+            
         </div>
     )
 };

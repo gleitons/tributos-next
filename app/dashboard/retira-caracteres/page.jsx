@@ -11,7 +11,7 @@ export default function Page() {
 
     const copiaTextoAoClicar = () => {
         const textoCopiado = inputValue
-        navigator.clipboard.writeText(textoCopiado) // Copia o texto para a área de transferência
+        navigator.clipboard.writeText(textoCopiado.toString().replace(/[-,.;\/' ><={}\\|:]/g, '')) // Copia o texto para a área de transferência
         setCopiado(true) // Exibe a mensagem "Copiado!!"
         setTimeout(() => setCopiado(false), 2000) // Oculta a mensagem após 2 segundos
     }
@@ -39,7 +39,7 @@ export default function Page() {
                 <abbr title={`Copiar ${inputValue.toString().replace(/[-,.;:]/g, '')}`}>
                     <p
                         onClick={() => copiaTextoAoClicar()}
-                        className="bg-blue-800 text-white p-2 no-underline cursor-pointer"
+                        className="bg-blue-800 text-white p-2 no-underline cursor-pointer "
                     >
                         {inputValue.toString().replace(/[-,.;\/' ><={}\\|:]/g, '')}
                     </p>

@@ -13,8 +13,8 @@ const MenuLateral = () => {
       link: '/dashboard',
       icone: <IoHome />,
       submenus: [
-        
-        
+
+
       ],
     },
     {
@@ -24,9 +24,65 @@ const MenuLateral = () => {
       submenus: [
         { nome: 'Dados Contribuites', link: '/dashboard/dados' },
         { nome: 'Registros Imobiliarios', link: '/dashboard/registros-imobiliarios' },
-        
+        { nome: 'Mapa Completo Lagoa', link: '/dashboard/mapa-completo-lagoa-dos-patos-mg' },
+        { nome: 'Valor Terra nua', link: '/dashboard/valor-terra-nua' },
+
+
+
       ],
     },
+    {
+      portugues: 'Bairros',
+      link: '',
+      icone: <BsDatabaseFillLock />,
+      submenus: [
+        { nome: 'Todos', link: '/dashboard/registros-imobiliarios' },
+        { nome: 'Centro', link: '/dashboard/centro' },
+        { nome: 'Cidade Nova', link: '/dashboard/cidade-nova' },
+        { nome: 'Cidade Nova II', link: '/dashboard/cidade-nova-ii' },
+        { nome: 'Independencia', link: '/dashboard/independencia' },
+        { nome: 'Novo Horizonte', link: '/dashboard/novo-horizonte' },
+        { nome: 'Santo Andre', link: '/dashboard/santo-andre' },
+
+
+      ],
+    },
+    {
+      portugues: 'Ferramentas',
+      link: '',
+      icone: <BsDatabaseFillLock />,
+      submenus: [
+        { nome: 'Calculadora ISSQN', link: '/dashboard/calculadora-issqn' },
+        { nome: 'Retira Caracteres', link: '/dashboard/retira-caracteres' },
+       
+
+
+      ],
+    },
+    {
+      portugues: 'ITBI',
+      link: '',
+      icone: <BsDatabaseFillLock />,
+      submenus: [
+        { nome: 'ITBI Rural', link: '/dashboard/itbi-rural' },
+        { nome: 'ITBI  Urbano', link: '/dashboard/itbi-urbano' },
+       
+
+
+      ],
+    },
+    {
+      portugues: 'Configurações',
+      link: '',
+      icone: <BsDatabaseFillLock />,
+      submenus: [
+        { nome: 'UFM', link: '/dashboard/configuracoes' },
+        { nome: 'Servidores', link: '/dashboard/servidor' },
+       
+
+      ],
+      
+    }
   ];
 
   const toggleMenu = (index) => {
@@ -43,7 +99,7 @@ const MenuLateral = () => {
                 onClick={() => toggleMenu(index)}
                 className='w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-600 focus:outline-none'
               >
-               {menu.icone}{menu.portugues}
+                {menu.icone}{menu.portugues}
               </button>
               {openMenu === index && (
                 <ul className='pl-4 bg-gray-600'>

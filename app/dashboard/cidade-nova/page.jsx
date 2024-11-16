@@ -2,16 +2,27 @@
 import React from 'react';
 
 async function fetchImoveisData() {
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : 'http://localhost:3000'; 
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
 
   //   console.log('baseUrl:', baseUrl);${baseUrl}
   const res = await fetch(`https://tributos.netlify.app/api/imoveis/`);
+
+  function filtrarPorBairro(imoveis, bairro) {
+    return imoveis.filter(imovel => imovel.bairro_descricao === bairro);
+  }
+  const resultadoSF = await res.json()
+
+  const resultado = await filtrarPorBairro(resultadoSF, "CIDADE NOVA");
+
+
+
+
   if (!res.ok) {
     throw new Error('Erro ao carregar dados');
   }
-  return res.json();
+  return resultado;
 }
 
 export default async function RegistrosImobiliariosPage() {
@@ -20,17 +31,22 @@ export default async function RegistrosImobiliariosPage() {
   // console.log(data[62])
   return (
     <div>
-      <p>Imóvei Cadastrados: {data.length - 111}</p>
-      <div className="flex  justify-center  bg-gray-100">
+      <p>Imóvei Cadastrados: {data.length}</p>
+      <div>
+        {/* <button onClick={() => data()}>Carregar</button> */}
+        {/* <button>Proximo</button> */}
+      </div>
+      <div  className='overflow-auto h-screen'>
+        <div className="flex  justify-center  bg-gray-100">
           <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md border border-gray-200">
             <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">
-              Cadastro de Todos os Bairros
+              Imóveis do bairro {data[1].bairro_descricao}
             </h2>
             
             <p className="text-lg text-gray-600 text-center mt-2">
               Quantidade de imóveis:{" "}
               <span className="font-semibold text-gray-900">
-                {data.length - 111}
+                {data.length}
               </span>
             </p>
             <div className="mt-4 flex justify-center">
@@ -49,10 +65,11 @@ export default async function RegistrosImobiliariosPage() {
             </div>
           </div>
         </div>
-      <div className='overflow-auto h-screen'>
+
         <table className='min-w-full border-collapse border border-gray-200'>
           <thead className='bg-gray-300 sticky top-0 z-10'>
             <tr className='bg-gray-300'>
+            <th className='p-2 border border-gray-200'>i</th>
               <th className='p-2 border border-gray-200'>Imóvel</th>
               <th className='p-2 border border-gray-200'>Proprietário</th>
               <th className='p-2 border border-gray-200'>Setor</th>
@@ -69,7 +86,8 @@ export default async function RegistrosImobiliariosPage() {
                 key={index}
                 className={`hover:bg-slate-400 ${index % 2 === 0 ? 'bg-slate-200' : 'bg-slate-300'}`}
               >
-                <td className='p-2 border border-gray-200'>{e.matricula} - {index}</td>
+                <td className='p-2 border border-gray-200'>{index}</td>
+                <td className='p-2 border border-gray-200'>{e.matricula}</td>
                 <td className='p-2 border border-gray-200'>{e.proprietario}</td>
                 <td className='p-2 border border-gray-200'>{e.codigo_setor}</td>
                 <td className='p-2 border border-gray-200'>{e.codigo_quadra}</td>
