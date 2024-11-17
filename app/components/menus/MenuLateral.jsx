@@ -72,6 +72,18 @@ const MenuLateral = () => {
       ],
     },
     {
+      portugues: 'Avaliação Venal',
+      link: '',
+      icone: <BsDatabaseFillLock />,
+      submenus: [
+        { nome: 'ITBI Rural', link: '/dashboard/avaliacao-venal-rural' },
+        { nome: 'ITBI  Urbano', link: '/dashboard/avaliacao-venal-urbano' },
+       
+
+
+      ],
+    },
+    {
       portugues: 'Configurações',
       link: '',
       icone: <BsDatabaseFillLock />,
