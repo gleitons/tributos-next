@@ -6,6 +6,8 @@ import { pega } from '../../components/pesquisa/Fetchapi'
 import Dadosempresa from '../../components/parts/Dadosempresa'
 import SkeletonList from "../components/SkeletonList";
 
+import { IoEye } from "react-icons/io5";
+
 
 
 
@@ -37,7 +39,7 @@ export default function Page() {
 
         const infos = await pega({ endereco: 'informacoes' });
 
-        setDadosC(infos.map((c) => (<li onClick={() => mostraDados(c)} className="cursor-default  transition-all hover:bg-slate-700 hover:text-white px-2" key={c.id}>{c.empresa}</li>)));
+        setDadosC(infos.map((c) => (<li  className="cursor-default  flex gap-2  items-center  transition-all hover:bg-slate-700 hover:text-white px-2" key={c.id}> <span className="hover:cursor-pointer" onMouseOver={() => mostraDados(c)}><IoEye /></span> | <span onClick={() => mostraDados(c)}> {c.empresa}</span></li>)));
 
 
         setInfoContribuinte(<div className="flex gap-4 border border-gray-500 m-1 p-2 w-[400px] relative border-b-4 border-b-black border-r-4 border-r-black bg-aliceblue"> <strong> &lt;- <span className="cursor-pointer text-blue-500 underline" > Selecione a empresa ao lado - * Clique em cima do item para copiar </span></strong></div>)

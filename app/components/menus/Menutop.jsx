@@ -5,16 +5,16 @@ import Loggout from '@/app/dashboard/components/Loggout';
 
 const Menutop = () => {
   return (
-    <header className="bg-gray-800 p-4">
+    <header className="bg-gray-700 p-4">
       <div className="container flex items-center justify-between w-[50%] m-auto">
         {/* Logo e Nome da Empresa */}
         <Link href={'/dashboard'} className="flex items-center space-x-3">
           <Image 
-            src="/img/futuro-consultoria-horizonte.png" // Caminho para o seu logo
+            src="/img/futuro-consultoria-horizonte.svg" // Caminho para o seu logo
             alt="Logo Futuro Consultoria"
             width={80}
             height={80}
-            // className="h-10 w-10"
+            className="h-10 w-30"
           />
           <span className="text-white font-bold text-xl text-center">
             FUTURO CONSULTORIA

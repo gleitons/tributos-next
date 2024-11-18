@@ -3,6 +3,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { IoHome } from "react-icons/io5";
 import { BsDatabaseFillLock } from "react-icons/bs";
+import { FaCity } from "react-icons/fa6";
+import { FaTools, FaHouseUser } from "react-icons/fa";
+import { RiPercentFill } from "react-icons/ri";
 
 const MenuLateral = () => {
   const [openMenu, setOpenMenu] = useState(null);
@@ -34,7 +37,7 @@ const MenuLateral = () => {
     {
       portugues: 'Bairros',
       link: '',
-      icone: <BsDatabaseFillLock />,
+      icone: <FaCity />,
       submenus: [
         { nome: 'Todos', link: '/dashboard/registros-imobiliarios' },
         { nome: 'Centro', link: '/dashboard/centro' },
@@ -50,7 +53,7 @@ const MenuLateral = () => {
     {
       portugues: 'Ferramentas',
       link: '',
-      icone: <BsDatabaseFillLock />,
+      icone: <FaTools />,
       submenus: [
         { nome: 'Calculadora ISSQN', link: '/dashboard/calculadora-issqn' },
         { nome: 'Retira Caracteres', link: '/dashboard/retira-caracteres' },
@@ -62,7 +65,7 @@ const MenuLateral = () => {
     {
       portugues: 'ITBI',
       link: '',
-      icone: <BsDatabaseFillLock />,
+      icone: <FaHouseUser />,
       submenus: [
         { nome: 'ITBI Rural', link: '/dashboard/itbi-rural' },
         { nome: 'ITBI  Urbano', link: '/dashboard/itbi-urbano' },
@@ -74,10 +77,10 @@ const MenuLateral = () => {
     {
       portugues: 'Avaliação Venal',
       link: '',
-      icone: <BsDatabaseFillLock />,
+      icone: <RiPercentFill />,
       submenus: [
-        { nome: 'ITBI Rural', link: '/dashboard/avaliacao-venal-rural' },
-        { nome: 'ITBI  Urbano', link: '/dashboard/avaliacao-venal-urbano' },
+        { nome: 'Avaliação Rural', link: '/dashboard/avaliacao-venal-rural' },
+        { nome: 'Avaliação Urbano', link: '/dashboard/avaliacao-venal-urbano' },
        
 
 

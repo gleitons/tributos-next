@@ -14,8 +14,19 @@ async function fetchImoveisData() {
   return res.json();
 }
 
+function corrigirNomes(data) {
+  return data.map((item) => ({
+    ...item,
+    proprietario: item.proprietario.replace("GON�", "GONÇ").replace("MAGALH�", "MAGALHÃ").replace("EN�", "ENÇ")
+  }));
+}
+
+
 export default async function RegistrosImobiliariosPage() {
-  const data = await fetchImoveisData();
+
+  
+  const imoveisCorrigidos = await fetchImoveisData();
+  const data = await corrigirNomes(imoveisCorrigidos);  
 
   // console.log(data[62])
   return (
@@ -49,8 +60,8 @@ export default async function RegistrosImobiliariosPage() {
             </div>
           </div>
         </div>
-      <div className='overflow-auto h-screen'>
-        <table className='min-w-full border-collapse border border-gray-200'>
+      <div className='overflow-auto h-screen flex '>
+        <table className=' border-collapse border w-1/2 border-gray-200'>
           <thead className='bg-gray-300 sticky top-0 z-10'>
             <tr className='bg-gray-300'>
               <th className='p-2 border border-gray-200'>Imóvel</th>
@@ -81,6 +92,9 @@ export default async function RegistrosImobiliariosPage() {
             ))}
           </tbody>
         </table>
+        <div>
+          <h2>Aqui mostra informacao do Lote</h2>
+        </div>
       </div>
 
     </div>
