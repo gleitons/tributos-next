@@ -10,7 +10,7 @@ import LoadingSpinner from "../loading/LoadingSpinner";
 
 export default function InputLogin() {
     const [passw, setPassw] = useState('');
-    const [inco, setInco] = useState('');
+    const [inco, setInco] = useState('Entrar');
     const [ver, setVer] = useState('password');
 
 
@@ -33,7 +33,7 @@ export default function InputLogin() {
 
     const handleLoad = (event) => {
         setPassw(event.target.value);
-        setInco('');
+        setInco('Entrar');
     };
 
     const entrar = async () => {
@@ -76,14 +76,15 @@ export default function InputLogin() {
                 </div>
             </div>
             <div className="mt-4 items-center flex justify-between">
-                <button className="px-4 py-1 text-white font-light tracking-wider bg-gray-900 hover:bg-gray-800 rounded"
+                <button className="px-4 flex items-center py-1 text-white font-light tracking-wider bg-gray-900 hover:bg-gray-800 rounded"
                     onClick={entrar}>
-                    Entrar
+                     {inco} 
+                     {/* <LoadingSpinner /> */}
                 </button>
             </div>
             <div>
                 <div className="bg-white my-5 rounded-md anim">
-                    {inco}
+                   
                 </div>
             </div>
         </>

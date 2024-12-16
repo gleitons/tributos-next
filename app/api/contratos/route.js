@@ -12,7 +12,7 @@ export async function POST(req) {
 
     const { codigoC } = await req.json();  
 
-    console.log(codigoC);
+   
 
     const dataE = await fetchData();    
 

@@ -12,7 +12,7 @@ export default function ServidorCompleto({servidor, onSave}) {
         const {name, value} = e.target;
         setForm({...form, [name]: value});
 
-        console.log(form)
+       
 
     }
 

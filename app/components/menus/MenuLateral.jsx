@@ -57,7 +57,8 @@ const MenuLateral = () => {
       submenus: [
         { nome: 'Calculadora ISSQN', link: '/dashboard/calculadora-issqn' },
         { nome: 'Retira Caracteres', link: '/dashboard/retira-caracteres' },
-       
+        { nome: 'Documentos para CNPJ', link: '/dashboard/documentos-cnpj' },
+
 
 
       ],
@@ -69,7 +70,7 @@ const MenuLateral = () => {
       submenus: [
         { nome: 'ITBI Rural', link: '/dashboard/itbi-rural' },
         { nome: 'ITBI  Urbano', link: '/dashboard/itbi-urbano' },
-       
+
 
 
       ],
@@ -81,10 +82,22 @@ const MenuLateral = () => {
       submenus: [
         { nome: 'Avaliação Rural', link: '/dashboard/avaliacao-venal-rural' },
         { nome: 'Avaliação Urbano', link: '/dashboard/avaliacao-venal-urbano' },
-       
+
 
 
       ],
+    },
+    {
+      portugues: 'Projetos',
+      link: '',
+      icone: <BsDatabaseFillLock />,
+      submenus: [
+        { nome: 'Nome de Ruas', link: '/dashboard/nome-de-ruas' },
+        { nome: 'Valores IPTU', link: '/dashboard/valores-iptu' },
+
+
+      ],
+
     },
     {
       portugues: 'Configurações',
@@ -93,10 +106,10 @@ const MenuLateral = () => {
       submenus: [
         { nome: 'UFM', link: '/dashboard/configuracoes' },
         { nome: 'Servidores', link: '/dashboard/servidor' },
-       
+
 
       ],
-      
+
     }
   ];
 

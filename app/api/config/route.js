@@ -33,7 +33,7 @@ export async function GET(req) {
   const url = new URL(req.url);
   const n = url.searchParams.get('n');
 
-  console.log(n + " req");
+ 
 
   if (n === '1') {
     await connectToDatabase();

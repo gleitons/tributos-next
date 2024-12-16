@@ -30,13 +30,12 @@ function PlanilhaFinanceira() {
     const dataFim = fim.split('-').reverse().join('/');
     
     const selicMensal = await fetchSelic(dataInicio, dataFim);
-    console.log(selicMensal);
+   
     const valorOriginal = valorGratificacao; // Considerando o valor da gratificação já calculado
     const valorCorrigido = await calcularValorCorrigido(valorOriginal, selicMensal);
 
     // Exemplo prático para aplicar a fórmula diretamente
     const exemploValorCorrigido = valorGratificacao * (1 + 0.40); // 40% de Selic acumulada
-    console.log(`Valor corrigido (exemplo): R$ ${exemploValorCorrigido.toFixed(2)}`);
     
     const listaLinhas = [];
     const dataInicioDate = new Date(inicio);

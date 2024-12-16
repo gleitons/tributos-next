@@ -20,7 +20,7 @@ export default function Page() {
         headers: { 'Content-Type': 'application/json' },
        
       });
-      console.log("ate aquyi")
+    
       const data = await response.json();
       const dataV = data.config.valor;
   

@@ -43,7 +43,7 @@ export default function ServidorForm({ servidor }) {
   const pegarData = async () => {
     const response = await fetch('/api/servidor');
     const {data} = await response.json();
-    console.log(data);
+   
   };
 
   return (

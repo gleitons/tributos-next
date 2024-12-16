@@ -1,0 +1,151 @@
+
+import puppeteer from 'puppeteer';
+
+
+export default async function Page() {
+
+    async function scrapeData() {
+        console.log("Iniciando scraping...");
+
+        const browser = await puppeteer.launch({ headless: true });
+        const page = await browser.newPage();
+
+        // Navegar até a página desejada
+        await page.goto('https://lagoadospatos.mg.gov.br/licitacoes/');
+
+        // Aguardar a tabela ser carregada
+        await page.waitForSelector('table.table.table-striped');
+
+        // Extrair os dados da tabela
+        const tableData = await page.evaluate(() => {
+            // Selecionar todas as linhas, exceto a linha do cabeçalho
+            const rows = Array.from(document.querySelectorAll('table.table.table-striped tbody tr:not(.bg-primary)'));
+
+            // Mapear as linhas para um array de objetos
+            return rows.map(row => {
+                const columns = row.querySelectorAll('td');
+                return {
+                    processo: columns[0]?.textContent.trim(),
+                    objeto: columns[1]?.textContent.trim(),
+                    publicacao: columns[2]?.textContent.trim(),
+                    abertura: columns[3]?.textContent.trim(),
+                    modalidade: columns[4]?.textContent.trim(),
+                    situacao: columns[5]?.textContent.trim(),
+                    arquivo: columns[6]?.querySelector('a')?.href.trim()
+                };
+            });
+        });
+
+        console.log(tableData);
+
+        await browser.close();
+        return tableData;
+    }
+    const data = await scrapeData();
+    if (data.json) {
+        return await data.json(); // Caso seja uma Response
+    }
+    return(
+        <div>
+            {/* {JSON.stringify(data)} */}
+            <table></table>
+            {data.map((item, index) => (
+                <div key={index}>
+                    <p>{item.processo}</p>
+                    <p>{item.objeto}</p>
+                </div>
+            ))}
+
+        </div>
+
+    )
+}
+
+
+
+import puppeteer from 'puppeteer';
+const fs = require('fs');
+
+
+
+export default async function Page() {
+
+    async function scrapeData() {
+        const browser = await puppeteer.launch({ headless: false }); // Setar headless: true para rodar em background.
+        const page = await browser.newPage();
+
+        // Navegue até a página inicial.
+        await page.goto('http://177.36.214.154/e-cidadeonline/digitamatricula.php');
+
+        // Fazer um loop de 1 a 1000 para inserir números de matrícula.
+        for (let matricula = 1; matricula <= 1; matricula++) {
+            console.log(`Processando matrícula: ${matricula}`);
+
+            // Digitar o número da matrícula no input.
+            await page.type('#matricula1', matricula.toString());
+
+            // Clicar no botão de pesquisar.
+            await page.click('input[name="pesquisa"]');
+            await page.waitForNavigation();
+
+            // Verificar se o link "Informações do Imóvel" está presente.
+            const infoImovelSelector = 'a[href*="listabicimovel.php"]';
+            console.log(await page.$(infoImovelSelector)) 
+            //await page.$(infoImovelSelector) == null           
+            if (true) {
+                // Clicar no link para abrir as informações do imóvel.
+                // await page.click(infoImovelSelector);
+                // await page.waitForNavigation();
+
+                // Extrair dados cadastrais.
+                const dados = await page.evaluate(() => {
+                    
+                    const tabela = document.querySelector('table.tabfonte');
+                    const linhas = tabela ? tabela.querySelectorAll('tr') : [];
+                    const info = {};
+
+                    linhas.forEach((linha) => {
+                        const colunas = linha.querySelectorAll('tbody')[0].querySelectorAll('td');
+                        console.log(colunas + " colunas");
+                        if (colunas.length === 4) {
+                            info[colunas[0].innerText.trim()] = colunas[1].innerText.trim();
+                            info[colunas[2].innerText.trim()] = colunas[3].innerText.trim();
+                        } else if (colunas.length === 2) {
+                            info[colunas[0].innerText.trim()] = colunas[1].innerText.trim();
+                        }
+                    });
+                    return info;
+                });
+
+                console.log(`Dados do imóvel matrícula ${matricula}:`, dados);
+
+                // Voltar para a página anterior.
+                await page.goBack();
+            } else {
+                console.log(`Nenhum imóvel encontrado para matrícula ${matricula}`);
+            }
+
+            // Voltar para a página inicial.
+            await page.goto('http://177.36.214.154/e-cidadeonline/digitamatricula.php');
+        }
+
+        await browser.close();
+    }
+    // fs.writeFileSync('dados.z1json', JSON.stringify(dadosColetados, null, 2));
+    await scrapeData();
+
+    return (
+        <div>
+            {/* {JSON.stringify(data)}
+            <table></table>
+            {data.map((item, index) => (
+                <div key={index}>
+                    <p>{item.processo}</p>
+                    <p>{item.objeto}</p>
+                </div>
+            ))} */}
+
+        </div>
+
+    )
+}
