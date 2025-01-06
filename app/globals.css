@@ -26,7 +26,7 @@
 }
 .backMac {
   background: #3d73b6d2;
-  box-shadow: 0 8px 32px 0 rgba(83, 91, 197, 0.37);  
+  box-shadow: 0 8px 32px 0 rgba(83, 91, 197, 0.37);
   border-radius: 10px;
   box-shadow: inset #70a8ed 0px 5px 8px 4px;
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -69,7 +69,6 @@
   animation: spin-fast 0.5s linear infinite; /* Ajuste a duração aqui */
 }
 .lagoa8 {
- 
   background-repeat: repeat;
   background-image: var(--imagemB);
   background-size: 140px;
@@ -84,6 +83,14 @@
   background-image: var(--imagemB);
   background-size: 198px;
   background-position: -40px -167px;
+}
+.vidroPetro {
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(6.5px);
+  -webkit-backdrop-filter: blur(6.5px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 .bgEscuro {
   background-color: rgba(12, 108, 163, 0.623);

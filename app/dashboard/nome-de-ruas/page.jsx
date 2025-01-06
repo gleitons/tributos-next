@@ -1,7 +1,7 @@
 import {nomeDeRuas, nomesSugestao} from '@/app/dashboard/components/NomedeRuas';
 export default function page() {
     const nRuas =  nomeDeRuas;
-    console.log(nRuas);
+  
     return (
         <div>
             <h1>Nome das Ruas </h1>

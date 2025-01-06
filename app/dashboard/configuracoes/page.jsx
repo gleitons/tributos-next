@@ -48,7 +48,7 @@ export default function Page() {
         body: JSON.stringify({ valor: novoItbi.replace(/,/g, '.') }),
       });
       const data = await response.json();
-      console.log(data)
+   
 
       if (data.success) {
         setMensagem('Valor atualizado com sucesso!');

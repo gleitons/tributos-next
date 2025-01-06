@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { checkIsPrivate } from './functions/check-is-private/index'
 import  { GoogleAnalytics } from '@next/third-parties/google'
 
+
 const metadata = {
   title: "Sistema - Setor de Tributos - Lagoa dos Patos MG",
   description: "Tributos - Lagoa dos Patos MG",

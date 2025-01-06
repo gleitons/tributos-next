@@ -35,19 +35,16 @@ export default function Page() {
 
     }
 
-    const buscaDados = async () => {
-
-        const infos = await pega({ endereco: 'informacoes' });
-
-        setDadosC(infos.map((c) => (<li  className="cursor-default  flex gap-2  items-center  transition-all hover:bg-slate-700 hover:text-white px-2" key={c.id}> <span className="hover:cursor-pointer" onMouseOver={() => mostraDados(c)}><IoEye /></span> | <span onClick={() => mostraDados(c)}> {c.empresa}</span></li>)));
-
-
-        setInfoContribuinte(<div className="flex gap-4 border border-gray-500 m-1 p-2 w-[400px] relative border-b-4 border-b-black border-r-4 border-r-black bg-aliceblue"> <strong> &lt;- <span className="cursor-pointer text-blue-500 underline" > Selecione a empresa ao lado - * Clique em cima do item para copiar </span></strong></div>)
-    }
-
     useEffect(() => {
-        buscaDados()
+        const buscaDados = async () => {
+            const infos = await pega({ endereco: 'informacoes' });
+            
+            setDadosC(infos.map((c) => (<li className="cursor-default flex gap-2 items-center transition-all hover:bg-slate-700 hover:text-white px-2" key={c.id}> <span className="hover:cursor-pointer" onMouseOver={() => mostraDados(c)}><IoEye /></span> | <span onClick={() => mostraDados(c)}> {c.empresa}</span></li>)));
 
+            setInfoContribuinte(<div className="flex gap-4 border border-gray-500 m-1 p-2 w-[400px] relative border-b-4 border-b-black border-r-4 border-r-black bg-aliceblue"> <strong> &lt;- <span className="cursor-pointer text-blue-500 underline" > Selecione a empresa ao lado - * Clique em cima do item para copiar </span></strong></div>)
+        }
+
+        buscaDados()
     }, [])
 
 

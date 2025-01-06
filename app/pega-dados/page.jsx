@@ -12,12 +12,12 @@ export default async function Page() {
             await page.goto(`http://177.36.214.154/e-cidadeonline/listabicimovel.php?matricula=${matricula}`);
            
             const dados = await page.evaluate(() => {
-                console.log("dados")  
+          
                 const tabela = document.querySelectorAll('tbody')[0].textContent;               
-                console.log(" tabela");        
+                   
                 
             });     
-            console.log(dados)     
+              
             
         }
         await browser.close();
