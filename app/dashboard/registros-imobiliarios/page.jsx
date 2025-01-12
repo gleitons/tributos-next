@@ -6,7 +6,9 @@ async function fetchImoveisData() {
   const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : 'http://localhost:3000';
-  const response = await fetch(`${baseUrl}/api/imoveis/`);
+
+    //${baseUrl}
+  const response = await fetch(`https://tributos.netlify.app/api/imoveis/`);
   
   if (!response.ok) {
     throw new Error('Erro ao carregar dados');
