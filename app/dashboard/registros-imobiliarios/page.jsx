@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import ImovelItem from '../components/ImovelItem';
 
 async function fetchImoveisData() {
-  // const baseUrl = process.env.VERCEL_URL
-  //   ? `https://${process.env.VERCEL_URL}`
-  //   : 'http://localhost:3000';
-  const response = await fetch(`http://localhost:3000/api/imoveis/`);
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
+  const response = await fetch(`${baseUrl}/api/imoveis/`);
   
   if (!response.ok) {
     throw new Error('Erro ao carregar dados');

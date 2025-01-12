@@ -88,6 +88,18 @@ const MenuLateral = () => {
       ],
     },
     {
+      portugues: 'Alvarás',
+      link: '',
+      icone: <RiPercentFill />,
+      submenus: [
+        { nome: 'Alvará Cemitério', link: '/dashboard/alvara-cemiterio' },
+        { nome: 'Alvará de Construção', link: '/dashboard/' },
+
+
+
+      ],
+    },
+    {
       portugues: 'Projetos',
       link: '',
       icone: <BsDatabaseFillLock />,

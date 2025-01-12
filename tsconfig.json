@@ -32,7 +32,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/dashboard/alvara-cemiterio/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]
