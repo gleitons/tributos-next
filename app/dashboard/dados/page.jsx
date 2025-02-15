@@ -1,80 +1,53 @@
-'use client'
-import { useState, useEffect } from "react"
-import { useRouter } from 'next/navigation';
-import LoadingSpinner from "../../components/loading/LoadingSpinner"
-import { pega } from '../../components/pesquisa/Fetchapi'
-import Dadosempresa from '../../components/parts/Dadosempresa'
-import SkeletonList from "../components/SkeletonList";
+import Link from "next/link";
+import VerEmpresa from "../components/VerEmpresa";
 
-import { IoEye } from "react-icons/io5";
+const importCadastros = async () => {
+  const link = "http://localhost:3000" || process.env.VERCEL_URL;
+  try {
+    const resp = await fetch(`${link}/api/informacoes`, { cache: "no-store" });
+    const data = await resp.json();
+    data.sort((a, b) => a.empresa.localeCompare(b.empresa));
 
-
-
-
-
-export default function Page() {
-    const [dadosC, setDadosC] = useState(<SkeletonList />)
-    const [infoContribuinte, setInfoContribuinte] = useState(<LoadingSpinner />)
-    const [nEmpresa, setNEmpresa] = useState('Empresa');
-    const [visivel, setVisivel] = useState(false);
-
-
-
-
-
-
-    const rota = useRouter()
-
-    const mostraVisivel = () => {
-        setVisivel(true)
-    }
-
-    const mostraDados = async (objeto) => {
-        setNEmpresa(objeto.empresa)
-        setInfoContribuinte(<Dadosempresa dados={objeto} />)
-
-    }
-
-    useEffect(() => {
-        const buscaDados = async () => {
-            const infos = await pega({ endereco: 'informacoes' });
-            
-            setDadosC(infos.map((c) => (<li className="cursor-default flex gap-2 items-center transition-all hover:bg-slate-700 hover:text-white px-2" key={c.id}> <span className="hover:cursor-pointer" onMouseOver={() => mostraDados(c)}><IoEye /></span> | <span onClick={() => mostraDados(c)}> {c.empresa}</span></li>)));
-
-            setInfoContribuinte(<div className="flex gap-4 border border-gray-500 m-1 p-2 w-[400px] relative border-b-4 border-b-black border-r-4 border-r-black bg-aliceblue"> <strong> &lt;- <span className="cursor-pointer text-blue-500 underline" > Selecione a empresa ao lado - * Clique em cima do item para copiar </span></strong></div>)
-        }
-
-        buscaDados()
-    }, [])
-
-
-
-    return (
-        <div>        
-            
-            <h2 className="text-xl">Dados Fiscais de Contribuintes - Sala Mineira do Empreendedor</h2> 
-            <p>Para novo Cadastro - <button className="bg-green-800 px-1 rounded-sm text-white" onClick={() => rota.push('https://docs.google.com/spreadsheets/d/12BlFnJ-jdrLi_JQPBYvHervxePaX5lHMEjIh4eDVkXQ/edit?gid=0#gid=0')} >Clique aqui</button></p> 
-            <p>*Os dados sao atualizados de 10 em 10 minutos</p>
-            <br />
-            <button onClick={() => mostraVisivel()}  className="inline-block bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">Mostrar Dados</button>
-
-            {visivel &&
-            <div className="flex ">
-                <div className="border border-sky-500 ">
-                    <h2 className="text-lg font-bold    bg-slate-700 text-center text-white ">Contribuintes</h2>
-                    <ul className="h-[600px] w-[410px] shadow-inner overflow-auto p-2">
-                        {dadosC}
-                    </ul>
-                </div>
-                <div className="border border-gray-500 mx-2 ">
-                    <h2 className="text-lg font-bold bg-slate-400 text-center">Empresa: {nEmpresa}</h2>
-                    <ul className="h-[600px] w-[500px] overflow-auto">
-                        {infoContribuinte}
-                    </ul>
-                </div>
-            </div>
-             }
-            
-        </div>
-    )
+    return resp.ok ? data : [];
+  } catch (error) {
+    console.error("Erro ao solicitar:", error);
+    return [];
+  }
 };
+
+export default async function Page() {
+  const cadastro = await importCadastros();
+
+  return (
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-bold text-gray-800 text-center">
+        Dados Fiscais de Contribuintes
+      </h2>
+      <p className="text-center text-gray-600 text-sm">
+        Sala Mineira do Empreendedor
+      </p>
+
+      {/* Seção de Cadastro */}
+      <div className="mt-4 flex justify-center">
+        <Link
+          href="https://docs.google.com/spreadsheets/d/12BlFnJ-jdrLi_JQPBYvHervxePaX5lHMEjIh4eDVkXQ/edit?gid=0#gid=0"
+          target="_blank"
+          className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          ➕ Novo Cadastro
+        </Link>
+      </div>
+
+      {/* Lista de Empresas */}
+      <div className="mt-6 max-h-[450px] overflow-auto bg-white shadow-md rounded-lg p-4">
+        <ul className="divide-y divide-gray-200 pb-80">
+          {cadastro.length > 0 ? (
+            cadastro.map((e, index) => <VerEmpresa key={index} dadosEmpresa={e} />)
+          ) : (
+            <p className="text-center text-gray-500 py-4">Nenhuma empresa encontrada.</p>
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+}

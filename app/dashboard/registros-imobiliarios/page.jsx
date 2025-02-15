@@ -32,16 +32,16 @@ export default function RegistrosImobiliariosPage() {
 
   useEffect(() => {
     async function fetchData() {
-      alert("Modulo em Manutencao")
-      // try {
-      //   const imoveisData = await fetchImoveisData();
-      //   const imoveisCorrigidos = corrigirNomes(imoveisData);
-      //   setData(imoveisCorrigidos);
-      // } catch (err) {
-      //   setError(err.message);
-      // } finally {
-      //   setLoading(false);
-      // }
+     
+      try {
+        const imoveisData = await fetchImoveisData();
+        const imoveisCorrigidos = corrigirNomes(imoveisData);
+        setData(imoveisCorrigidos);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchData();

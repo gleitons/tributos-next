@@ -46,6 +46,7 @@ const MenuLateral = () => {
         { nome: 'Independencia', link: '/dashboard/independencia' },
         { nome: 'Novo Horizonte', link: '/dashboard/novo-horizonte' },
         { nome: 'Santo Andre', link: '/dashboard/santo-andre' },
+        { nome: 'Vila Branca', link: '/dashboard/vila-branca' },
 
 
       ],

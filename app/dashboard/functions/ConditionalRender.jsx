@@ -24,8 +24,7 @@ const ConditionalRender = ({  children }) => {
 
     if (isAuthenticated() || null) {
         return ( // Garantindo que a estrutura HTML corresponda
-            <div>
-                
+            <div>                
                 <Menutop />
                 <div className="flex">
                     <div>

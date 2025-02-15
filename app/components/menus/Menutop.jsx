@@ -24,7 +24,7 @@ const Menutop = () => {
         <nav className="flex space-x-4">
           <Link href="/dashboard/" className="text-white hover:text-gray-300">Home</Link>
           <Link href="/dashboard/sobre" className="text-white hover:text-gray-300">Sobre</Link>
-          <Link href="/dashboard/servicos" className="text-white hover:text-gray-300">Serviços</Link>
+          <Link href="/dashboard/documentos-cnpj" className="text-white hover:text-gray-300">Serviços</Link>
           <Loggout />
         {/* <Link href="/dashboard/contato" className="text-white hover:text-gray-300">Sair</Link> */}  
           {/* <Link href="/dashboard/contato" className="text-white hover:text-gray-300">Sair</Link> */}
