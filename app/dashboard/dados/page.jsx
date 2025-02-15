@@ -4,7 +4,7 @@ import VerEmpresa from "../components/VerEmpresa";
 const importCadastros = async () => {
   
   try {
-    const resp = await fetch(`/api/informacoes`, { cache: "no-store" });
+    const resp = await fetch(`https://tributos.netlify.app/api/informacoes`, { revalidade: 10 });
     const data = await resp.json();
     data.sort((a, b) => a.empresa.localeCompare(b.empresa));
 
