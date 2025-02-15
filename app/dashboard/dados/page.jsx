@@ -2,9 +2,9 @@ import Link from "next/link";
 import VerEmpresa from "../components/VerEmpresa";
 
 const importCadastros = async () => {
-  const link = "http://localhost:3000" || process.env.VERCEL_URL;
+  
   try {
-    const resp = await fetch(`${link}/api/informacoes`, { cache: "no-store" });
+    const resp = await fetch(`https://tributos.netlify.app/api/informacoes`, { cache: "no-store" });
     const data = await resp.json();
     data.sort((a, b) => a.empresa.localeCompare(b.empresa));
 
