@@ -7,24 +7,18 @@ export default async function Fetchapi() {
 export async function pega({ endereco }) {
     try {
         const response = await fetch(`/api/${endereco}/`, {
+           
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // Corrigido aqui
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({})
         });
 
-
         const dadosEmpresas = await response.json();
-
-
-        const dados = dadosEmpresas.osDados
-
-
-        dados.sort((a, b) => {           
-            return a.empresa.localeCompare(b.empresa);
-        });       
-
+        const dados = dadosEmpresas.osDados;
+        
+        dados.sort((a, b) => a.empresa.localeCompare(b.empresa));       
         return dados;
 
     } catch (error) {
