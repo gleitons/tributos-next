@@ -7,6 +7,8 @@ const importCadastros = async () => {
         const url = 'https://tributos.netlify.app/api/informacoes';
 
         const resp = await fetch(url, {
+            cache: "no-store",
+            next: { revalidate: 0 },
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
