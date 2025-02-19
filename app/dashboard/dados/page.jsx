@@ -4,10 +4,10 @@ import VerEmpresa from "../components/VerEmpresa";
 const importCadastros = async () => {
     try {
         const url = 'https://script.google.com/macros/s/AKfycbwLdkjCEZAbCoFaWX7sfqjUSk3UL-hGdj0suHhtKRC1k1GBdsV7gyIISyQvyz9IpI63UA/exec';
-        
+
         const resp = await fetch(url, {
-            cache: "no-store", 
-            next: { revalidate: 0 }, 
+            cache: "no-store",
+            next: { revalidate: 60 },
             headers: { "Cache-Control": "no-cache, no-store, must-revalidate" }
         });
 
@@ -33,7 +33,7 @@ export default async function Page() {
                 Sala Mineira do Empreendedor
             </p>
 
-            {/* Seção de Cadastro */}
+           
             <div className="mt-4 flex justify-center">
                 <Link
                     href="https://docs.google.com/spreadsheets/d/12BlFnJ-jdrLi_JQPBYvHervxePaX5lHMEjIh4eDVkXQ/edit?gid=0#gid=0"
@@ -44,15 +44,24 @@ export default async function Page() {
                 </Link>
             </div>
 
-            {/* Lista de Empresas */}
-            <div className="mt-6 max-h-[450px] overflow-auto bg-white shadow-md rounded-lg p-4">
-                <ul className="divide-y divide-gray-200 pb-80">
+
+            <div className="mt-6 max-h-[450px] relative flex overflow-auto bg-white shadow-md rounded-lg p-4">
+                <ul className="divide-y w-2/3 divide-gray-200 pb-80">
                     {cadastro.length > 0 ? (
                         cadastro.map((e, index) => <VerEmpresa key={index} dadosEmpresa={e} />)
                     ) : (
                         <p className="text-center text-gray-500 py-4">Nenhum dado encontrado.</p>
                     )}
                 </ul>
+                <div className="relative w-1/3">
+                    <div className="sticky top-4 left-0 bg-white shadow-lg rounded-2xl p-4 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                            <span className="font-semibold">Clique na empresa</span> para mais informações sobre seus <span className="font-semibold">dados fiscais</span>.
+                            A <span className="text-blue-500">Sala Mineira do Empreendedor</span> de <span className="text-blue-500">Lagoa dos Patos - MG</span> está à disposição para auxiliar contribuintes com informações e suporte.
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
     );

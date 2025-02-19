@@ -22,7 +22,7 @@ export default function InputLogin() {
         setVer('text');
         setOicon(<FaRegEye className="hover:cursor-pointer" onClick={esconderSenha} />);
     };
-    const router = useRouter();  // Garantir que o hook seja executado no cliente
+    const router = useRouter();  
 
    
 
@@ -79,7 +79,7 @@ export default function InputLogin() {
                 <button className="px-4 flex items-center py-1 text-white font-light tracking-wider bg-gray-900 hover:bg-gray-800 rounded"
                     onClick={entrar}>
                      {inco} 
-                     {/* <LoadingSpinner /> */}
+                    
                 </button>
             </div>
             <div>
