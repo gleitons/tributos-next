@@ -6,7 +6,10 @@ const importCadastros = async () => {
     try {
         const url = 'https://tributos.netlify.app/api/informacoes';
 
-        const resp = await fetch(url);
+        const resp = await fetch(url, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
 
         if (!resp.ok) throw new Error("Erro ao buscar dados");
 
