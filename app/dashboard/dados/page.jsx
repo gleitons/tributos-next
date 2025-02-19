@@ -11,7 +11,7 @@ const importCadastros = async () => {
         if (!resp.ok) throw new Error("Erro ao buscar dados");
 
         const data = await resp.json();
-        console.log(data)
+       
         return data.sort((a, b) => a.empresa.localeCompare(b.empresa));
     } catch (error) {
         console.error("Erro ao solicitar:", error);
@@ -22,9 +22,6 @@ const importCadastros = async () => {
 export default async function Page() {
     
     const cadastros = await  importCadastros();
-
-    console.log(cadastros)
-  
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
