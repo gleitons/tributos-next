@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 
-export default function VerEmpresa({ dadosEmpresa }) {
+export default function VerEmpresa({ dadosEmpresa, cor}) {
     const [showModal, setShowModal] = useState(false);
     const [copiedItem, setCopiedItem] = useState("");
 
     const handleCopy = (text, label) => {
         navigator.clipboard.writeText(text);
-        setCopiedItem(`${label} copiado!`);
+        setCopiedItem(`${label.toUpperCase()} copiado!`);
         setTimeout(() => setCopiedItem(""), 2000); // Esconde o banner após 2 segundos
     };
 
@@ -20,10 +20,10 @@ export default function VerEmpresa({ dadosEmpresa }) {
         <div>
             {/* Item da lista que abre o modal */}
             <li
-                className="cursor-pointer hover:text-blue-500"
+                className={`cursor-pointer ${cor} hover:text-white px-5  hover:bg-slate-600 h-8`}
                 onClick={() => setShowModal(true)}
             >
-                {dadosEmpresa.empresa}
+                {dadosEmpresa.empresa.toUpperCase()}
             </li>
 
             {/* Modal */}
@@ -58,7 +58,7 @@ export default function VerEmpresa({ dadosEmpresa }) {
                                     className="animate-jump-in animate-once animate-duration-300 cursor-pointer bg-gray-100 p-2 rounded hover:bg-gray-200"
                                     onClick={() => handleCopy(value, key)}
                                 >
-                                    <strong>{key.replace(/_/g, " ")}:</strong> {value}
+                                    <strong>{key.replace(/_/g, " ").toUpperCase()}:</strong> {value}
                                 </p>
                             ))}
                         </div>
