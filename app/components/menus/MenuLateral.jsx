@@ -27,7 +27,8 @@ const MenuLateral = () => {
       submenus: [
         { nome: 'Dados Contribuites', link: '/dashboard/dados' },
         { nome: 'Registros Imobiliarios', link: '/dashboard/registros-imobiliarios' },
-        { nome: 'Mapa Completo Lagoa', link: '/dashboard/mapa-completo-lagoa-dos-patos-mg' },
+        { nome: 'Mapa Urbano Lagoa', link: '/dashboard/mapa-completo-lagoa-dos-patos-mg' },
+        { nome: 'Mapa Rural Lagoa', link: '/dashboard/mapa-rural-lagoa-dos-patos-mg' },
         { nome: 'Valor Terra nua', link: '/dashboard/valor-terra-nua' },
 
 
