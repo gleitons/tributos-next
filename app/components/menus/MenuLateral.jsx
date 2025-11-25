@@ -83,7 +83,7 @@ const MenuLateral = () => {
       icone: <RiPercentFill />,
       submenus: [
         { nome: 'Avaliação Rural', link: '/dashboard/avaliacao-venal-rural' },
-        { nome: 'Avaliação Urbano', link: '/dashboard/avaliacao-venal-urbano' },
+        { nome: 'Avaliação Urbano', link: '/dashboard/avaliacao-venal-urbana' },
 
 
 
@@ -119,7 +119,7 @@ const MenuLateral = () => {
       icone: <BsDatabaseFillLock />,
       submenus: [
         { nome: 'UFM', link: '/dashboard/configuracoes' },
-        { nome: 'Servidores', link: '/dashboard/servidor' },
+        { nome: 'Servidores', link: '/dashboard/usuarios' },
 
 
       ],
