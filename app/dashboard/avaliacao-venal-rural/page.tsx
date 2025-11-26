@@ -5,7 +5,7 @@ export default async function RuralValuationPage() {
   const valuations = await getRuralValuations();
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className=" mx-auto">
       <h1 className="text-2xl font-bold mb-6">Avaliações Recentes</h1>
       
       <div className="bg-white rounded-lg shadow-md overflow-hidden">

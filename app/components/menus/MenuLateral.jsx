@@ -78,12 +78,26 @@ const MenuLateral = () => {
       ],
     },
     {
-      portugues: 'Avaliação Venal',
+      portugues: 'Avaliação V. Urbana',
       link: '',
       icone: <RiPercentFill />,
       submenus: [
-        { nome: 'Avaliação Rural', link: '/dashboard/avaliacao-venal-rural' },
-        { nome: 'Avaliação Urbano', link: '/dashboard/avaliacao-venal-urbana' },
+        { nome: 'Nova Avaliação Urbana', link: '/dashboard/avaliacao-venal-urbana/nova' },
+        { nome: 'Todas Avaliações urbanas', link: '/dashboard/avaliacao-venal-urbana' },
+        { nome: 'Imprimir', link: '/dashboard/avaliacao-venal-urbana' },
+
+
+
+      ],
+    },
+    {
+      portugues: 'Avaliação V. Rural',
+      link: '',
+      icone: <RiPercentFill />,
+      submenus: [
+        { nome: 'Nova Avaliação Rural', link: '/dashboard/avaliacao-venal-rural/nova' },
+        { nome: 'Todas Avaliações Rurais', link: '/dashboard/avaliacao-venal-rural' },
+        { nome: 'Imprimir', link: '/dashboard/avaliacao-venal-rural' },
 
 
 
@@ -120,6 +134,7 @@ const MenuLateral = () => {
       submenus: [
         { nome: 'UFM', link: '/dashboard/configuracoes' },
         { nome: 'Servidores', link: '/dashboard/usuarios' },
+         { nome: 'Valores Terra Nua', link: '/dashboard/avaliacao-venal-rural/configuracao-vtn' },
 
 
       ],
@@ -139,12 +154,12 @@ const MenuLateral = () => {
             <Link href={menu.link} key={menu.portugues}>
               <button
                 onClick={() => toggleMenu(index)}
-                className='w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-600 focus:outline-none'
+                className='w-full flex cursor-pointer items-center gap-2 text-left px-4 py-2 hover:bg-gray-600 focus:outline-none'
               >
                 {menu.icone}{menu.portugues}
               </button>
               {openMenu === index && (
-                <ul className='pl-4 bg-gray-600'>
+                <ul className='pl-4 bg-gray-200 text-black'>
                   {menu.submenus.map((submenu) => (
                     <li key={submenu.nome} className='py-1 shadow-xl hover:bg-gray-500'>
                       <Link href={submenu.link}>

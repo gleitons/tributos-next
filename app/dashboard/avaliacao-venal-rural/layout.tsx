@@ -7,8 +7,8 @@ export default function RuralValuationLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-full">
-      <aside className="w-64 bg-gray-100 border-r border-gray-200 p-4 hidden md:block">
+    <div className="flex h-[100vh]">
+      {/* <aside className="w-64 bg-gray-100 border-r border-gray-200 p-4 hidden md:block">
         <nav className="space-y-1">
           {menuAvaliacaoRural.map((item) => (
             <Link
@@ -20,7 +20,7 @@ export default function RuralValuationLayout({
             </Link>
           ))}
         </nav>
-      </aside>
+      </aside> */}
       <main className="flex-1 p-6 overflow-auto">
         {children}
       </main>

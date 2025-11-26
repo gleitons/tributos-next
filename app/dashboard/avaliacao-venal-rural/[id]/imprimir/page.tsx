@@ -123,7 +123,7 @@ export default function ImprimirAvaliacaoPage({ params }: { params: { id: string
                                             PRAÇA 31 DE MARÇO, 111, CENTRO - CEP: 39360-000 TEL.(38) 3426-0398 <br />
                                             CNPJ: 16.901.381/0001-10 - SECRETARIA DE FAZENDA - SETOR TRIBUTÁRIO MUNICIPAL <br />
                                             <a href="http://www.lagoadospatos.mg.gov.br" className="text-gray-600 hover:underline">www.lagoadospatos.mg.gov.br</a>
-                                             <h4 className="text-lg font-bold text-blue-800">PROTOCOLO {data.protocolo}/{data.anoProtocolo}</h4>
+                                            <h4 className="text-lg font-bold text-blue-800">PROTOCOLO {data.protocolo}/{data.anoProtocolo}</h4>
                                         </h6>
                                     </div>
                                     <div className="w-24 h-24 relative ">
@@ -135,18 +135,18 @@ export default function ImprimirAvaliacaoPage({ params }: { params: { id: string
                                         />
                                     </div>
                                 </div>
-                                
+
                                 {/* Body */}
                                 <div className="mb-2">
                                     <div className="text-center mb-2">
                                         <h3 className="text-lg font-bold text-gray-800 uppercase">CERTIDÃO DE VALOR VENAL DE IMÓVEL RURAL</h3>
-                                       
+
                                     </div>
                                     <p className="text-justify text-sm leading-relaxed">
                                         Certifico a pedido verbal e protocolado de <strong>{data.solicitante}</strong>, pessoa interessada e a quem interessar que, verificando os valores de Terrenos Rurais do CTM <strong>(Código Tributário Municipal)</strong>, CVTN <strong>(Comissão de Valor da Terra Nua)</strong> e atualizações georeferenciadas <strong>(GEO)</strong>, verifica-se constar o seguinte:
                                     </p>
                                     <p className="text-justify mb-4 text-sm leading-relaxed">
-                                        O Imóvel localizado na(o) <strong>{data.endereco}</strong>, lugar denominado <strong>{data.denominacao}</strong>{data.nomeImovel ? <> <strong>, {data.nomeImovel}</strong></> : null}, matrícula/registro: <strong>{data.matricula}</strong>, {data.livro ? <>livro <strong>{data.livro}</strong>, </> : null}{data.folha ? <> folha <strong>{data.folha}</strong>, </> : null} registrado em <strong>{formatDateExtended(data.registroData)}</strong>, propriedade {data.generoProprietario === 'M' ? 'do Sr°' : 'da Sra°'}: <strong>{data.proprietario}</strong>, {data.cpfCnpj ? <>CPF/CNPJ: <strong>{data.cpfCnpj},</strong></> : null} {data.identidade ? <>identidade de número <strong>{data.identidade},</strong></> : null}{data.conjuge ? <> {data.generoProprietario === 'M' ? 'e sua' : 'e seu'} {data.conjuge ? <>cônjuge <strong>{data.conjuge}</strong></>: null} {data.cpfConjuge ? <> <strong>, CPF: {data.cpfConjuge}</strong></> : null} {data.identidadeConjuge ? <>, identidade de número <strong>{data.identidadeConjuge}</strong></> : null}</> : null}. Com área total de <strong>{data.areaTotal.toFixed(4).replace('.', ',')} Ha ({formatarAreaPorExtenso(data.areaTotal)})</strong>, descrita nesta avaliação como <strong>Imóvel Rural</strong>, sendo <strong>{getDescricaoAvaliacao(data)}</strong>, definido por Comissão de VTN (Valor de Terra Nua), comissão esta reunida <strong>no ano de {data.anoVtn}</strong> ², propriedade localizada neste Município de Lagoa dos Patos – MG. Segue abaixo as informações dos valores de terra nua.
+                                        O Imóvel localizado na(o) <strong>{data.endereco}</strong>, lugar denominado <strong>{data.denominacao}</strong>{data.nomeImovel ? <> <strong>, {data.nomeImovel}</strong></> : null}, matrícula/registro: <strong>{data.matricula}</strong>, {data.livro ? <>livro <strong>{data.livro}</strong>, </> : null}{data.folha ? <> folha <strong>{data.folha}</strong>, </> : null} registrado em <strong>{formatDateExtended(data.registroData)}</strong>, propriedade {data.generoProprietario === 'M' ? 'do Sr°' : 'da Sra°'}: <strong>{data.proprietario}</strong>, {data.cpfCnpj ? <>CPF/CNPJ: <strong>{data.cpfCnpj}</strong></> : null} {data.identidade ? <>identidade de número <strong>{data.identidade},</strong></> : null}{data.conjuge ? <> {data.generoProprietario === 'M' ? 'e sua' : 'e seu'} {data.conjuge ? <>cônjuge <strong>{data.conjuge}</strong></> : null} {data.cpfConjuge ? <> <strong>, CPF: {data.cpfConjuge}</strong></> : null} {data.identidadeConjuge ? <>, identidade de número <strong>{data.identidadeConjuge}</strong></> : null}</> : null}. Com área total de <strong>{data.areaTotal.toFixed(4).replace('.', ',')} Ha ({formatarAreaPorExtenso(data.areaTotal)})</strong>, descrita nesta avaliação como <strong>Imóvel Rural</strong>, sendo <strong>{getDescricaoAvaliacao(data)}</strong>, definido por Comissão de VTN (Valor de Terra Nua), comissão esta reunida <strong>no ano de {data.anoVtn}</strong> ², propriedade localizada neste Município de Lagoa dos Patos – MG. Segue abaixo as informações dos valores de terra nua.
                                     </p>
                                     {/* Table */}
                                     <div className="-mt-3">
@@ -261,13 +261,16 @@ export default function ImprimirAvaliacaoPage({ params }: { params: { id: string
                                 {/* <div className="border-t-2 border-gray-300 pt-4">
                             <h2 className="text-lg font-bold uppercase text-gray-400 mb-2">{data.usuario}</h2>
                             <div className="text-sm text-gray-500">
-                                <h3 className="font-semibold">Emitido Digitalmente por:</h3>
-                                <h4 className="uppercase">{data.usuario}</h4>
-                                <p>{new Date().toString()}</p>
+                            <h3 className="font-semibold">Emitido Digitalmente por:</h3>
+                            <h4 className="uppercase">{data.usuario}</h4>
+                            <p>{new Date().toString()}</p>
                             </div>
-                        </div> */}
+                            </div> */}
                             </div>
                         </div>
+                            <div className=" w-full px-10 absolute bottom-6 left-0  text-xs text-justify text-gray-800  ">
+                               <strong>Observações:</strong> {data.observacoes}
+                            </div>
                     </div>
                 </div>
             </div>
