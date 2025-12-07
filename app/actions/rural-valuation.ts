@@ -105,3 +105,16 @@ export async function updateRuralValuation(id: number, data: any) {
 
     revalidatePath('/dashboard/avaliacao-venal-rural');
 }
+
+export async function deleteRuralValuetion(id:number) {
+    try {
+        await db.delete(ruralValuations)
+            .where(eq(ruralValuations.id, id));
+
+        // Atualiza a tela para sumir o item deletado
+        revalidatePath('/dashboard/avaliacao-venal-rural'); 
+    } catch (error) {
+        console.error("Erro ao apagar avaliação:", error);
+        throw new Error("Falha ao apagar a avaliação.");
+    }
+}
