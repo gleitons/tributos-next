@@ -90,7 +90,7 @@ export default function NovaAvaliacaoUrbanaPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Protocolo Geral</label>
-                            <input type="text" name="protocolo" value={formData.protocolo} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" placeholder="ex: 252" />
+                            <input type="text" required name="protocolo" value={formData.protocolo} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" placeholder="ex: 252" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Ano</label>

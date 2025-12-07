@@ -34,6 +34,14 @@ export const ruralValuations = sqliteTable('rural_valuations', {
     proprietario: text('proprietario').notNull(),
     cpfCnpj: text('cpf_cnpj'),
     identidade: text('identidade'),
+    enderecoProprietario: text('endereco_proprietario'),
+    logradouroProprietario: text('logradouro_proprietario'),
+    numeroProprietario: text('numero_proprietario'),
+    complementoProprietario: text('complemento_proprietario'),
+    bairroProprietario: text('bairro_proprietario'),
+    cidadeProprietario: text('cidade_proprietario'),
+    estadoProprietario: text('estado_proprietario'),
+    cepProprietario: text('cep_proprietario'),
     conjuge: text('conjuge'),
     cpfConjuge: text('cpf_conjuge'),
     identidadeConjuge: text('identidade_conjuge'),
@@ -107,4 +115,78 @@ export const urbanValuations = sqliteTable('urban_valuations', {
 export const ufm = sqliteTable('ufm', {
     ano: integer('ano').primaryKey(),
     valor: real('valor').notNull(),
+});
+
+export const people = sqliteTable('people', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    tipo: text('tipo').notNull(), // 'FISICA' or 'JURIDICA'
+    nome: text('nome').notNull(),
+    cpfCnpj: text('cpf_cnpj').notNull(),
+    rg: text('rg'),
+    telefone: text('telefone'),
+    email: text('email'),
+    endereco: text('endereco'),
+    numero: text('numero'),
+    bairro: text('bairro'),
+    cidade: text('cidade'),
+    estado: text('estado'),
+    cep: text('cep'),
+    criadoEm: text('criado_em').default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const properties = sqliteTable('properties', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    tipo: text('tipo').notNull(), // 'RURAL' or 'URBANO'
+    descricao: text('descricao'),
+
+    // Endereço
+    endereco: text('endereco'),
+    numero: text('numero'),
+    bairro: text('bairro'),
+    cidade: text('cidade'),
+    estado: text('estado'),
+    cep: text('cep'),
+
+    // Dados Cartoriais
+    matricula: text('matricula'),
+    livro: text('livro'),
+    folha: text('folha'),
+
+    // Dados Rurais (Campos específicos solicitados)
+    areaTotal: real('area_total'),
+    areaAptidaoBoa: real('area_aptidao_boa').default(0),
+    areaAptidaoRegular: real('area_aptidao_regular').default(0),
+    areaAptidaoRestrita: real('area_aptidao_restrita').default(0),
+    areaPastagemPlantada: real('area_pastagem_plantada').default(0),
+    areaPastagemNatural: real('area_pastagem_natural').default(0),
+    areaReserva: real('area_reserva').default(0),
+
+    // Dados Urbanos
+    areaLote: real('area_lote'),
+    areaConstrucao: real('area_construcao'),
+    inscricaoMunicipal: text('inscricao_municipal'),
+
+    criadoEm: text('criado_em').default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const itbi = sqliteTable('itbi', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    protocolo: text('protocolo'),
+    dataTransacao: text('data_transacao').default(sql`CURRENT_TIMESTAMP`),
+
+    adquirenteId: integer('adquirente_id').references(() => people.id),
+    transmitenteId: integer('transmitente_id').references(() => people.id),
+    imovelId: integer('imovel_id').references(() => properties.id),
+
+    natureza: text('natureza'), // COMPRA E VENDA, ETC
+
+    qualidadeImovel: text('qualidade_imovel'),
+    condicaoImovel: text('condicao_imovel'),
+    situacaoTransmitente: text('situacao_transmitente'),
+
+    valorTransacao: real('valor_transacao'),
+    valorVenal: real('valor_venal'),
+    valorItbi: real('valor_itbi'),
+
+    observacoes: text('observacoes'),
 });

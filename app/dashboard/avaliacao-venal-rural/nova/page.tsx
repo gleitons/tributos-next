@@ -30,6 +30,14 @@ export default function NovaAvaliacaoPage() {
     proprietario: '',
     cpfCnpj: '',
     identidade: '',
+    enderecoProprietario: '',
+    logradouroProprietario: '',
+    numeroProprietario: '',
+    complementoProprietario: '',
+    bairroProprietario: '',
+    cidadeProprietario: '',
+    estadoProprietario: '',
+    cepProprietario: '',
     conjuge: '',
     cpfConjuge: '',
     identidadeConjuge: '',
@@ -83,7 +91,7 @@ export default function NovaAvaliacaoPage() {
   const calculateVTNTotal = () => {
     if (!vtnValues) return 0;
     const totalArea = Number(formData.areaTotal) || 0;
-    
+
     return (
       (calculateAreaFromPercentage(percentages.aptidaoBoa) * vtnValues.aptidaoBoa) +
       (calculateAreaFromPercentage(percentages.aptidaoRegular) * vtnValues.aptidaoRegular) +
@@ -119,7 +127,7 @@ export default function NovaAvaliacaoPage() {
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Nova Avaliação Venal Rural</h1>
-      
+
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* 1. Dados Iniciais */}
         <section>
@@ -127,13 +135,13 @@ export default function NovaAvaliacaoPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Protocolo Geral</label>
-              <input type="text" name="protocolo" value={formData.protocolo} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+              <input type="text" name="protocolo" required value={formData.protocolo} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Ano do Protocolo</label>
               <input type="number" name="anoProtocolo" value={formData.anoProtocolo} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
             </div>
-             <div>
+            <div>
               <label className="block text-sm font-medium text-gray-700">Ano do Valor da Terra Nua (VTN)</label>
               <select value={selectedYear} onChange={(e) => setSelectedYear(Number(e.target.value))} className="mt-1 block w-full border rounded-md p-2" required>
                 <option value="">Selecione</option>
@@ -144,7 +152,7 @@ export default function NovaAvaliacaoPage() {
               <label className="block text-sm font-medium text-gray-700">Solicitante</label>
               <input type="text" name="solicitante" value={formData.solicitante} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
             </div>
-             <div>
+            <div>
               <label className="block text-sm font-medium text-gray-700">Usuário</label>
               <select name="usuario" value={formData.usuario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" required>
                 <option value="">Selecione</option>
@@ -178,19 +186,19 @@ export default function NovaAvaliacaoPage() {
               <label className="block text-sm font-medium text-gray-700">Número da Matrícula</label>
               <input type="text" name="matricula" value={formData.matricula} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
             </div>
-             <div className="grid grid-cols-3 gap-2">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Folha</label>
-                    <input type="text" name="folha" value={formData.folha} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Livro</label>
-                    <input type="text" name="livro" value={formData.livro} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
-                </div>
-                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Registro (Data)</label>
-                    <input type="date" name="registroData" value={formData.registroData} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
-                </div>
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Folha</label>
+                <input type="text" name="folha" value={formData.folha} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Livro</label>
+                <input type="text" name="livro" value={formData.livro} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Registro (Data)</label>
+                <input type="date" name="registroData" value={formData.registroData} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+              </div>
             </div>
           </div>
         </section>
@@ -199,7 +207,7 @@ export default function NovaAvaliacaoPage() {
         <section>
           <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-indigo-600">3. Informações do Proprietário</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div>
+            <div>
               <label className="block text-sm font-medium text-gray-700">Gênero</label>
               <select name="generoProprietario" value={formData.generoProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2">
                 <option value="">Selecione</option>
@@ -220,19 +228,60 @@ export default function NovaAvaliacaoPage() {
               <label className="block text-sm font-medium text-gray-700">Identidade</label>
               <input type="text" name="identidade" value={formData.identidade} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
             </div>
-             <div>
+
+            <div className="md:col-span-2 border-t pt-4 mt-2">
+              <h3 className="text-sm font-semibold text-gray-900 mb-2">Endereço do Proprietário</h3>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700">Endereço Completo</label>
+              <input type="text" name="enderecoProprietario" value={formData.enderecoProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">CEP</label>
+              <input type="text" name="cepProprietario" value={formData.cepProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Logradouro</label>
+              <input type="text" name="logradouroProprietario" value={formData.logradouroProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Número</label>
+              <input type="text" name="numeroProprietario" value={formData.numeroProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Complemento</label>
+              <input type="text" name="complementoProprietario" value={formData.complementoProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Bairro</label>
+              <input type="text" name="bairroProprietario" value={formData.bairroProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Cidade</label>
+              <input type="text" name="cidadeProprietario" value={formData.cidadeProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Estado</label>
+              <input type="text" name="estadoProprietario" value={formData.estadoProprietario} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+            </div>
+
+            <div className="md:col-span-2 border-t pt-4 mt-2">
+              <h3 className="text-sm font-semibold text-gray-900 mb-2">Dados do Cônjuge</h3>
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-gray-700">Cônjuge</label>
               <input type="text" name="conjuge" value={formData.conjuge} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
             </div>
-             <div className="grid grid-cols-2 gap-2">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">CPF Cônjuge</label>
-                    <input type="text" name="cpfConjuge" value={formData.cpfConjuge} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Identidade Cônjuge</label>
-                    <input type="text" name="identidadeConjuge" value={formData.identidadeConjuge} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
-                </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">CPF Cônjuge</label>
+                <input type="text" name="cpfConjuge" value={formData.cpfConjuge} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Identidade Cônjuge</label>
+                <input type="text" name="identidadeConjuge" value={formData.identidadeConjuge} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+              </div>
             </div>
           </div>
         </section>
@@ -241,60 +290,61 @@ export default function NovaAvaliacaoPage() {
         <section>
           <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-indigo-600">4. Imóvel Rural - Aptidão da Terra</h2>
           <div className="mb-4">
-             <label className="block text-sm font-medium text-gray-700 mb-1">Área Total do Imóvel (Hectares)</label>
-             <input type="number" step="0.01" name="areaTotal" value={formData.areaTotal} onChange={handleInputChange} className="block w-full border rounded-md p-2 bg-gray-50" required />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Área Total do Imóvel (Hectares)</label>
+            <input type="number"  step="0.01" name="areaTotal" value={formData.areaTotal} onChange={handleInputChange} className="block w-full border rounded-md p-2 bg-gray-50" required />
           </div>
 
           {selectedYear && vtnValues ? (
             <div className="bg-gray-50 p-4 rounded-md">
-                <h3 className="font-medium mb-2">Distribuição da Área (%) e Valores (Base {selectedYear})</h3>
-                <div className="grid grid-cols-1 gap-4">
-                    {[
-                        { key: 'aptidaoBoa', label: 'Aptidão Boa', value: vtnValues.aptidaoBoa },
-                        { key: 'aptidaoRegular', label: 'Aptidão Regular', value: vtnValues.aptidaoRegular },
-                        { key: 'aptidaoRestrita', label: 'Aptidão Restrita', value: vtnValues.aptidaoRestrita },
-                        { key: 'pastagemPlantada', label: 'Pastagem Plantada', value: vtnValues.pastagemPlantada },
-                        { key: 'pastagemNatural', label: 'Pastagem Natural', value: vtnValues.pastagemNatural },
-                        { key: 'reserva', label: 'Reserva/Preservação', value: vtnValues.reserva },
-                    ].map((item) => {
-                        const areaCalculada = calculateAreaFromPercentage(percentages[item.key as keyof typeof percentages]);
-                        const valorCalculado = areaCalculada * item.value;
-                        
-                        return (
-                        <div key={item.key} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center border-b pb-2 last:border-0">
-                            <div className="text-sm font-medium text-gray-700 md:col-span-1">
-                                {item.label} <span className="text-xs text-gray-500 block">(R$ {item.value.toFixed(2)}/ha)</span>
-                            </div>
-                            <div className="flex items-center md:col-span-1">
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    name={item.key}
-                                    value={percentages[item.key as keyof typeof percentages]}
-                                    onChange={handlePercentageChange}
-                                    placeholder="%"
-                                    className="block w-full border rounded-md p-2 text-right"
-                                />
-                                <span className="ml-2 text-gray-600">%</span>
-                            </div>
-                            <div className="text-sm text-gray-600 text-right md:col-span-1">
-                                {areaCalculada.toFixed(4)} ha
-                            </div>
-                            <div className="text-right text-sm font-semibold text-gray-900 md:col-span-1">
-                                R$ {valorCalculado.toFixed(2)}
-                            </div>
-                        </div>
-                    )})}
-                </div>
-                <div className="mt-4 flex justify-between items-center font-bold text-lg border-t pt-2">
-                    <span>Total Calculado (Terra Nua):</span>
-                    <span>R$ {calculateVTNTotal().toFixed(2)}</span>
-                </div>
-                 <div className="mt-1 flex justify-between items-center text-sm text-gray-600">
-                    <span className={calculateTotalPercentage() !== 100 ? "text-red-500 font-bold" : "text-green-600 font-bold"}>
-                        Total Porcentagem: {calculateTotalPercentage().toFixed(2)}%
-                    </span>
-                </div>
+              <h3 className="font-medium mb-2">Distribuição da Área (%) e Valores (Base {selectedYear})</h3>
+              <div className="grid grid-cols-1 gap-4">
+                {[
+                  { key: 'aptidaoBoa', label: 'Aptidão Boa', value: vtnValues.aptidaoBoa },
+                  { key: 'aptidaoRegular', label: 'Aptidão Regular', value: vtnValues.aptidaoRegular },
+                  { key: 'aptidaoRestrita', label: 'Aptidão Restrita', value: vtnValues.aptidaoRestrita },
+                  { key: 'pastagemPlantada', label: 'Pastagem Plantada', value: vtnValues.pastagemPlantada },
+                  { key: 'pastagemNatural', label: 'Pastagem Natural', value: vtnValues.pastagemNatural },
+                  { key: 'reserva', label: 'Reserva/Preservação', value: vtnValues.reserva },
+                ].map((item) => {
+                  const areaCalculada = calculateAreaFromPercentage(percentages[item.key as keyof typeof percentages]);
+                  const valorCalculado = areaCalculada * item.value;
+
+                  return (
+                    <div key={item.key} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center border-b pb-2 last:border-0">
+                      <div className="text-sm font-medium text-gray-700 md:col-span-1">
+                        {item.label} <span className="text-xs text-gray-500 block">(R$ {item.value.toFixed(2)}/ha)</span>
+                      </div>
+                      <div className="flex items-center md:col-span-1">
+                        <input
+                          type="number"
+                          step="0.01"
+                          name={item.key}
+                          value={percentages[item.key as keyof typeof percentages]}
+                          onChange={handlePercentageChange}
+                          placeholder="%"
+                          className="block w-full border rounded-md p-2 text-right"
+                        />
+                        <span className="ml-2 text-gray-600">%</span>
+                      </div>
+                      <div className="text-sm text-gray-600 text-right md:col-span-1">
+                        {areaCalculada.toFixed(4)} ha
+                      </div>
+                      <div className="text-right text-sm font-semibold text-gray-900 md:col-span-1">
+                        R$ {valorCalculado.toFixed(2)}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="mt-4 flex justify-between items-center font-bold text-lg border-t pt-2">
+                <span>Total Calculado (Terra Nua):</span>
+                <span>R$ {calculateVTNTotal().toFixed(2)}</span>
+              </div>
+              <div className="mt-1 flex justify-between items-center text-sm text-gray-600">
+                <span className={calculateTotalPercentage() !== 100 ? "text-red-500 font-bold" : "text-green-600 font-bold"}>
+                  Total Porcentagem: {calculateTotalPercentage().toFixed(2)}%
+                </span>
+              </div>
             </div>
           ) : (
             <p className="text-gray-500 italic">Selecione um ano de VTN para habilitar os campos de aptidão.</p>
@@ -306,27 +356,27 @@ export default function NovaAvaliacaoPage() {
           <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-indigo-600">5. Valores Venais e Construções</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <label className="block text-sm font-medium text-gray-700">01. Valor da Terra Nua (Calculado)</label>
-                <input type="text" value={`R$ ${calculateVTNTotal().toFixed(2)}`} disabled className="mt-1 block w-full border rounded-md p-2 bg-gray-100" />
+              <label className="block text-sm font-medium text-gray-700">01. Valor da Terra Nua (Calculado)</label>
+              <input type="text" value={`R$ ${calculateVTNTotal().toFixed(2)}`} disabled className="mt-1 block w-full border rounded-md p-2 bg-gray-100" />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">02. Valor das Construções/Benfeitorias</label>
-                <input type="number" step="0.01" name="valorConstrucoes" value={formData.valorConstrucoes} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+              <label className="block text-sm font-medium text-gray-700">02. Valor das Construções/Benfeitorias</label>
+              <input type="number" step="0.01" name="valorConstrucoes" value={formData.valorConstrucoes} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-700">03. Valor das Culturas/Florestas</label>
-                <input type="number" step="0.01" name="valorCulturas" value={formData.valorCulturas} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
+              <label className="block text-sm font-medium text-gray-700">03. Valor das Culturas/Florestas</label>
+              <input type="number" step="0.01" name="valorCulturas" value={formData.valorCulturas} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" />
             </div>
-             <div>
-                <label className="block text-sm font-medium text-gray-700 font-bold">Valor Total da Avaliação</label>
-                <input type="text" value={`R$ ${(calculateVTNTotal() + Number(formData.valorConstrucoes) + Number(formData.valorCulturas)).toFixed(2)}`} disabled className="mt-1 block w-full border rounded-md p-2 bg-indigo-50 font-bold text-indigo-700" />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 font-bold">Valor Total da Avaliação</label>
+              <input type="text" value={`R$ ${(calculateVTNTotal() + Number(formData.valorConstrucoes) + Number(formData.valorCulturas)).toFixed(2)}`} disabled className="mt-1 block w-full border rounded-md p-2 bg-indigo-50 font-bold text-indigo-700" />
             </div>
           </div>
         </section>
-        
+
         <section>
-             <label className="block text-sm font-medium text-gray-700">Observações</label>
-             <textarea name="observacoes" value={formData.observacoes} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" rows={3}></textarea>
+          <label className="block text-sm font-medium text-gray-700">Observações</label>
+          <textarea name="observacoes" value={formData.observacoes} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2" rows={3}></textarea>
         </section>
 
         <div className="flex justify-end pt-4">

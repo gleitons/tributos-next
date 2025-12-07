@@ -1,4 +1,5 @@
 import { getRuralValuations } from '@/app/actions/rural-valuation';
+import { valorReal } from '@/app/funcions/ValorReal';
 import Link from 'next/link';
 
 export default async function RuralValuationPage() {
@@ -17,7 +18,7 @@ export default async function RuralValuationPage() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proprietário</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Imóvel</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Área</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">VTN (R$)</th>
+                {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">VTN (R$)</th> */}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total (R$)</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
               </tr>
@@ -36,8 +37,8 @@ export default async function RuralValuationPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{val.proprietario}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{val.nomeImovel}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{val.areaTotal} ha</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">R$ {val.valorTerraNua.toFixed(2)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">R$ {val.valorTotal.toFixed(2)}</td>
+                    {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{valorReal(val.valorTerraNua)}</td> */}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{valorReal(val.valorTotal)}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link href={`/dashboard/avaliacao-venal-rural/${val.id}/editar`} className="text-indigo-600 hover:text-indigo-900 mr-4">
                         Editar

@@ -13,7 +13,7 @@
   background-position: center;
 
   /* quanto menor o alfa, mais transparente fica a IMAGEM */
-  background-color: rgba(255, 255, 255, 0.856);
+  background-color: rgba(255, 255, 255, 0.897);
   background-blend-mode: lighten;
 }
 

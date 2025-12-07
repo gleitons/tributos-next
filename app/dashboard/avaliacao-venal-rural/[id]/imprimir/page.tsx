@@ -98,7 +98,7 @@ export default function ImprimirAvaliacaoPage({ params }: { params: { id: string
 
             <div className="flex justify-center">
                 <div className="">
-                    <div ref={componentRef} className=" relative fundoImprimir border-frame w-[206mm] min-h-[297mm] p-[10mm] shadow-lg print:shadow-none print:w-full print:h-full print:p-[10mm] text-black">
+                    <div ref={componentRef} className=" relative  border-frame w-[206mm] min-h-[297mm] p-[10mm] shadow-lg print:shadow-none print:w-full print:h-full print:p-[10mm] text-black">
                         <div className="btl"></div>
                         <div className="btr"></div>
                         <div className="bbb"></div>
