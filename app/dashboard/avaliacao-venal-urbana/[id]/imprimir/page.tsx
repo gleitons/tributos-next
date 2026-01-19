@@ -59,6 +59,8 @@ export default function ImprimirAvaliacaoUrbanaPage({ params }: { params: { id: 
     // Note: valuation.setor stored the multiplier (e.g., 8, 6, 4)
     const setorMultiplier = valuation.setor;
     const valorMetroQuadradoTerreno = ufmValue ? setorMultiplier * ufmValue : 0;
+    const setor = valuation.setor == 8 ? '0001' : valuation.setor == 6 ? '0002' : valuation.setor == 4 ? '0003' : '0004';
+    console.log(valuation)
 
     const valorTerreno = valuation.areaLote * valorMetroQuadradoTerreno;
     const valorConstrucao = valuation.areaConstrucao * valuation.tipoAcabamento;
@@ -119,7 +121,7 @@ export default function ImprimirAvaliacaoUrbanaPage({ params }: { params: { id: 
                         <p className="mb-2">
                             Certifico a pedido verbal e protocolado de <strong>{valuation.solicitante.toUpperCase()}</strong> pessoa interessada que, revendo a planta
                             Cadastral do Perímetro Urbano deste Município e a Planta de valores de
-                            Terrenos Urbanos do <strong>CTM (Código Tributário Municipal)</strong>, verifiquei que o <strong>Lote {valuation.lote} </strong>da <strong>Quadra {valuation.quadra}</strong> localizado no <strong>Setor {setorMultiplier < 10 ? `0${setorMultiplier}` : setorMultiplier}</strong> com área total de <strong>{valuation.areaLote} M²</strong> ({numeroPorExtenso(valuation.areaLote)} metros quadrados), com área construída de <strong>{valuation.areaConstrucao} M²</strong> ({numeroPorExtenso(valuation.areaConstrucao)} metros quadrados), localizado na <strong> {valuation.rua.toUpperCase()}, N° {valuation.numero}, no Bairro: {valuation.bairro.toUpperCase()},
+                            Terrenos Urbanos do <strong>CTM (Código Tributário Municipal)</strong>, verifiquei que o <strong>Lote {valuation.lote} </strong>da <strong>Quadra {valuation.quadra}</strong> localizado no <strong>Setor {setor}</strong> com área total de <strong>{valuation.areaLote} M²</strong> ({numeroPorExtenso(valuation.areaLote)} metros quadrados), com área construída de <strong>{valuation.areaConstrucao} M²</strong> ({numeroPorExtenso(valuation.areaConstrucao)} metros quadrados), localizado na <strong> {valuation.rua.toUpperCase()}, N° {valuation.numero}, no Bairro: {valuation.bairro.toUpperCase()},
                             </strong> neste Município de Lagoa dos Patos – MG. Tem o seguinte Valor
                             Venal (avaliado a <strong>“Preço de Tabela *Código Tributário Pág. 87</strong> - e <strong>Pág. 90 para terrenos.</strong>”) da
                             seguinte forma:
@@ -127,7 +129,7 @@ export default function ImprimirAvaliacaoUrbanaPage({ params }: { params: { id: 
 
                         <div className="ml-4 mb-2 ">
                             <p>
-                                <strong>* Terreno (Lote):</strong> <u>{formatCurrency(valorTerreno)} ({formatarValorPorExtenso(valorTerreno)})</u> (Este é o valor do terreno sem imóvel, localizado no <strong>Setor {setorMultiplier < 10 ? `0${setorMultiplier}` : setorMultiplier}</strong> sendo o preço médio de <strong>{formatCurrency(valorMetroQuadradoTerreno)} ({formatarValorPorExtenso(valorMetroQuadradoTerreno)})</strong> por M²). <strong>(*VT) - </strong>
+                                <strong>* Terreno (Lote):</strong> <u>{formatCurrency(valorTerreno)} ({formatarValorPorExtenso(valorTerreno)})</u> (Este é o valor do terreno sem imóvel, localizado no <strong>Setor {setor}</strong> sendo o preço médio de <strong>{formatCurrency(valorMetroQuadradoTerreno)} ({formatarValorPorExtenso(valorMetroQuadradoTerreno)})</strong> por M²). <strong>(*VT) - </strong>
                                 {ufmValue && (
                                     <span className=" text-sm text-gray-600 italic mt-1">
                                         (Cálculo: {setorMultiplier} UFM x {formatCurrency(ufmValue)} = {formatCurrency(valorMetroQuadradoTerreno)}/m²)
