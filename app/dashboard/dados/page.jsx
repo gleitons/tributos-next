@@ -1,5 +1,5 @@
 import Link from "next/link";
-import VerEmpresa from "../components/VerEmpresa";
+import EmpresasList from "./EmpresasList";
 
 const importCadastros = async () => {
     try {
@@ -35,36 +35,10 @@ export default async function Page() {
                 Sala Mineira do Empreendedor
             </p>
 
-
-
-
-
             <div className="mt-6 flex flex-col md:flex-row gap-6 bg-white shadow-xl rounded-2xl p-6">
 
-                {/* LISTA DE EMPRESAS */}
-                <div className="w-full md:w-2/3 max-h-[80vh] overflow-y-auto pr-2 space-y-3">
-
-                    <ul className="space-y-3">
-                        {cadastros.length > 0 ? (
-                            cadastros.map((e, index) => {
-                                const colorir = index % 2 === 0 ? "bg-white" : "bg-gray-100";
-                                return (
-                                    <div
-                                        key={index}
-                                        className={`${colorir} hover:bg-blue-50 transition rounded-xl shadow-sm border border-gray-200`}
-                                    >
-                                        <VerEmpresa cor={colorir} dadosEmpresa={e} />
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <p className="text-center text-gray-500 py-4">
-                                Nenhum dado encontrado.
-                            </p>
-                        )}
-                    </ul>
-
-                </div>
+                {/* LISTA DE EMPRESAS (Componente Cliente) */}
+                <EmpresasList initialData={cadastros} />
 
                 {/* LATERAL DIREITA */}
                 <div className="w-full md:w-1/3 flex flex-col gap-4">

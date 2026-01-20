@@ -22,7 +22,7 @@ const Menutop = () => {
         </Link>
         {/* Menu de navegação */}
         <nav className="flex space-x-4">
-          <Link href="/dashboard/" className="text-white hover:text-gray-300">Home</Link>
+          <Link href="/dashboard/" className="text-white hover:text-gray-300">🏠 Home</Link>
           <Link href="/dashboard/sobre" className="text-white hover:text-gray-300">Sobre</Link>
           <Link href="/dashboard/documentos-cnpj" className="text-white hover:text-gray-300">Serviços</Link>
           <Loggout />

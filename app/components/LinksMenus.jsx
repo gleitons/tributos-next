@@ -2,7 +2,7 @@ const LinkMenus = [
 
     {
         portugues: 'inicio',
-        ingles: 'home',
+        ingles: '🏠 home',
         espanhol: 'initio',
         link: './',
 
