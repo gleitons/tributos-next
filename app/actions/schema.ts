@@ -28,6 +28,7 @@ export const imoveis = sqliteTable('imoveis', {
 
   // Classificação
   tipo: text('tipo').$type<'residencial' | 'comercial' | 'industrial' | 'religioso' | 'publico' | 'rural'>().notNull(),
+  numeroSetor: text('numero_setor').notNull(),
   
   // Medidas e Confrontações
   medidaFrente: real('medida_frente'),

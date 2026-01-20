@@ -98,6 +98,7 @@ export const urbanValuations = sqliteTable('urban_valuations', {
     // Imóvel Urbano
     tipoAcabamento: real('tipo_acabamento'), // Valor do acabamento
     setor: real('setor'), // Valor do setor
+    numeroSetor: text('numero_setor').notNull(),
     quadra: text('quadra'),
     lote: text('lote'),
 

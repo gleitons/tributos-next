@@ -21,7 +21,8 @@ export default function NovaAvaliacaoUrbanaPage() {
         numero: '',
         bairro: '',
         tipoAcabamento: 0,
-        setor: 0,
+        setor: 0,         // value do option
+        numeroSetor: "0",   // texto do option
         quadra: '',
         lote: '',
         areaLote: 0,
@@ -43,10 +44,31 @@ export default function NovaAvaliacaoUrbanaPage() {
         }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
 
+        // Tratamento especial para o select de setor
+        if (name === 'setor' && e.target instanceof HTMLSelectElement) {
+            const selectedOption = e.target.options[e.target.selectedIndex];
+
+            setFormData(prev => ({
+                ...prev,
+                setor: Number(value),                 // value numérico
+                numeroSetor: selectedOption.text      // texto "0001"
+            }));
+
+            return;
+        }
+
+        // Tratamento padrão
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        // Seu fetch já existente
         if (name === 'ano') {
             fetchUfm(Number(value));
         }
@@ -160,12 +182,13 @@ export default function NovaAvaliacaoUrbanaPage() {
                             <label className="block text-sm font-medium text-gray-700">Setor (Multiplicador UFM)</label>
                             <select name="setor" value={formData.setor} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2">
                                 <option value="0">Selecione</option>
-                                <option value="8">Setor 01 (8 UFM)</option>
-                                <option value="6">Setor 02 (6 UFM)</option>
-                                <option value="4">Setor 03 (4 UFM)</option>
-                                <option value="4">Setor 04 (4 UFM)</option>
-                                <option value="4">Setor 05 (4 UFM)</option>
+                                <option value="8">0001</option>
+                                <option value="6">0002</option>
+                                <option value="4">0003</option>
+                                <option value="4">0004</option>
+                                <option value="4">0005</option>
                             </select>
+                            <p className="text-xs text-gray-500 cursor-help mt-1" title='Setor 01 (8 UFM) - Setor 02 (6 UFM) - Setor 03 (4 UFM) - Setor 04 (4 UFM) - Setor 05 (4 UFM)'>ℹ️</p>
                             {ufmValue && formData.setor > 0 && (
                                 <p className="text-xs text-gray-500 mt-1">
                                     Valor Calculado: {formData.setor} x R$ {ufmValue.toFixed(2)} = <strong>R$ {(Number(formData.setor) * ufmValue).toFixed(2)}/m²</strong>

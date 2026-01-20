@@ -23,6 +23,7 @@ export default function ImprimirAvaliacaoUrbanaPage({ params }: { params: { id: 
         const loadData = async () => {
             const val = await getUrbanValuation(Number(params.id));
             setValuation(val);
+            console.log(val)
 
             if (val) {
                 if (val.usuarioId) {
@@ -59,8 +60,8 @@ export default function ImprimirAvaliacaoUrbanaPage({ params }: { params: { id: 
     // Note: valuation.setor stored the multiplier (e.g., 8, 6, 4)
     const setorMultiplier = valuation.setor;
     const valorMetroQuadradoTerreno = ufmValue ? setorMultiplier * ufmValue : 0;
-    const setor = valuation.setor == 8 ? '0001' : valuation.setor == 6 ? '0002' : valuation.setor == 4 ? '0003' : '0004';
-    console.log(valuation)
+    const setor = valuation.numeroSetor;
+    
 
     const valorTerreno = valuation.areaLote * valorMetroQuadradoTerreno;
     const valorConstrucao = valuation.areaConstrucao * valuation.tipoAcabamento;

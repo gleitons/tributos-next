@@ -6,6 +6,14 @@ import { getUsers } from '@/app/actions/users';
 import { getUfmByYear } from '@/app/actions/ufm';
 import { useRouter } from 'next/navigation';
 
+const SECTORS = [
+    { label: "0001", value: 8 },
+    { label: "0002", value: 6 },
+    { label: "0003", value: 4 },
+    { label: "0004", value: 4 },
+    { label: "0005", value: 4 },
+];
+
 export default function EditarAvaliacaoUrbanaPage({ params }: { params: { id: string } }) {
     const router = useRouter();
     const [users, setUsers] = useState<any[]>([]);
@@ -22,7 +30,8 @@ export default function EditarAvaliacaoUrbanaPage({ params }: { params: { id: st
         numero: '',
         bairro: '',
         tipoAcabamento: 0,
-        setor: 0,
+        setor: 0,         // value do option
+        numeroSetor: "0",   // texto do option
         quadra: '',
         lote: '',
         areaLote: 0,
@@ -36,7 +45,7 @@ export default function EditarAvaliacaoUrbanaPage({ params }: { params: { id: st
                 getUsers(),
                 getUrbanValuation(Number(params.id))
             ]);
-
+            console.log(valuationData);
             setUsers(usersData);
 
             if (valuationData) {
@@ -50,6 +59,7 @@ export default function EditarAvaliacaoUrbanaPage({ params }: { params: { id: st
                     bairro: valuationData.bairro || '',
                     tipoAcabamento: valuationData.tipoAcabamento || 0,
                     setor: valuationData.setor || 0,
+                    numeroSetor: valuationData.numeroSetor || "",
                     quadra: valuationData.quadra || '',
                     lote: valuationData.lote || '',
                     areaLote: valuationData.areaLote || 0,
@@ -78,14 +88,36 @@ export default function EditarAvaliacaoUrbanaPage({ params }: { params: { id: st
         }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
 
+        // Tratamento especial para o select de setor (agora usando numeroSetor como chave)
+        if (name === 'numeroSetor') {
+            const selectedSector = SECTORS.find(s => s.label === value);
+
+            setFormData(prev => ({
+                ...prev,
+                numeroSetor: value,
+                setor: selectedSector ? selectedSector.value : 0
+            }));
+
+            return;
+        }
+
+        // Tratamento padrão
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        // Seu fetch já existente
         if (name === 'ano') {
             fetchUfm(Number(value));
         }
     };
+
 
     const calculateTotal = () => {
         const areaLote = Number(formData.areaLote) || 0;
@@ -197,13 +229,18 @@ export default function EditarAvaliacaoUrbanaPage({ params }: { params: { id: st
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Setor (Multiplicador UFM)</label>
-                            <select name="setor" value={formData.setor} onChange={handleInputChange} className="mt-1 block w-full border rounded-md p-2">
-                                <option value="0">Selecione</option>
-                                <option value="8">Setor 01 (8 UFM)</option>
-                                <option value="6">Setor 02 (6 UFM)</option>
-                                <option value="4">Setor 03 (4 UFM)</option>
-                                <option value="4">Setor 04 (4 UFM)</option>
-                                <option value="4">Setor 05 (4 UFM)</option>
+                            <select
+                                name="numeroSetor"
+                                value={formData.numeroSetor}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full border rounded-md p-2"
+                            >
+                                <option value="">Selecione</option>
+                                {SECTORS.map((s) => (
+                                    <option key={s.label} value={s.label}>
+                                        {s.label}
+                                    </option>
+                                ))}
                             </select>
                             {ufmValue && formData.setor > 0 && (
                                 <p className="text-xs text-gray-500 mt-1">

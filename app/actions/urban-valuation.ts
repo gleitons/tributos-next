@@ -27,6 +27,7 @@ export async function getUrbanValuation(id: number) {
 }
 
 export async function createUrbanValuation(data: any) {
+    console.log(data)
     try {
         const result = await db.insert(urbanValuations).values({
             protocolo: data.protocolo,
@@ -38,6 +39,7 @@ export async function createUrbanValuation(data: any) {
             bairro: data.bairro,
             tipoAcabamento: parseFloat(data.tipoAcabamento),
             setor: parseFloat(data.setor),
+            numeroSetor: data.numeroSetor,
             quadra: data.quadra,
             lote: data.lote,
             areaLote: parseFloat(data.areaLote),
@@ -66,6 +68,7 @@ export async function updateUrbanValuation(id: number, data: any) {
             bairro: data.bairro,
             tipoAcabamento: parseFloat(data.tipoAcabamento),
             setor: parseFloat(data.setor),
+            numeroSetor: data.numeroSetor,
             quadra: data.quadra,
             lote: data.lote,
             areaLote: parseFloat(data.areaLote),

@@ -22,9 +22,10 @@ export default async function CadastroPage() {
                         <input type="hidden" name="id" /> {/* Preencher para editar */}
                         <input name="inscricaoMunicipal" placeholder="Inscrição Municipal" className="w-full p-2 border rounded" required />
                         <input name="logradouro" placeholder="Logradouro" className="w-full p-2 border rounded" required />
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-3 gap-2">
                             <input name="numero" placeholder="Nº" className="p-2 border rounded" />
                             <input name="bairro" placeholder="Bairro" className="p-2 border rounded" />
+                            <input name="numeroSetor" placeholder="Setor" className="p-2 border rounded" required />
                         </div>
                         <select name="tipo" className="w-full p-2 border rounded">
                             <option value="residencial">Residencial</option>
