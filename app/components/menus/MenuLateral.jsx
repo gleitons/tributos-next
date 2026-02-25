@@ -1,10 +1,12 @@
 'use client'
 import { useState } from 'react';
 import Link from 'next/link';
-import { IoHome } from "react-icons/io5";
-import { BsDatabaseFillLock } from "react-icons/bs";
-import { FaCity } from "react-icons/fa6";
-import { FaTools, FaHouseUser } from "react-icons/fa";
+import { IoHome , IoSettings} from "react-icons/io5";
+import { MdDocumentScanner } from "react-icons/md";
+import { BsDatabaseFillLock, } from "react-icons/bs";
+import { FaCity, FaMoneyCheckDollar} from "react-icons/fa6";
+import { FaTools, FaHouseUser , FaMoneyCheckAlt} from "react-icons/fa";
+
 import { RiPercentFill } from "react-icons/ri";
 
 const MenuLateral = () => {
@@ -80,7 +82,7 @@ const MenuLateral = () => {
     {
       portugues: 'Avaliação V. Urbana',
       link: '',
-      icone: <RiPercentFill />,
+      icone: <FaMoneyCheckAlt />,
       submenus: [
         { nome: 'Nova Avaliação Urbana', link: '/dashboard/avaliacao-venal-urbana/nova' },
         { nome: 'Todas Avaliações urbanas', link: '/dashboard/avaliacao-venal-urbana' },
@@ -93,7 +95,7 @@ const MenuLateral = () => {
     {
       portugues: 'Avaliação V. Rural',
       link: '',
-      icone: <RiPercentFill />,
+      icone: <FaMoneyCheckDollar />,
       submenus: [
         { nome: 'Nova Avaliação Rural', link: '/dashboard/avaliacao-venal-rural/nova' },
         { nome: 'Todas Avaliações Rurais', link: '/dashboard/avaliacao-venal-rural' },
@@ -106,7 +108,7 @@ const MenuLateral = () => {
     {
       portugues: 'Alvarás',
       link: '',
-      icone: <RiPercentFill />,
+      icone: <MdDocumentScanner />,
       submenus: [
         { nome: 'Alvará Cemitério', link: '/dashboard/alvara-cemiterio' },
         { nome: 'Alvará de Construção', link: '/dashboard/' },
@@ -130,7 +132,7 @@ const MenuLateral = () => {
     {
       portugues: 'Configurações',
       link: '',
-      icone: <BsDatabaseFillLock />,
+      icone: <IoSettings />,
       submenus: [
         { nome: 'UFM', link: '/dashboard/configuracoes' },
         { nome: 'Servidores', link: '/dashboard/usuarios' },

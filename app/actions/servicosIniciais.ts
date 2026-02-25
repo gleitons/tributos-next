@@ -23,34 +23,48 @@ export const servicosIniciais = [
     },
     {
         id: 4,
+        nome: "ITBI Urbano",
+        descricao: "Consulta e cálculo do valor venal de imóveis urbanos.",
+        emoji: "💵",
+        url: "/dashboard/itbi-urbano"
+    },
+    {
+        id: 5,
+        nome: "ITBI Rural",
+        descricao: "Consulta e cálculo do valor venal de imóveis urbanos.",
+        emoji: "💶",
+        url: "/dashboard/itbi-rural"
+    },
+    {
+        id: 6,
         nome: "Calculadora ISSQN",
         descricao: "Calcule automaticamente o valor do ISSQN e taxa de expediente municipal.",
         emoji: "🧮",
         url: "/dashboard/calculadora-issqn"
     },
     {
-        id: 5,
+        id: 7,
         nome: "Registros Imobiliários",
         descricao: "Consulta e gestão de registros de imóveis municipais.",
         emoji: "📚",
         url: "/dashboard/registros-imobiliarios"
     },
     {
-        id: 6,
+        id: 8,
         nome: "Mapa Urbanístico",
         descricao: "Visualização completa do mapa urbano de Lagoa dos Patos/MG.",
         emoji: "🗺️",
         url: "/dashboard/mapa-completo-lagoa-dos-patos-mg"
     },
     {
-        id: 7,
+        id: 9,
         nome: "Mapa Rural",
         descricao: "Visualização completa do mapa rural de Lagoa dos Patos/MG.",
         emoji: "📍🗺️",
         url: "/dashboard/mapa-rural-lagoa-dos-patos-mg"
     },
     {
-        id: 8,
+        id: 10,
         nome: "Alvará Cemitério",
         descricao: "Alvara de construcao de tumulo, cemiterio.",
         emoji: "†",
@@ -58,7 +72,7 @@ export const servicosIniciais = [
     },
 
     {
-        id: 9,
+        id: 11,
         nome: "Configurações",
         descricao: "Parâmetros e ajustes do sistema.",
         emoji: "⚙️",

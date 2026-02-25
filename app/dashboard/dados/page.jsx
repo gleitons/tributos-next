@@ -1,30 +1,17 @@
 import Link from "next/link";
 import EmpresasList from "./EmpresasList";
-
-const importCadastros = async () => {
-    try {
-        const url = 'https://tributos.netlify.app/api/informacoes';
-
-        const resp = await fetch(url, {
-            cache: "no-store",
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        if (!resp.ok) throw new Error("Erro ao buscar dados");
-
-        const data = await resp.json();
-
-        return data.sort((a, b) => a.empresa.localeCompare(b.empresa));
-    } catch (error) {
-        console.error("Erro ao solicitar:", error);
-        return [];
-    }
-};
+import { db } from "@/lib/db";
+import { informacoes } from "@/lib/schema";
+import { asc } from "drizzle-orm";
 
 export default async function Page() {
+    let cadastros = [];
 
-    const cadastros = await importCadastros();
+    try {
+        cadastros = await db.select().from(informacoes).orderBy(asc(informacoes.empresa));
+    } catch (error) {
+        console.error("Erro ao buscar dados do banco:", error);
+    }
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
@@ -46,8 +33,7 @@ export default async function Page() {
                     {/* Botão Novo Cadastro */}
                     <div className="flex justify-center">
                         <Link
-                            href="https://docs.google.com/spreadsheets/d/12BlFnJ-jdrLi_JQPBYvHervxePaX5lHMEjIh4eDVkXQ/edit?gid=0#gid=0"
-                            target="_blank"
+                            href="/dashboard/dados/novo"
                             className="bg-blue-600 text-white px-6 py-2 rounded-xl shadow-lg hover:bg-blue-700 hover:shadow-xl transition"
                         >
                             ➕ Novo Cadastro

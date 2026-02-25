@@ -1,8 +1,10 @@
-export const APP_ROUTES =  {
+export const APP_ROUTES = {
     private: {
         dashboard: [
             '/dashboard',
             '/dashboard/dados',
+            '/dashboard/dados/novo',
+            '/dashboard/usuarios',
             '/dashboard/servicos',
             '/dashboard/contato',
             '/dashboard/itbi',

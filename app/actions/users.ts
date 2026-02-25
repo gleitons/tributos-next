@@ -25,16 +25,18 @@ export async function createUser(data: any) {
         cargo: data.cargo,
         setor: data.setor,
         dataAdmissao: data.dataAdmissao,
+        password: data.password || '123456', // In a real app, hash this!
         funcao: data.funcao,
         email: data.email,
         telefone: data.telefone,
+
         status: data.status || 'ativo',
     });
     revalidatePath('/dashboard/usuarios');
 }
 
 export async function updateUser(id: number, data: any) {
-    await db.update(users).set({
+    const updateData: any = {
         matricula: data.matricula,
         nome: data.nome,
         sobrenome: data.sobrenome,
@@ -45,7 +47,15 @@ export async function updateUser(id: number, data: any) {
         email: data.email,
         telefone: data.telefone,
         status: data.status,
-    }).where(eq(users.id, id));
+    };
+
+    // Só atualiza a senha se foi preenchida
+    if (data.password && data.password.trim() !== '') {
+        updateData.password = data.password;
+    }
+
+    await db.update(users).set(updateData).where(eq(users.id, id));
+
     revalidatePath('/dashboard/usuarios');
 }
 
