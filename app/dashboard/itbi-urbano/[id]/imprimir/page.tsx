@@ -11,6 +11,7 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
     const { id } = params;
     const [data, setData] = useState<any>(null);
     const [user, setUser] = useState<any>(null);
+    const [availableUsers, setAvailableUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [fontSize, setFontSize] = useState('Padrão');
     const [showQR, setShowQR] = useState('Padrão');
@@ -25,16 +26,17 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
     useEffect(() => {
         getItbiUrbano(Number(id)).then(val => {
             setData(val);
-            if (val && val.usuario) {
-                getUsers().then(users => {
+            getUsers().then(users => {
+                setAvailableUsers(users);
+                if (val && val.usuario) {
                     const foundUser = users.find((u: any) =>
                         `${u.nome} ${u.sobrenome || ''}`.trim() === val.usuario
                     );
                     if (foundUser) {
                         setUser(foundUser);
                     }
-                });
-            }
+                }
+            });
             setLoading(false);
         });
     }, [id]);
@@ -85,11 +87,21 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
                         </select>
                     </div>
                     <div>
-                        <label className="mr-2 font-bold">QR Code:</label>
-                        <select value={showQR} onChange={(e) => setShowQR(e.target.value)} className="border p-1 rounded">
-                            <option>Padrão</option>
-                            <option>Retirar</option>
-                            <option>Inserir</option>
+                        <label className="mr-2 font-bold">Assinatura:</label>
+                        <select
+                            value={user ? `${user.nome} ${user.sobrenome || ''}`.trim() : ''}
+                            onChange={(e) => {
+                                const found = availableUsers.find(u => `${u.nome} ${u.sobrenome || ''}`.trim() === e.target.value);
+                                setUser(found || null);
+                            }}
+                            className="border p-1 rounded"
+                        >
+                            <option value="">Selecione o Emitente</option>
+                            {availableUsers.map((u, idx) => (
+                                <option key={idx} value={`${u.nome} ${u.sobrenome || ''}`.trim()}>
+                                    {`${u.nome} ${u.sobrenome || ''}`.trim()}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
@@ -206,7 +218,7 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
                             <div className="flex justify-center">
                                 <div className="text-center">
                                     <p className="mb-2">___________________________________________________</p>
-                                    <h4 className="font-bold uppercase">{data.usuario}</h4>
+                                    <h4 className="font-bold uppercase">{user ? `${user.nome} ${user.sobrenome || ''}`.trim() : data.usuario}</h4>
                                     {user && user.cargo && <p className="text-xs font-semibold">{toTitleCase(user.cargo)}</p>}
                                     <p className="text-[9px] text-gray-500 mt-2">
                                         Divisão Fiscal e Cadastramento Imobiliário <br />

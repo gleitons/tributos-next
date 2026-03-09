@@ -29,19 +29,18 @@ export default function ItbiForm({ people, properties }: { people: any[], proper
     const ITBI_RATE = 0.02;
 
     useEffect(() => {
+        const calculateItbi = () => {
+            // Use the higher value between Transaction and Venal
+            const baseCalculation = Math.max(formData.valorTransacao, formData.valorVenal);
+            const tax = baseCalculation * ITBI_RATE;
+            const fee = UFM_VALUE * TAXA_EXPEDIENTE_UFM;
+            const total = tax + fee;
+
+            setValorCalculado(total);
+            setFormData(prev => ({ ...prev, valorItbi: total }));
+        };
         calculateItbi();
-    }, [formData.valorVenal, formData.valorTransacao]);
-
-    const calculateItbi = () => {
-        // Use the higher value between Transaction and Venal
-        const baseCalculation = Math.max(formData.valorTransacao, formData.valorVenal);
-        const tax = baseCalculation * ITBI_RATE;
-        const fee = UFM_VALUE * TAXA_EXPEDIENTE_UFM;
-        const total = tax + fee;
-
-        setValorCalculado(total);
-        setFormData(prev => ({ ...prev, valorItbi: total }));
-    };
+    }, [formData.valorVenal, formData.valorTransacao, ITBI_RATE, TAXA_EXPEDIENTE_UFM, UFM_VALUE]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

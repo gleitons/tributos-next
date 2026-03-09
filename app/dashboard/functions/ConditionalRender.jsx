@@ -2,29 +2,29 @@
 import MenuLateral from "@/app/components/menus/MenuLateral";
 import Menutop from "@/app/components/menus/Menutop";
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { colectCookie } from '../components/Cookie';
 
-const ConditionalRender = ({  children }) => {   
+const ConditionalRender = ({ children }) => {
     const pullAdrees = useRouter();
-    const verifica = colectCookie();  
-    
-    const isAuthenticated = () => {
+    const verifica = colectCookie();
+
+    const isAuthenticated = useCallback(() => {
         if (verifica) {
             return true;
         }
+        return false;
+    }, [verifica]);
 
-    };
-    
     useEffect(() => {
         if (!isAuthenticated()) {
             pullAdrees.push('/');
         }
-    }, []);
+    }, [isAuthenticated, pullAdrees]);
 
     if (isAuthenticated() || null) {
         return ( // Garantindo que a estrutura HTML corresponda
-            <div>                
+            <div>
                 <Menutop />
                 <div className="flex">
                     <div>

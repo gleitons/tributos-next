@@ -52,14 +52,13 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
     }, [formData.ano]);
 
     useEffect(() => {
+        const calculateItbi = () => {
+            const ITBI_RATE = 0.02; // 2%
+            const total = formData.valorTransacao * ITBI_RATE;
+            setFormData(prev => ({ ...prev, valorItbi: total }));
+        };
         calculateItbi();
     }, [formData.valorTransacao]);
-
-    const calculateItbi = () => {
-        const ITBI_RATE = 0.02; // 2%
-        const total = formData.valorTransacao * ITBI_RATE;
-        setFormData(prev => ({ ...prev, valorItbi: total }));
-    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -193,18 +192,23 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                         <legend className="px-2 font-bold text-gray-700 uppercase">Natureza</legend>
                         <select name="natureza" value={formData.natureza} onChange={handleInputChange} className="w-full border p-2 rounded" required>
                             <option value="selecione">Selecione</option>
-                            <option value="COMPRAEVENDA">COMPRA E VENDA</option>
-                            <option value="CESSÃODEDIREITOHEREDITARIO">CESSÃO DE DIREITO HEREDITÁRIO</option>
-                            <option value="ISENCAO">ISENÇÃO DE ITBI</option>
-                            <option value="CONCESSÃO">FUSÃO, INCORPORAÇÃO, CISÃO OU EXTINÇÃO</option>
+                            <option value="COMPRA E VENDA">COMPRA E VENDA</option>
+                            <option value="CESSÃO DE DIREITO HEREDITÁRIO">CESSÃO DE DIREITO HEREDITÁRIO</option>
+                            {/* <option value="ISENÇÃO">ISENÇÃO DE ITBI</option> */}
+                            <option value="FUSÃO/INCORPORAÇÃO">FUSÃO, INCORPORAÇÃO, CISÃO OU EXTINÇÃO</option>
+                            <option value="ISENÇÃO DE ITBI">ISENÇÃO DE ITBI</option>
+                            <option value="DAÇÃO EM PAGAMENTO">DAÇÃO EM PAGAMENTO</option>
+                            <option value="PERMUTA">PERMUTA</option>
                         </select>
                     </fieldset>
 
                     <fieldset className="border p-4 rounded-md border-gray-300 text-sm">
                         <legend className="px-2 font-bold text-gray-700 uppercase">Tipo</legend>
                         <select name="tipoImovel" value={formData.tipoImovel} onChange={handleInputChange} className="w-full border p-2 rounded" required>
-                            <option value="URBANO">URBANO</option>
-                            <option value="RURAL">RURAL</option>
+                            <option value="selecione">Selecione</option>
+                            <option value="Terreno Rural">Terreno Rural</option>
+                            <option value="Fazenda de Cultura">Fazenda de Cultura</option>
+                            <option value="Gleba de Terras">Gleba de Terras</option>
                         </select>
                     </fieldset>
 
@@ -226,10 +230,8 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                         <legend className="px-2 font-bold text-gray-700 uppercase">Condições</legend>
                         <select name="condicaoImovel" value={formData.condicaoImovel} onChange={handleInputChange} className="w-full border p-2 rounded" required>
                             <option value="selecione">Selecione</option>
-                            <option value="PAGAIPTU">O IMÓVEL PAGA IPTU</option>
-                            <option value="NAOPAGAIPTU">NÃO PAGA IPTU</option>
-                            <option value="PAGAITR">IMOVEL RURAL PAGA ITR</option>
-                            <option value="NAOPAGAITR">NÃO PAGA ITR</option>
+                            <option value="Imóvel paga ITR">Imóvel paga ITR</option>
+                            <option value="Imóvel não paga ITR">Imóvel não paga ITR</option>
                         </select>
                     </fieldset>
 

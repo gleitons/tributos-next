@@ -11,6 +11,13 @@ export default async function ItbiRuralPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">ITBI Rural</h1>
         <Link
+          href="/solicitacao/itbi-rural"
+          target="_blank"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition shadow"
+        >
+          Link de Solicitação ITBI Rural
+        </Link>
+        <Link
           href="/dashboard/itbi-rural/nova"
           className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700 transition shadow"
         >

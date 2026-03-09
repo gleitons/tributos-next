@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createUrbanValuation } from '@/app/actions/urban-valuation';
 import { getUsers } from '@/app/actions/users';
 import { getUfmByYear } from '@/app/actions/ufm';
@@ -30,19 +30,19 @@ export default function NovaAvaliacaoUrbanaPage() {
         observacoes: '',
     });
 
-    useEffect(() => {
-        getUsers().then(setUsers);
-        fetchUfm(formData.ano);
-    }, []);
-
-    const fetchUfm = async (year: number) => {
+    const fetchUfm = useCallback(async (year: number) => {
         const ufm = await getUfmByYear(year);
         if (ufm) {
             setUfmValue(ufm.valor);
         } else {
             setUfmValue(null);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        getUsers().then(setUsers);
+        fetchUfm(formData.ano);
+    }, [fetchUfm, formData.ano]);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>

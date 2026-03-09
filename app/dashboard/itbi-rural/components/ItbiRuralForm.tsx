@@ -7,6 +7,7 @@ import { FaBold } from 'react-icons/fa';
 
 export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
     const router = useRouter();
+    const [users, setUsers] = useState<any[]>([]);
     const [taxaExpediente, setTaxaExpediente] = useState(initialData?.taxaExpediente || 0);
     const [formData, setFormData] = useState({
         protocolo: initialData?.protocolo || '',
@@ -25,7 +26,7 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
         situacaoTransmitente: initialData?.situacaoTransmitente || 'selecione',
         valorTransacao: initialData?.valorTransacao || 0,
         valorItbi: initialData?.valorItbi || 0,
-        observacoes: initialData?.observacoes || '',
+        observacoes: initialData?.protocolo + " - " + initialData?.observacoes || '',
     });
 
     const adquirenteRef = useRef<HTMLTextAreaElement>(null);
@@ -48,18 +49,31 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
                 console.error('Erro ao buscar UFM:', error);
             }
         }
+
+        async function fetchUsers() {
+            try {
+                const res = await fetch('/api/usuarios');
+                if (res.ok) {
+                    const data = await res.json();
+                    setUsers(data);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar usuários:', error);
+            }
+        }
+
         fetchUfm();
+        fetchUsers();
     }, [formData.ano]);
 
     useEffect(() => {
+        const calculateItbi = () => {
+            const ITBI_RATE = 0.02; // 2%
+            const total = formData.valorTransacao * ITBI_RATE;
+            setFormData(prev => ({ ...prev, valorItbi: total }));
+        };
         calculateItbi();
     }, [formData.valorTransacao]);
-
-    const calculateItbi = () => {
-        const ITBI_RATE = 0.02; // 2%
-        const total = formData.valorTransacao * ITBI_RATE;
-        setFormData(prev => ({ ...prev, valorItbi: total }));
-    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -109,10 +123,11 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
                             <label className="text-sm font-semibold">Usuário:</label>
                             <select name="usuario" value={formData.usuario} onChange={handleInputChange} className="border p-2 rounded">
                                 <option value="">Selecione</option>
-                                <option value="GLEITON APARECIDO SOARES DE SOUZA">GLEITON APARECIDO SOARES DE SOUZA</option>
-                                <option value="VANDER DE JESUS MAGALHAES NOBRE">VANDER DE JESUS MAGALHAES NOBRE</option>
-                                <option value="JOÃO MARTINS GUEDES">JOÃO MARTINS GUEDES</option>
-                                <option value="JHESSYK DAIENY REIS BRITO RABELO">JHESSYK DAIENY REIS BRITO RABELO</option>
+                                {users.map((user) => (
+                                    <option key={user.id} value={`${user.nome} ${user.sobrenome || ''}`.trim()}>
+                                        {`${user.nome} ${user.sobrenome || ''}`.trim()}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="flex flex-col">
@@ -169,7 +184,7 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
                 </fieldset>
 
                 <fieldset className="border p-4 rounded-md border-gray-300">
-                    <legend className="px-2 font-bold text-gray-700 uppercase">Área Negociada</legend>
+                    <legend className="px-2 font-bold text-gray-700 uppercase">Área Negociada - Ha (hectares)</legend>
                     <input type="text" name="areaTerreno" value={formData.areaTerreno} onChange={handleInputChange} placeholder="ex: 15.65.25ha" className="w-full border p-2 rounded" />
                 </fieldset>
 
@@ -193,20 +208,26 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <fieldset className="border p-4 rounded-md border-gray-300 text-sm">
                         <legend className="px-2 font-bold text-gray-700 uppercase">Natureza</legend>
+                        <span title={`*Pedido: ${formData.natureza}`}>ℹ️</span>
                         <select name="natureza" value={formData.natureza} onChange={handleInputChange} className="w-full border p-2 rounded" required>
                             <option value="selecione">Selecione</option>
-                            <option value="COMPRAEVENDA">COMPRA E VENDA</option>
-                            <option value="CESSÃODEDIREITOHEREDITARIO">CESSÃO DE DIREITO HEREDITÁRIO</option>
-                            <option value="ISENCAO">ISENÇÃO DE ITBI</option>
-                            <option value="CONCESSÃO">FUSÃO, INCORPORAÇÃO, CISÃO OU EXTINÇÃO</option>
+                            <option value="COMPRA E VENDA">COMPRA E VENDA</option>
+                            <option value="CESSÃO DE DIREITO HEREDITÁRIO">CESSÃO DE DIREITO HEREDITÁRIO</option>
+                            {/* <option value="ISENÇÃO">ISENÇÃO DE ITBI</option> */}
+                            <option value="FUSÃO/INCORPORAÇÃO">FUSÃO, INCORPORAÇÃO, CISÃO OU EXTINÇÃO</option>
+                            <option value="ISENÇÃO DE ITBI">ISENÇÃO DE ITBI</option>
+                            <option value="DAÇÃO EM PAGAMENTO">DAÇÃO EM PAGAMENTO</option>
+                            <option value="PERMUTA">PERMUTA</option>
                         </select>
                     </fieldset>
 
                     <fieldset className="border p-4 rounded-md border-gray-300 text-sm">
                         <legend className="px-2 font-bold text-gray-700 uppercase">Tipo</legend>
                         <select name="tipoImovel" value={formData.tipoImovel} onChange={handleInputChange} className="w-full border p-2 rounded" required>
-                            <option value="URBANO">URBANO</option>
-                            <option value="RURAL">RURAL</option>
+                            <option value="selecione">Selecione</option>
+                            <option value="Terreno Rural">Terreno Rural</option>
+                            <option value="Fazenda de Cultura">Fazenda de Cultura</option>
+                            <option value="Gleba de Terras">Gleba de Terras</option>
                         </select>
                     </fieldset>
 
@@ -214,13 +235,12 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
                         <legend className="px-2 font-bold text-gray-700 uppercase">Qualidade</legend>
                         <select name="qualidadeImovel" value={formData.qualidadeImovel} onChange={handleInputChange} className="w-full border p-2 rounded" required>
                             <option value="selecione">Selecione</option>
-                            <option value="OTIMO">OTIMO</option>
-                            <option value="MUITOBOM">MUITO BOM</option>
-                            <option value="BOM">BOM</option>
-                            <option value="REGULAR">REGULAR</option>
-                            <option value="RUIM">RUIM</option>
-                            <option value="PESSIMO">PÉSSIMO</option>
-                            <option value="NAOPOSSUIIMOVEL">NÃO POSSUI IMÓVEL</option>
+                            <option value="Não Possui">Não Possui</option>
+                            <option value="Excelente">Excelente</option>
+                            <option value="Boa">Boa</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Ruim">Ruim</option>
+                            <option value="Péssima">Péssima</option>
                         </select>
                     </fieldset>
 
@@ -228,10 +248,8 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
                         <legend className="px-2 font-bold text-gray-700 uppercase">Condições</legend>
                         <select name="condicaoImovel" value={formData.condicaoImovel} onChange={handleInputChange} className="w-full border p-2 rounded" required>
                             <option value="selecione">Selecione</option>
-                            <option value="PAGAIPTU">O IMÓVEL PAGA IPTU</option>
-                            <option value="NAOPAGAIPTU">NÃO PAGA IPTU</option>
-                            <option value="PAGAITR">IMOVEL RURAL PAGA ITR</option>
-                            <option value="NAOPAGAITR">NÃO PAGA ITR</option>
+                            <option value="Imóvel paga ITR">Imóvel paga ITR</option>
+                            <option value="Imóvel não paga ITR">Imóvel não paga ITR</option>
                         </select>
                     </fieldset>
 

@@ -245,6 +245,7 @@ export const itbiRural = sqliteTable('itbi_rural', {
     valorItbi: real('valor_itbi'),
     taxaExpediente: real('taxa_expediente').default(0),
     observacoes: text('observacoes'),
+    status: text('status').default('PENDENTE'),
     dataCriacao: text('data_criacao').default(sql`CURRENT_TIMESTAMP`),
 });
 export const itbiUrbano = sqliteTable('itbi_urbano', {
@@ -267,5 +268,6 @@ export const itbiUrbano = sqliteTable('itbi_urbano', {
     valorItbi: real('valor_itbi'),
     taxaExpediente: real('taxa_expediente').default(0),
     observacoes: text('observacoes'),
+    status: text('status').default('PENDENTE'),
     dataCriacao: text('data_criacao').default(sql`CURRENT_TIMESTAMP`),
 });

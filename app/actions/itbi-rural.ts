@@ -25,6 +25,7 @@ export async function createItbiRural(data: any) {
         valorItbi: Number(data.valorItbi),
         taxaExpediente: Number(data.taxaExpediente || 0),
         observacoes: data.observacoes,
+        status: data.status || 'PENDENTE',
     });
 
     revalidatePath('/dashboard/itbi-rural');
@@ -59,6 +60,7 @@ export async function updateItbiRural(id: number, data: any) {
         valorItbi: Number(data.valorItbi),
         taxaExpediente: Number(data.taxaExpediente || 0),
         observacoes: data.observacoes,
+        status: data.status,
     }).where(eq(itbiRural.id, id));
 
     revalidatePath('/dashboard/itbi-rural');

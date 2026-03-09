@@ -2,7 +2,8 @@
 import ConditionalRender from './functions/ConditionalRender';
 import { usePathname } from 'next/navigation';
 import { checkIsPrivate } from './functions/check-is-private/index'
-import  { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google'
+import ITBINotifications from './components/ITBINotifications';
 
 
 const metadata = {
@@ -15,17 +16,18 @@ export default function LayoutDashboad({ children }) {
   const pathname = usePathname();
   const isPrivatePage = checkIsPrivate(pathname)
 
-  
+
 
   return (
     <html lang="pt-BR">
-      <body >       
-          <ConditionalRender conditionFunction={isPrivatePage}>
-            {children}
-            <GoogleAnalytics gaId="G-EKP341VD46" />
-          </ConditionalRender>
+      <body >
+        <ConditionalRender conditionFunction={isPrivatePage}>
+          {children}
+          <ITBINotifications />
           <GoogleAnalytics gaId="G-EKP341VD46" />
-       
+        </ConditionalRender>
+        <GoogleAnalytics gaId="G-EKP341VD46" />
+
       </body>
     </html>
   );

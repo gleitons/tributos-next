@@ -74,6 +74,8 @@ const MenuLateral = () => {
       submenus: [
         { nome: 'ITBI Rural', link: '/dashboard/itbi-rural' },
         { nome: 'ITBI  Urbano', link: '/dashboard/itbi-urbano' },
+        { nome: 'Solicitações ITBI Rural', link: '/dashboard/itbi-rural/solicitacoes' },
+        { nome: 'Solicitações ITBI Urbano', link: '/dashboard/itbi-urbano/solicitacoes' },
 
 
 
