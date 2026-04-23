@@ -228,8 +228,10 @@ export const informacoes = sqliteTable('informacoes', {
 export const itbiRural = sqliteTable('itbi_rural', {
     id: integer('id').primaryKey({ autoIncrement: true }),
     protocolo: text('protocolo'),
+    protocoloOriginal: text('protocolo_original'),
     usuario: text('usuario'),
     solicitante: text('solicitante'),
+    nomeUsuario: text('nome_usuario'),
     valorUfm: real('valor_ufm'),
     ano: integer('ano'),
     adquirente: text('adquirente'),
@@ -251,13 +253,21 @@ export const itbiRural = sqliteTable('itbi_rural', {
 export const itbiUrbano = sqliteTable('itbi_urbano', {
     id: integer('id').primaryKey({ autoIncrement: true }),
     protocolo: text('protocolo'),
+    protocoloOriginal: text('protocolo_original'),
     usuario: text('usuario'),
     solicitante: text('solicitante'),
+    nomeUsuario: text('nome_usuario'),
     valorUfm: real('valor_ufm'),
     ano: integer('ano'),
     adquirente: text('adquirente'),
     transmitente: text('transmitente'),
     areaTerreno: text('area_terreno'),
+    setor: text('setor'),
+    quadra: text('quadra'),
+    lote: text('lote'),
+    areaLote: real('area_lote'),
+    areaConstrucao: real('area_construcao'),
+    possuiConstrucao: text('possui_construcao'),
     descricaoImovel: text('descricao_imovel'),
     natureza: text('natureza'),
     tipoImovel: text('tipo_imovel').default('URBANO'),
@@ -270,4 +280,33 @@ export const itbiUrbano = sqliteTable('itbi_urbano', {
     observacoes: text('observacoes'),
     status: text('status').default('PENDENTE'),
     dataCriacao: text('data_criacao').default(sql`CURRENT_TIMESTAMP`),
+});
+export const portalUsers = sqliteTable('portal_users', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    cpf: text('cpf').unique().notNull(),
+    nome: text('nome').notNull(),
+    email: text('email'),
+    telefone: text('telefone'),
+    dataCadastro: text('data_cadastro').default(sql`CURRENT_TIMESTAMP`),
+});
+export const usuarioPedido = sqliteTable('usuario_pedido', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    cpf: text('cpf').notNull(),
+    nome: text('nome').notNull(),
+    idItbi: integer('id_itbi').notNull(),
+    email: text('email'),
+    registrado: integer('registrado', { mode: 'boolean' }).default(false),
+    dataCadastro: text('data_cadastro').default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const numerosIndependencia = sqliteTable('numeros_independencia', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    cod: text('cod'),
+    setor: text('setor'),
+    quadra: text('quadra'),
+    lote: text('lote'),
+    principal: text('principal'),
+    numero: text('numero'),
+    prop: text('prop'),
+    maisInforma: text('mais_informa'),
 });

@@ -8,8 +8,10 @@ import { desc, eq } from 'drizzle-orm';
 export async function createItbiRural(data: any) {
     await db.insert(itbiRural).values({
         protocolo: data.protocolo,
+        protocoloOriginal: data.protocoloOriginal || data.protocolo,
         usuario: data.usuario,
         solicitante: data.solicitante,
+        nomeUsuario: data.nomeUsuario,
         valorUfm: Number(data.valorUfm),
         ano: Number(data.ano),
         adquirente: data.adquirente,
@@ -31,7 +33,10 @@ export async function createItbiRural(data: any) {
     revalidatePath('/dashboard/itbi-rural');
 }
 
-export async function getItbisRural() {
+export async function getItbisRural(cpf?: string) {
+    if (cpf) {
+        return await db.select().from(itbiRural).where(eq(itbiRural.usuario, cpf)).orderBy(desc(itbiRural.id));
+    }
     return await db.select().from(itbiRural).orderBy(desc(itbiRural.id));
 }
 
@@ -43,8 +48,10 @@ export async function getItbiRural(id: number) {
 export async function updateItbiRural(id: number, data: any) {
     await db.update(itbiRural).set({
         protocolo: data.protocolo,
+        // protocoloOriginal is NOT updated here — it preserves the solicitor's original protocol
         usuario: data.usuario,
         solicitante: data.solicitante,
+        nomeUsuario: data.nomeUsuario,
         valorUfm: Number(data.valorUfm),
         ano: Number(data.ano),
         adquirente: data.adquirente,

@@ -1,13 +1,17 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { getItbiUrbano } from '@/app/actions/itbi-urbano';
+import { getItbiRural } from '@/app/actions/itbi-rural';
 import Image from 'next/image';
 import { useReactToPrint } from 'react-to-print';
 import { toTitleCase } from '@/app/utils/textUtils';
 import { getUsers } from '@/app/actions/users';
+import DetalhesLegaisITBI from '@/app/dashboard/components/SituacaoItbi';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import QRCode from 'qrcode';
 
-export default function ImprimirItbiUrbanoPage({ params }: { params: { id: string } }) {
+export default function ImprimirItbiRuralPage({ params }: { params: { id: string } }) {
     const { id } = params;
     const [data, setData] = useState<any>(null);
     const [user, setUser] = useState<any>(null);
@@ -20,11 +24,11 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
 
     const handlePrint = useReactToPrint({
         contentRef: componentRef,
-        documentTitle: `ITBI_Urbano_${id}`,
+        documentTitle: `ITBI_Rural_${id}`,
     });
 
     useEffect(() => {
-        getItbiUrbano(Number(id)).then(val => {
+        getItbiRural(Number(id)).then(val => {
             setData(val);
             getUsers().then(users => {
                 setAvailableUsers(users);
@@ -40,7 +44,7 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
             setLoading(false);
         });
     }, [id]);
-
+    console.log(user)
     const getFontClass = () => {
         switch (fontSize) {
             case '14': return 'text-[14pt]';
@@ -58,15 +62,95 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
     if (loading) return <div className="p-8 text-center">Carregando...</div>;
     if (!data) return <div className="p-8 text-center">ITBI não encontrado.</div>;
 
+    const stripBold = (html: string) => html ? html.replace(/<\/?b>/g, '') : '-';
+
+    const handleDownloadSolicitantePDF = async () => {
+        const doc = new jsPDF();
+        const protocoloSolicitante = data.protocoloOriginal || data.protocolo || `ID-${data.id}`;
+
+        // QR Code
+        const qrCodeData = await QRCode.toDataURL(
+            `https://tributos.netlify.app/itbi/validar/${protocoloSolicitante}`
+        );
+
+        const brasao = '/brasao-lagoa-dos-patos-mg.webp';
+
+        // Header
+        doc.addImage(brasao, 'WEBP', 15, 10, 25, 25);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.text('GUIA DE INFORMAÇÃO DE I.T.B.I', 105, 15, { align: 'center' });
+        doc.setFontSize(12);
+        doc.text('PREFEITURA DE LAGOA DOS PATOS - MG', 105, 22, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text('SECRETARIA MUNICIPAL DA FAZENDA', 105, 28, { align: 'center' });
+        doc.text('CONTATO: (38) 3426-0398 | tributos@lagoadospatos.mg.gov.br', 105, 33, { align: 'center' });
+        doc.addImage(qrCodeData, 'PNG', 170, 10, 25, 25);
+
+        // Separator
+        doc.setLineWidth(0.5);
+        doc.line(14, 40, 196, 40);
+
+        // Protocol
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.text(`PROTOCOLO Nº ${protocoloSolicitante.toUpperCase()}`, 105, 48, { align: 'center' });
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.text(`Data da Solicitação: ${data.dataCriacao ? new Date(data.dataCriacao).toLocaleDateString('pt-BR') : '-'}`, 14, 60);
+        doc.text(`Solicitante: ${(data.solicitante || '-').toUpperCase()}`, 14, 66);
+
+        // Table
+        autoTable(doc, {
+            startY: 72,
+            theme: 'grid',
+            styles: { fontSize: 9, cellPadding: 2, halign: 'left', valign: 'middle' },
+            head: [['Campo', 'Informação']],
+            body: [
+                ['Adquirente', stripBold(data.adquirente || '-')],
+                ['Transmitente', stripBold(data.transmitente || '-')],
+                ['Área Negociada', stripBold(data.areaTerreno || '-')],
+                ['Descrição do Imóvel', stripBold(data.descricaoImovel || '-')],
+                ['Natureza da Transmissão', stripBold(data.natureza || '-')],
+                ['Tipo de Imóvel', stripBold(data.tipoImovel || '-')],
+                ['Qualidade do Imóvel', stripBold(data.qualidadeImovel || '-')],
+                ['Condições do Imóvel', stripBold(data.condicaoImovel || '-')],
+                ['Sessão de Dívida Ativa', stripBold(data.situacaoTransmitente || 'AGUARDANDO SETOR DE TRIBUTOS')],
+                ['Valor da Transação', data.valorTransacao?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'],
+                ['Estimativa de ITBI', (data.valorItbi?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-') + ' + Taxa de Expediente'],
+            ]
+        });
+
+        // Footer
+        const pageHeight = doc.internal.pageSize.height;
+        const ufmVal = data.valorUfm || 4.63;
+        doc.setFontSize(10);
+        doc.text(`ATENÇÃO: ITBI rural é 2% sobre o valor da transação. Adiciona-se a taxa de Expediente no valor de 2 UFMs. R$ ${ufmVal * 2}`, 105, pageHeight - 35, { align: 'center' });
+        doc.setFontSize(8);
+        doc.text('Documento gerado automaticamente pelo Sistema de controle local do Tributário Municipal.', 105, pageHeight - 20, { align: 'center' });
+        doc.text('A autenticidade deste documento pode ser verificada através do QR Code - O protocolo interno poderá ser alterado.', 105, pageHeight - 15, { align: 'center' });
+        doc.text(`Prefeitura Municipal de Lagoa dos Patos - MG • ${new Date().getFullYear()}`, 105, pageHeight - 10, { align: 'center' });
+
+        doc.save(`protocolo_itbi_${protocoloSolicitante}.pdf`);
+    };
+    // console.log(data);
     return (
         <div className="min-h-screen bg-gray-100 text-black p-8">
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 max-w-[210mm] mx-auto gap-4 bg-white p-4 rounded shadow">
                 <div className="flex gap-4">
                     <button
                         onClick={() => handlePrint()}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-bold shadow-md"
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-bold shadow-md"
                     >
                         Imprimir / Salvar PDF
+                    </button>
+                    <button
+                        onClick={handleDownloadSolicitantePDF}
+                        className="px-4 py-2 bg-amber-500 text-white rounded hover:bg-amber-600 font-bold shadow-md"
+                    >
+                        📄 Baixar PDF Solicitante
                     </button>
                     <button
                         onClick={() => window.history.back()}
@@ -115,21 +199,24 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
                     <div className="bbt"></div>
                     <div className="left-border"></div>
                     <div className="right-border"></div>
-                    <div className="relative fundoImprimir bg-white p-2 border border-transparent h-full flex flex-col justify-between">
+                    <div className="relative fundoImprimir bg-white p-2 border border-transparent  flex flex-col justify-between">
                         <div>
                             {/* Header */}
-                            <div className="flex justify-between items-center mb-6 border-b-2 border-gray-300 pb-2">
+                            <div className="flex justify-between items-center  border-b-2 border-gray-300 ">
                                 <div className="w-24 h-24 relative">
                                     <Image src="/brasao-lagoa-dos-patos-mg.webp" alt="Brasão" fill className="object-contain" />
                                 </div>
-                                <div className="text-center flex-1 px-4">
-                                    <h2 className="text-xl font-bold text-gray-800 uppercase">Prefeitura de Lagoa dos Patos MG</h2>
-                                    <p className="text-[10px] text-gray-600 mt-1 font-medium">
+                                <div className="text-center flex-1 px-2">
+                                    <h2 className="text-lg font-bold text-gray-800 uppercase">Prefeitura de Lagoa dos Patos MG</h2>
+                                    <p className="text-[10px] text-gray-600  font-medium">
                                         PRAÇA 31 DE MARÇO, 111, CENTRO - CEP: 39360-000 TEL.(38) 3426-0398 <br />
                                         CNPJ: 16.901.381/0001-10 - SECRETARIA DE FAZENDA - SETOR TRIBUTÁRIO MUNICIPAL <br />
                                         <span className="text-blue-600">www.lagoadospatos.mg.gov.br</span>
                                     </p>
-                                    <h4 className="text-lg font-bold text-blue-800 mt-2 uppercase">Protocolo {data.protocolo} / {data.ano || new Date().getFullYear()}</h4>
+
+                                    <div className="text-center font-bold text-md border-y border-gray-200 uppercase">
+                                        Guia de Informação e Recolhimento de ITBI - RURAL
+                                    </div>
                                 </div>
                                 {(showQR === 'Padrão' || showQR === 'Inserir') && (
                                     <div className="w-24 h-24 relative">
@@ -140,71 +227,110 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
                             </div>
 
                             {/* Content */}
-                            <div className="space-y-6">
-                                <div className="text-center font-bold text-lg border-y py-2 border-gray-200 uppercase">
-                                    Guia de Informação e Recolhimento de ITBI - URBANO
-                                </div>
+                            <div>
+                                <h4 className="text-lg text-center font-bold text-blue-800  uppercase">Protocolo {data.protocolo} / {data.ano || new Date().getFullYear()}</h4>
 
-                                <div className="grid grid-cols-1 gap-4">
+                                <div className="grid grid-cols-1 gap-2">
                                     <section>
-                                        <h3 className="font-bold border-b mb-1 uppercase text-xs text-gray-600">Adquirente (Comprador)</h3>
+                                        <h3 className="font-bold border-b uppercase text-xs text-gray-600">Adquirente (Comprador)</h3>
                                         <div className="p-2 bg-white/50 border rounded text-justify" dangerouslySetInnerHTML={{ __html: data.adquirente }} />
                                     </section>
 
                                     <section>
-                                        <h3 className="font-bold border-b mb-1 uppercase text-xs text-gray-600">Transmitente (Vendedor)</h3>
+                                        <h3 className="font-bold border-b uppercase text-xs text-gray-600">Transmitente (Vendedor)</h3>
                                         <div className="p-2 bg-white/50 border rounded text-justify" dangerouslySetInnerHTML={{ __html: data.transmitente }} />
                                     </section>
 
-                                    <section className="grid grid-cols-2 gap-4">
+                                    <section className="grid grid-cols-3 gap-4">
                                         <div>
-                                            <h3 className="font-bold border-b mb-1 uppercase text-xs text-gray-600">Área do Terreno</h3>
+                                            <h3 className="font-bold border-b uppercase text-xs text-gray-600">Área do Terreno (ha)</h3>
                                             <div className="p-2 bg-white/50 border rounded font-bold">{data.areaTerreno}</div>
                                         </div>
                                         <div>
-                                            <h3 className="font-bold border-b mb-1 uppercase text-xs text-gray-600">Natureza da Operação</h3>
+                                            <h3 className="font-bold border-b uppercase text-xs text-gray-600">Natureza da Operação</h3>
                                             <div className="p-2 bg-white/50 border rounded">{data.natureza}</div>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold border-b uppercase text-xs text-gray-600">Tipo de Imóvel</h3>
+                                            <div className="p-2 bg-white/50 border rounded">{data.tipoImovel}</div>
                                         </div>
                                     </section>
 
                                     <section>
-                                        <h3 className="font-bold border-b mb-1 uppercase text-xs text-gray-600">Descrição do Imóvel</h3>
+                                        <h3 className="font-bold border-b uppercase text-xs text-gray-600">Descrição do Imóvel</h3>
                                         <div className="p-2 bg-white/50 border rounded text-justify" dangerouslySetInnerHTML={{ __html: data.descricaoImovel }} />
                                     </section>
 
                                     <section className="grid grid-cols-3 gap-4 text-xs">
                                         <div>
-                                            <h3 className="font-bold border-b mb-1 uppercase text-gray-600">Qualidade</h3>
+                                            <h3 className="font-bold border-b uppercase text-gray-600">Qualidade</h3>
                                             <div className="p-1 bg-white/50 border rounded">{data.qualidadeImovel}</div>
                                         </div>
                                         <div>
-                                            <h3 className="font-bold border-b mb-1 uppercase text-gray-600">Condição</h3>
+                                            <h3 className="font-bold border-b uppercase text-gray-600">Condição</h3>
                                             <div className="p-1 bg-white/50 border rounded">{data.condicaoImovel}</div>
                                         </div>
                                         <div>
-                                            <h3 className="font-bold border-b mb-1 uppercase text-gray-600">Dívida Ativa</h3>
+                                            <h3 className="font-bold border-b uppercase text-gray-600">Dívida Ativa</h3>
                                             <div className="p-1 bg-white/50 border rounded">{data.situacaoTransmitente}</div>
                                         </div>
                                     </section>
+                                    {/* <--editavel -!> */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <section>
+                                            <DetalhesLegaisITBI natureza={data.natureza} />
 
-                                    <section className="border-2 border-indigo-800 p-4 rounded bg-indigo-50/80">
+                                        </section>
+
+
+                                        <section className="border border-gray-50 p-2 rounded bg-white/80">
+                                            <div className="flex justify-between items-center ">
+                                                <span className="font-bold uppercase text-blue-900">Valor da Transação:</span>
+                                                <span className="text-md font-bold">{data.valorTransacao?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center pt-2 border-t border-blue-200">
+                                                <span className="font-bold uppercase text-blue-900">Imposto Devido (2%):</span>
+                                                <span className="text-md font-bold text-blue-900">{data.valorItbi?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center pt-2 border-t border-blue-200">
+                                                <span className="font-bold uppercase text-blue-900">Taxa de Expediente (UFM × 2):</span>
+                                                <span className="text-md font-bold text-blue-900">{(data.taxaExpediente || (data.valorUfm ? data.valorUfm * 2 : 0))?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center pt-2 border-t-2 border-blue-400 mt-1">
+                                                <span className="font-black uppercase text-blue-900">Total a Recolher:</span>
+                                                <span className="text-md font-black text-blue-900">{((data.valorItbi || 0) + (data.taxaExpediente || (data.valorUfm ? data.valorUfm * 2 : 0))).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                            </div>
+                                        </section>
+
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+                                    {/* <section className="border-2 border-blue-800 p-4 rounded bg-blue-50/80">
                                         <div className="flex justify-between items-center mb-2">
-                                            <span className="font-bold uppercase text-indigo-900">Valor da Transação:</span>
+                                            <span className="font-bold uppercase text-blue-900">Valor da Transação:</span>
                                             <span className="text-lg font-bold">{data.valorTransacao?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                                         </div>
-                                        <div className="flex justify-between items-center pt-2 border-t border-indigo-200">
-                                            <span className="font-bold uppercase text-indigo-900">Imposto Devido (2%):</span>
-                                            <span className="text-lg font-bold text-indigo-900">{data.valorItbi?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                        <div className="flex justify-between items-center pt-2 border-t border-blue-200">
+                                            <span className="font-bold uppercase text-blue-900">Imposto Devido (2%):</span>
+                                            <span className="text-lg font-bold text-blue-900">{data.valorItbi?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                                         </div>
-                                        <div className="flex justify-between items-center pt-2 border-t border-indigo-200">
-                                            <span className="font-bold uppercase text-indigo-900">Taxa de Expediente (UFM × 2):</span>
-                                            <span className="text-lg font-bold text-indigo-900">{(data.taxaExpediente || (data.valorUfm ? data.valorUfm * 2 : 0))?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                        <div className="flex justify-between items-center pt-2 border-t border-blue-200">
+                                            <span className="font-bold uppercase text-blue-900">Taxa de Expediente (UFM × 2):</span>
+                                            <span className="text-lg font-bold text-blue-900">{(data.taxaExpediente || (data.valorUfm ? data.valorUfm * 2 : 0))?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                                         </div>
-                                        <div className="flex justify-between items-center pt-2 border-t-2 border-indigo-400 mt-1">
-                                            <span className="font-black uppercase text-indigo-900">Total a Recolher:</span>
-                                            <span className="text-2xl font-black text-indigo-900">{((data.valorItbi || 0) + (data.taxaExpediente || (data.valorUfm ? data.valorUfm * 2 : 0))).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                                        <div className="flex justify-between items-center pt-2 border-t-2 border-blue-400 mt-1">
+                                            <span className="font-black uppercase text-blue-900">Total a Recolher:</span>
+                                            <span className="text-2xl font-black text-blue-900">{((data.valorItbi || 0) + (data.taxaExpediente || (data.valorUfm ? data.valorUfm * 2 : 0))).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                                         </div>
-                                    </section>
+                                    </section> */}
                                 </div>
                             </div>
                         </div>
@@ -234,6 +360,9 @@ export default function ImprimirItbiUrbanoPage({ params }: { params: { id: strin
                             <div className="mb-1"><strong>Observações:</strong> {data.observacoes}</div>
                         )}
                         <strong>Solicitante:</strong> {data.solicitante} | <strong>Valor UFM:</strong> {data.valorUfm} | <strong>Ano Base:</strong> {data.ano}
+                        {data.protocoloOriginal && (
+                            <span> | <strong>Protocolo Solicitante:</strong> {data.protocoloOriginal}</span>
+                        )}
                     </div>
                 </div>
             </div>

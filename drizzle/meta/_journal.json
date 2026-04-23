@@ -15,6 +15,13 @@
       "when": 1771926741046,
       "tag": "0001_sad_butterfly",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1773494737793,
+      "tag": "0002_yielding_whiplash",
+      "breakpoints": true
     }
   ]
 }

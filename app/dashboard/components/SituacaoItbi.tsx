@@ -5,10 +5,23 @@ const DetalhesLegaisITBI = ({ natureza }: { natureza: any }) => {
     // Mapeamento de textos baseados na lei de Lagoa dos Patos
     const renderConteudo = () => {
         switch (natureza) {
-            case "Compra e Venda":
+            case "COMPRA E VENDA":
                 return (
                     <div>
-                        compra e venda
+                         <h4 className="font-bold text-blue-900 uppercase border-b border-blue-100 pb-1">
+                            Incidência do Imposto (Art. 45 e 46)
+                        </h4>
+                        <p className="text-[11px] leading-relaxed">
+                            O imposto incide sobre a transmissão onerosa de bens imóveis e direitos reais.
+                            Conforme o <strong>Art. 45</strong> e <strong>Art. 46</strong>, a incidência alcança:
+                        </p>
+                        <ul className="grid grid-cols-1 md:grid-cols-1 gap-2 text-[10px] list-disc ml-4">
+                            <li>Art. 45 - O Imposto de Transmissão sobre Bens Imóveis por Ato Oneroso entre Vivos
+e de Direitos Reais sobre Imóveis tem como fator gerador, exceto os direitos reais de garantia: </li>
+                            <li>Art. 46 - A incidência do imposto alcança os seguintes atos de mutações patrimoniais
+onerosas: </li>
+                            <li>Consulte o Códito tributário para mais informações.</li>
+                        </ul>
                     </div>
                 )
             case "DAÇÃO EM PAGAMENTO":
@@ -54,7 +67,7 @@ const DetalhesLegaisITBI = ({ natureza }: { natureza: any }) => {
 
             case "ISENÇÃO DE ITBI":
                 return (
-                    <div className="space-y-3">
+                    <div className="">
                         <h4 className="font-bold text-purple-900 uppercase border-b border-purple-100 pb-1">
                             Das Isenções (Art. 48)
                         </h4>
@@ -68,7 +81,13 @@ const DetalhesLegaisITBI = ({ natureza }: { natureza: any }) => {
                 );
 
             default:
-                return <p className="text-gray-500 italic">Selecione a natureza da transação para ver os detalhes legais.</p>;
+                return <div className='flex flex-col justify-center items-center'>
+                    <img className='w-24' src="/codigo-tributario.png" alt="Codigo Tributario" />
+                    <p className='text-gray-500 italic text-center'>Consulte o Códito Tributário para mais informações.</p>
+                </div>
+
+
+                // <p className="text-gray-500 italic">Selecione a natureza da transação para ver os detalhes legais.</p>;
         }
     };
 

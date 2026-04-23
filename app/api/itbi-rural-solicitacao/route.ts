@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { itbiRural } from '@/lib/schema';
+import { itbiRural, usuarioPedido } from '@/lib/schema';
 import { eq, desc } from 'drizzle-orm';
 
 export const dynamic = 'force-dynamic';
@@ -39,8 +39,10 @@ export async function POST(request: Request) {
 
         await db.insert(itbiRural).values({
             protocolo: body.protocolo,
+            protocoloOriginal: body.protocolo,
             usuario: body.usuario, // O CPF do Logado
             solicitante: body.solicitante,
+            nomeUsuario: body.nomeUsuario,
             valorUfm: body.valorUfm,
             ano: body.ano,
             adquirente: body.adquirente,
@@ -58,7 +60,13 @@ export async function POST(request: Request) {
             observacoes: body.observacoes,
             status: 'PENDENTE',
         });
-
+        await db.insert(usuarioPedido).values({
+            cpf: body.usuario,
+            nome: body.nomeUsuario,
+            email: body.email,
+            idItbi: body.id,
+            registrado: body.registrado,
+        });
         return NextResponse.json({ success: true, message: 'Solicitação gerada com sucesso.' });
     } catch (error) {
         console.error('Error saving ITBI:', error);

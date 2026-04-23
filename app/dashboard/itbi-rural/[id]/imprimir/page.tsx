@@ -7,6 +7,9 @@ import { useReactToPrint } from 'react-to-print';
 import { toTitleCase } from '@/app/utils/textUtils';
 import { getUsers } from '@/app/actions/users';
 import DetalhesLegaisITBI from '@/app/dashboard/components/SituacaoItbi';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import QRCode from 'qrcode';
 
 export default function ImprimirItbiRuralPage({ params }: { params: { id: string } }) {
     const { id } = params;
@@ -58,6 +61,80 @@ export default function ImprimirItbiRuralPage({ params }: { params: { id: string
 
     if (loading) return <div className="p-8 text-center">Carregando...</div>;
     if (!data) return <div className="p-8 text-center">ITBI não encontrado.</div>;
+
+    const stripBold = (html: string) => html ? html.replace(/<\/?b>/g, '') : '-';
+
+    const handleDownloadSolicitantePDF = async () => {
+        const doc = new jsPDF();
+        const protocoloSolicitante = data.protocoloOriginal || data.protocolo || `ID-${data.id}`;
+
+        // QR Code
+        const qrCodeData = await QRCode.toDataURL(
+            `https://tributos.netlify.app/itbi/validar/${protocoloSolicitante}`
+        );
+
+        const brasao = '/brasao-lagoa-dos-patos-mg.webp';
+
+        // Header
+        doc.addImage(brasao, 'WEBP', 15, 10, 25, 25);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.text('GUIA DE INFORMAÇÃO DE I.T.B.I', 105, 15, { align: 'center' });
+        doc.setFontSize(12);
+        doc.text('PREFEITURA DE LAGOA DOS PATOS - MG', 105, 22, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text('SECRETARIA MUNICIPAL DA FAZENDA', 105, 28, { align: 'center' });
+        doc.text('CONTATO: (38) 3426-0398 | tributos@lagoadospatos.mg.gov.br', 105, 33, { align: 'center' });
+        doc.addImage(qrCodeData, 'PNG', 170, 10, 25, 25);
+
+        // Separator
+        doc.setLineWidth(0.5);
+        doc.line(14, 40, 196, 40);
+
+        // Protocol
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.text(`PROTOCOLO Nº ${protocoloSolicitante.toUpperCase()}`, 105, 48, { align: 'center' });
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.text(`Data da Solicitação: ${data.dataCriacao ? new Date(data.dataCriacao).toLocaleDateString('pt-BR') : '-'}`, 14, 60);
+        doc.text(`Solicitante: ${(data.solicitante || '-').toUpperCase()}`, 14, 66);
+
+        // Table
+        autoTable(doc, {
+            startY: 72,
+            theme: 'grid',
+            styles: { fontSize: 9, cellPadding: 2, halign: 'left', valign: 'middle' },
+            head: [['Campo', 'Informação']],
+            body: [
+                ['Adquirente', stripBold(data.adquirente || '-')],
+                ['Transmitente', stripBold(data.transmitente || '-')],
+                ['Área Negociada', stripBold(data.areaTerreno || '-')],
+                ['Descrição do Imóvel', stripBold(data.descricaoImovel || '-')],
+                ['Natureza da Transmissão', stripBold(data.natureza || '-')],
+                ['Tipo de Imóvel', stripBold(data.tipoImovel || '-')],
+                ['Qualidade do Imóvel', stripBold(data.qualidadeImovel || '-')],
+                ['Condições do Imóvel', stripBold(data.condicaoImovel || '-')],
+                ['Sessão de Dívida Ativa', stripBold(data.situacaoTransmitente || 'AGUARDANDO SETOR DE TRIBUTOS')],
+                ['Valor da Transação', data.valorTransacao?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-'],
+                ['Estimativa de ITBI', (data.valorItbi?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || '-') + ' + Taxa de Expediente'],
+            ]
+        });
+
+        // Footer
+        const pageHeight = doc.internal.pageSize.height;
+        const ufmVal = data.valorUfm || 4.63;
+        doc.setFontSize(10);
+        doc.text(`ATENÇÃO: ITBI rural é 2% sobre o valor da transação. Adiciona-se a taxa de Expediente no valor de 2 UFMs. R$ ${ufmVal * 2}`, 105, pageHeight - 35, { align: 'center' });
+        doc.setFontSize(8);
+        doc.text('Documento gerado automaticamente pelo Sistema de controle local do Tributário Municipal.', 105, pageHeight - 20, { align: 'center' });
+        doc.text('A autenticidade deste documento pode ser verificada através do QR Code - O protocolo interno poderá ser alterado.', 105, pageHeight - 15, { align: 'center' });
+        doc.text(`Prefeitura Municipal de Lagoa dos Patos - MG • ${new Date().getFullYear()}`, 105, pageHeight - 10, { align: 'center' });
+
+        doc.save(`protocolo_itbi_${protocoloSolicitante}.pdf`);
+    };
     // console.log(data);
     return (
         <div className="min-h-screen bg-gray-100 text-black p-8">
@@ -68,6 +145,12 @@ export default function ImprimirItbiRuralPage({ params }: { params: { id: string
                         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-bold shadow-md"
                     >
                         Imprimir / Salvar PDF
+                    </button>
+                    <button
+                        onClick={handleDownloadSolicitantePDF}
+                        className="px-4 py-2 bg-amber-500 text-white rounded hover:bg-amber-600 font-bold shadow-md"
+                    >
+                        📄 Baixar PDF Solicitante
                     </button>
                     <button
                         onClick={() => window.history.back()}
@@ -196,6 +279,7 @@ export default function ImprimirItbiRuralPage({ params }: { params: { id: string
                                     <div className="grid grid-cols-2 gap-4">
                                         <section>
                                             <DetalhesLegaisITBI natureza={data.natureza} />
+                                           {/* {JSON.stringify(data.natureza)} */}
 
                                         </section>
 
@@ -277,6 +361,9 @@ export default function ImprimirItbiRuralPage({ params }: { params: { id: string
                             <div className="mb-1"><strong>Observações:</strong> {data.observacoes}</div>
                         )}
                         <strong>Solicitante:</strong> {data.solicitante} | <strong>Valor UFM:</strong> {data.valorUfm} | <strong>Ano Base:</strong> {data.ano}
+                        {data.protocoloOriginal && (
+                            <span> | <strong>Protocolo Solicitante:</strong> {data.protocoloOriginal}</span>
+                        )}
                     </div>
                 </div>
             </div>

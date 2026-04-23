@@ -13,6 +13,7 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
         protocolo: initialData?.protocolo || '',
         usuario: initialData?.usuario || '',
         solicitante: initialData?.solicitante || '',
+        nomeUsuario: initialData?.nomeUsuario || '',
         valorUfm: initialData?.valorUfm || 0,
         ano: initialData?.ano || new Date().getFullYear(),
         adquirente: initialData?.adquirente || '',
@@ -77,7 +78,13 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        if (name === 'usuario') {
+            // For manual entries in dashboard, 'usuario' might be the clerk's name.
+            // Let's set nomeUsuario to the same for consistency.
+            setFormData(prev => ({ ...prev, [name]: value, nomeUsuario: value }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const applyBold = (ref: React.RefObject<HTMLTextAreaElement>, name: string) => {
@@ -112,11 +119,38 @@ export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
             <h2 className="text-2xl font-bold text-center mb-6 text-blue-800 uppercase">Formulário ITBI Rural</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Info box showing original solicitor data (read-only) */}
+                {initialData?.id && (initialData?.protocoloOriginal || initialData?.nomeUsuario) && (
+                    <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
+                        <h3 className="font-bold text-amber-900 mb-2 text-sm uppercase">📋 Dados do Solicitante Original</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                            {initialData.protocoloOriginal && (
+                                <div>
+                                    <span className="font-semibold text-amber-800">Protocolo do Solicitante:</span>
+                                    <span className="ml-2 font-mono bg-amber-100 px-2 py-0.5 rounded text-amber-900">{initialData.protocoloOriginal}</span>
+                                </div>
+                            )}
+                            {initialData.nomeUsuario && (
+                                <div>
+                                    <span className="font-semibold text-amber-800">Nome:</span>
+                                    <span className="ml-2 text-amber-900">{initialData.nomeUsuario}</span>
+                                </div>
+                            )}
+                            {initialData.usuario && (
+                                <div>
+                                    <span className="font-semibold text-amber-800">CPF/Usuário:</span>
+                                    <span className="ml-2 font-mono text-amber-900">{initialData.usuario}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
                 <fieldset className="border p-4 rounded-md border-gray-300">
                     <legend className="px-2 font-bold text-gray-700">DADOS INICIAIS</legend>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex flex-col">
-                            <label className="text-sm font-semibold">Protocolo Geral:</label>
+                            <label className="text-sm font-semibold">Protocolo Secretaria da Fazenda:</label>
                             <input type="text" name="protocolo" value={formData.protocolo} onChange={handleInputChange} placeholder="ex: 252 - Prefeitura" className="border p-2 rounded" />
                         </div>
                         <div className="flex flex-col">

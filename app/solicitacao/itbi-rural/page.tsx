@@ -71,16 +71,30 @@ export default function ItbiRuralPage() {
     const [editNome, setEditNome] = useState("");
     const [editEmail, setEditEmail] = useState("");
 
-    const handleSaveProfile = () => {
+    const handleSaveProfile = async () => {
         if (!currentUser) return;
         if (!editNome || !editEmail) return alert("Preencha todos os campos.");
-        const users = JSON.parse(localStorage.getItem("itbi_users") || "{}");
+
         const updatedUser = { ...currentUser, nome: editNome, email: editEmail };
-        users[currentUser.cpf] = updatedUser;
-        localStorage.setItem("itbi_users", JSON.stringify(users));
-        setCurrentUser(updatedUser);
-        setIsEditingProfile(false);
-        alert("Dados atualizados com sucesso!");
+
+        try {
+            // Sincronizar com o Servidor
+            await fetch('/api/portal-usuarios', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedUser)
+            });
+
+            const users = JSON.parse(localStorage.getItem("itbi_users") || "{}");
+            users[currentUser.cpf] = updatedUser;
+            localStorage.setItem("itbi_users", JSON.stringify(users));
+            setCurrentUser(updatedUser);
+            setIsEditingProfile(false);
+            alert("Dados atualizados com sucesso!");
+        } catch (err) {
+            console.error("Erro ao atualizar perfil:", err);
+            alert("Erro ao salvar no servidor.");
+        }
     };
 
     // Variaveis Reais do Sistema (API)
@@ -136,7 +150,7 @@ export default function ItbiRuralPage() {
             if (Array.isArray(data)) {
                 // Mapear dados do BD para o objeto Requests do Front-End (caso tenha q formatar algo)
                 setRequests(data.map((r: any) => ({
-                    id: r.protocolo || r.id.toString(),
+                    id: r.protocoloOriginal || r.protocolo || r.id.toString(),
                     date: r.dataCriacao,
                     solicitante: r.solicitante,
                     areaNegociada: r.areaTerreno,
@@ -174,42 +188,35 @@ export default function ItbiRuralPage() {
             localStorage.setItem("itbi_logged_cpf", cleanCpf);
             fetchUserRequests(cleanCpf);
         } else {
-            // Verifica no banco de dados se esse CPF já tem solicitações
+            // Verifica no banco de dados se esse CPF já tem cadastro ou solicitações
             try {
-                const res = await fetch(`/api/itbi-rural-solicitacao?usuario=${cleanCpf}`);
-                const data = await res.json();
+                // 1. Verificar se existe cadastro de usuário
+                const userRes = await fetch(`/api/portal-usuarios?cpf=${cleanCpf}`);
+                const dbUser = await userRes.json();
 
-                if (Array.isArray(data) && data.length > 0) {
-                    // Já existe na base de dados, mas não estava no localStorage (ex: limpou cache ou outro PC)
-                    const nomeTiradoDaBase = data[0].solicitante;
-                    const restoredUser = { cpf: cleanCpf, nome: nomeTiradoDaBase, email: "" };
+                if (dbUser) {
+                    const restoredUser = { cpf: dbUser.cpf, nome: dbUser.nome, email: dbUser.email || "" };
                     users[cleanCpf] = restoredUser;
                     localStorage.setItem("itbi_users", JSON.stringify(users));
                     setCurrentUser(restoredUser);
                     localStorage.setItem("itbi_logged_cpf", cleanCpf);
-
-                    // Como já rodamos o fetch, não precisamos rodar fetchUserRequests() dnv se apenas remapearmos aqui:
-                    setRequests(data.map((r: any) => ({
-                        id: r.protocolo || r.id.toString(),
-                        date: r.dataCriacao,
-                        solicitante: r.solicitante,
-                        areaNegociada: r.areaTerreno,
-                        valorCalculado: formatMoney((r.valorItbi * 100).toFixed(0).padStart(3, '0')),
-                        adquirente: r.adquirente,
-                        transmitente: r.transmitente,
-                        descricao: r.descricaoImovel,
-                        naturezaTransmissao: r.natureza,
-                        tipoImovel: r.tipoImovel,
-                        qualidadeImovel: r.qualidadeImovel,
-                        condicoesImovel: r.condicaoImovel,
-                        sessaoDividaAtiva: r.situacaoTransmitente,
-                        valorTransacao: formatMoney((r.valorTransacao * 100).toFixed(0).padStart(3, '0')),
-                        status: r.status || 'Pendente',
-                        observacoes: r.observacoes || ''
-                    })));
+                    fetchUserRequests(cleanCpf);
                 } else {
-                    // Realmente não existe, precisa registrar
-                    setIsRegistering(true);
+                    // 2. Se não tem cadastro, mas pode ter solicitações antigas (legado)
+                    const res = await fetch(`/api/itbi-rural-solicitacao?usuario=${cleanCpf}`);
+                    const data = await res.json();
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        const nomeTiradoDaBase = data[0].nomeUsuario || data[0].solicitante;
+                        const restoredUser = { cpf: cleanCpf, nome: nomeTiradoDaBase, email: "" };
+                        users[cleanCpf] = restoredUser;
+                        localStorage.setItem("itbi_users", JSON.stringify(users));
+                        setCurrentUser(restoredUser);
+                        localStorage.setItem("itbi_logged_cpf", cleanCpf);
+                        fetchUserRequests(cleanCpf);
+                    } else {
+                        setIsRegistering(true);
+                    }
                 }
             } catch (error) {
                 console.error("Erro ao validar login no BD:", error);
@@ -218,20 +225,33 @@ export default function ItbiRuralPage() {
         }
     };
 
-    const handleRegister = (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         const cleanCpf = loginCpf.replace(/\D/g, "");
         if (!regNome || !regEmail) return alert("Preencha todos os campos.");
 
-        const users = JSON.parse(localStorage.getItem("itbi_users") || "{}");
         const newUser: User = { cpf: cleanCpf, nome: regNome, email: regEmail };
-        users[cleanCpf] = newUser;
-        localStorage.setItem("itbi_users", JSON.stringify(users));
-        localStorage.setItem("itbi_logged_cpf", cleanCpf);
 
-        setCurrentUser(newUser);
-        fetchUserRequests(cleanCpf);
-        setIsRegistering(false);
+        try {
+            // Sincronizar com o Banco de Dados
+            await fetch('/api/portal-usuarios', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newUser)
+            });
+
+            const users = JSON.parse(localStorage.getItem("itbi_users") || "{}");
+            users[cleanCpf] = newUser;
+            localStorage.setItem("itbi_users", JSON.stringify(users));
+            localStorage.setItem("itbi_logged_cpf", cleanCpf);
+
+            setCurrentUser(newUser);
+            fetchUserRequests(cleanCpf);
+            setIsRegistering(false);
+        } catch (err) {
+            console.error("Erro ao cadastrar:", err);
+            alert("Erro ao salvar cadastro no servidor.");
+        }
     };
 
     const handleLogout = () => {
@@ -421,6 +441,7 @@ export default function ItbiRuralPage() {
             protocolo: "RUR-" + Math.random().toString(36).substr(2, 6).toUpperCase(),
             usuario: currentUser.cpf,
             solicitante,
+            nomeUsuario: currentUser.nome,
             valorUfm: valorUfm,
             ano: anoVigente,
             adquirente,
@@ -648,13 +669,13 @@ export default function ItbiRuralPage() {
                                 {requests.map((req) => (
                                     <div key={req.id} className="border border-gray-200 rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-md transition">
                                         <div>
-                                            <h3 className="font-semibold text-gray-800">Protocolo: #{req.id.toUpperCase()} (Número Provisório)</h3>
+                                            <h3 className="font-semibold text-gray-800">Protocolo: #{req.id.toUpperCase()}</h3>
                                             <p className="text-sm text-gray-600">Data: {new Date(req.date).toLocaleDateString()}</p>
                                             <p className="text-sm text-gray-600">Área: {req.areaNegociada} | Valor: {req.valorCalculado} (ITBI)</p>
                                         </div>
                                         <div className="flex flex-col gap-2 items-end">
-                                            <span className={`text-xs font-semibold px-3 py-1.5 rounded-full text-center ${req.status === 'Atendida' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
-                                                {req.status === 'Atendida' ? '✅ Atendida' : '✅ Enviado'}
+                                            <span className={`text-xs font-semibold px-3 py-1.5 rounded-full text-center ${req.status?.toUpperCase() === 'ATENDIDA' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+                                                {req.status?.toUpperCase() === 'ATENDIDA' ? '✅ Atendida' : '✅ Enviado'}
                                             </span>
                                             <div className="flex gap-2">
                                                 <Link href={`/solicitacao/itbi-rural/${req.id}/visualizar`} className="text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 border border-blue-200">
@@ -710,7 +731,7 @@ export default function ItbiRuralPage() {
                                     <div className="md:col-span-2"><strong className="text-gray-600">Transmitente:</strong> <br />{transmitente}</div>
                                     <div className="md:col-span-2"><strong className="text-gray-600">Descrição do Imóvel:</strong> <br />{descricao}</div>
 
-                                    <div><strong className="text-gray-600">Área Negociada:</strong> <br />{areaNegociada}</div>
+                                    <div><strong className="text-gray-600">Área Negociada (Ha):</strong> <br />{areaNegociada}</div>
                                     <div><strong className="text-gray-600">Natureza da Transmissão:</strong> <br />{naturezaTransmissao}</div>
                                     <div><strong className="text-gray-600">Tipo de Imóvel:</strong> <br />{tipoImovel}</div>
                                     <div><strong className="text-gray-600">Sessão de Dívida Ativa:</strong> <br />{sessaoDividaAtiva}</div>
@@ -771,7 +792,7 @@ export default function ItbiRuralPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">Área Negociada *</label>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-1">Área Negociada * (Ha)</label>
                                     <input type="text" value={areaNegociada} onChange={e => setAreaNegociada(e.target.value)} required placeholder="Ex: 15.65.25ha" className="w-full md:w-1/2 border-gray-300 rounded-lg p-3 border focus:ring-blue-500 outline-none" />
                                 </div>
 

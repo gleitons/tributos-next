@@ -1,28 +1,50 @@
 import { getItbisRural, deleteItbiRural } from "@/app/actions/itbi-rural";
+import { getUsuarioPedido } from "@/app/actions/usuarioPedido";
 import Link from "next/link";
 import { FaPlus, FaEdit, FaTrash, FaPrint } from 'react-icons/fa';
 
 
-export default async function ItbiRuralPage() {
-  const itbis = await getItbisRural();
-
+export default async function ItbiRuralPage({ searchParams }: { searchParams: { cpf?: string } }) {
+  const cpf = searchParams?.cpf;
+  const itbis = await getItbisRural(cpf);
+  const usuario = await getUsuarioPedido(cpf);
+  // console.log(itbis);
+  console.log(usuario);
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">ITBI Rural</h1>
-        <Link
-          href="/solicitacao/itbi-rural"
-          target="_blank"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition shadow"
-        >
-          Link de Solicitação ITBI Rural
-        </Link>
-        <Link
-          href="/dashboard/itbi-rural/nova"
-          className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700 transition shadow"
-        >
-          <FaPlus /> Novo ITBI Rural
-        </Link>
+        <h1 className="text-3xl font-bold text-gray-800">
+          ITBI Rural {cpf && <span className="text-blue-600 text-xl font-normal">(Filtrado por CPF: {cpf})</span>}
+        </h1>
+        <div className="flex gap-2">
+          {cpf && (
+            <Link
+              href="/dashboard/itbi-rural"
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition shadow text-sm flex items-center"
+            >
+              Limpar Filtro
+            </Link>
+          )}
+          <Link
+            href="/dashboard/itbi-rural/solicitacoes"
+            className="bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-orange-600 transition shadow"
+          >
+            Solicitações
+          </Link>
+          <Link
+            href="/solicitacao/itbi-rural"
+            target="_blank"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition shadow"
+          >
+            Link de Solicitação ITBI Rural
+          </Link>
+          <Link
+            href="/dashboard/itbi-rural/nova"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700 transition shadow"
+          >
+            <FaPlus /> Novo ITBI Rural
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200">
@@ -55,7 +77,11 @@ export default async function ItbiRuralPage() {
                       <div className="max-w-xs truncate" dangerouslySetInnerHTML={{ __html: itbi.adquirente || '' }} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {itbi.solicitante}
+                      <div className="font-bold text-gray-900">{itbi.nomeUsuario || itbi.solicitante}</div>
+                      <div className="text-xs text-gray-600">Solicitante: {itbi.solicitante}</div>
+                      <div className="text-xs text-gray-400 font-mono">
+                        {/\d/.test(itbi.usuario || '') ? `CPF: ${itbi.usuario}` : `Usuário: ${itbi.usuario}`}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {itbi.dataCriacao ? new Date(itbi.dataCriacao).toLocaleDateString('pt-BR') : '-'}

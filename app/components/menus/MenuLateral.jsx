@@ -6,6 +6,7 @@ import { MdDocumentScanner } from "react-icons/md";
 import { BsDatabaseFillLock, } from "react-icons/bs";
 import { FaCity, FaMoneyCheckDollar} from "react-icons/fa6";
 import { FaTools, FaHouseUser , FaMoneyCheckAlt} from "react-icons/fa";
+import { BsFileEarmarkText } from "react-icons/bs";
 
 import { RiPercentFill } from "react-icons/ri";
 
@@ -31,7 +32,9 @@ const MenuLateral = () => {
         { nome: 'Registros Imobiliarios', link: '/dashboard/registros-imobiliarios' },
         { nome: 'Mapa Urbano Lagoa', link: '/dashboard/mapa-completo-lagoa-dos-patos-mg' },
         { nome: 'Mapa Rural Lagoa', link: '/dashboard/mapa-rural-lagoa-dos-patos-mg' },
-        { nome: 'Valor Terra nua', link: '/dashboard/valor-terra-nua' },
+        { nome: 'Números Independencia', link: '/dashboard/numeros-independencia' },
+        { nome: 'Valor Terra nua', link: '/dashboard/avaliacao-venal-rural/configuracao-vtn' },
+
 
 
 
@@ -130,6 +133,15 @@ const MenuLateral = () => {
 
       ],
 
+    },
+    {
+      portugues: 'Documentos',
+      link: '/dashboard/documentos',
+      icone: <BsFileEarmarkText />,
+      submenus: [
+
+
+      ],
     },
     {
       portugues: 'Configurações',

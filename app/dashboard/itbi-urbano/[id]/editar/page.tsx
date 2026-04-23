@@ -1,9 +1,9 @@
-import { getItbiUrbano } from "@/app/actions/itbi-urbano";
-import ItbiUrbanoForm from "../../components/ItbiUrbanoForm";
+import { getItbiRural } from "@/app/actions/itbi-rural";
+import ItbiRuralForm from "../../components/ItbiRuralForm";
 import { notFound } from "next/navigation";
 
-export default async function EditarItbiUrbanoPage({ params }: { params: { id: string } }) {
-    const itbi = await getItbiUrbano(parseInt(params.id));
+export default async function EditarItbiRuralPage({ params }: { params: { id: string } }) {
+    const itbi = await getItbiRural(parseInt(params.id));
 
     if (!itbi) {
         notFound();
@@ -12,10 +12,10 @@ export default async function EditarItbiUrbanoPage({ params }: { params: { id: s
     return (
         <div className="p-6">
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-800">Editar ITBI Urbano</h1>
+                <h1 className="text-3xl font-bold text-gray-800">Editar ITBI Rural</h1>
                 <p className="text-gray-600">Altere os dados do protocolo {itbi.protocolo}.</p>
             </div>
-            <ItbiUrbanoForm initialData={itbi} />
+            <ItbiRuralForm initialData={itbi} />
         </div>
     );
 }

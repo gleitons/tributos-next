@@ -2,16 +2,18 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { createItbiUrbano, updateItbiUrbano } from '@/app/actions/itbi-urbano';
+import { createItbiRural, updateItbiRural } from '@/app/actions/itbi-rural';
 import { FaBold } from 'react-icons/fa';
 
-export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
+export default function ItbiRuralForm({ initialData }: { initialData?: any }) {
     const router = useRouter();
+    const [users, setUsers] = useState<any[]>([]);
     const [taxaExpediente, setTaxaExpediente] = useState(initialData?.taxaExpediente || 0);
     const [formData, setFormData] = useState({
         protocolo: initialData?.protocolo || '',
         usuario: initialData?.usuario || '',
         solicitante: initialData?.solicitante || '',
+        nomeUsuario: initialData?.nomeUsuario || '',
         valorUfm: initialData?.valorUfm || 0,
         ano: initialData?.ano || new Date().getFullYear(),
         adquirente: initialData?.adquirente || '',
@@ -19,13 +21,13 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
         areaTerreno: initialData?.areaTerreno || '',
         descricaoImovel: initialData?.descricaoImovel || '',
         natureza: initialData?.natureza || 'selecione',
-        tipoImovel: initialData?.tipoImovel || 'URBANO',
+        tipoImovel: initialData?.tipoImovel || 'RURAL',
         qualidadeImovel: initialData?.qualidadeImovel || 'selecione',
         condicaoImovel: initialData?.condicaoImovel || 'selecione',
         situacaoTransmitente: initialData?.situacaoTransmitente || 'selecione',
         valorTransacao: initialData?.valorTransacao || 0,
         valorItbi: initialData?.valorItbi || 0,
-        observacoes: initialData?.observacoes || '',
+        observacoes: initialData?.protocolo + " - " + initialData?.observacoes || '',
     });
 
     const adquirenteRef = useRef<HTMLTextAreaElement>(null);
@@ -48,7 +50,21 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                 console.error('Erro ao buscar UFM:', error);
             }
         }
+
+        async function fetchUsers() {
+            try {
+                const res = await fetch('/api/usuarios');
+                if (res.ok) {
+                    const data = await res.json();
+                    setUsers(data);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar usuários:', error);
+            }
+        }
+
         fetchUfm();
+        fetchUsers();
     }, [formData.ano]);
 
     useEffect(() => {
@@ -62,7 +78,13 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        if (name === 'usuario') {
+            // For manual entries in dashboard, 'usuario' might be the clerk's name.
+            // Let's set nomeUsuario to the same for consistency.
+            setFormData(prev => ({ ...prev, [name]: value, nomeUsuario: value }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const applyBold = (ref: React.RefObject<HTMLTextAreaElement>, name: string) => {
@@ -84,34 +106,62 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
         e.preventDefault();
         const submitData = { ...formData, taxaExpediente };
         if (initialData?.id) {
-            await updateItbiUrbano(initialData.id, submitData);
+            await updateItbiRural(initialData.id, submitData);
         } else {
-            await createItbiUrbano(submitData);
+            await createItbiRural(submitData);
         }
-        router.push('/dashboard/itbi-urbano');
+        router.push('/dashboard/itbi-rural');
         router.refresh();
     };
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto border border-gray-200">
-            <h2 className="text-2xl font-bold text-center mb-6 text-indigo-800 uppercase">Formulário ITBI Urbano</h2>
+            <h2 className="text-2xl font-bold text-center mb-6 text-blue-800 uppercase">Formulário ITBI Rural</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Info box showing original solicitor data (read-only) */}
+                {initialData?.id && (initialData?.protocoloOriginal || initialData?.nomeUsuario) && (
+                    <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
+                        <h3 className="font-bold text-amber-900 mb-2 text-sm uppercase">📋 Dados do Solicitante Original</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                            {initialData.protocoloOriginal && (
+                                <div>
+                                    <span className="font-semibold text-amber-800">Protocolo do Solicitante:</span>
+                                    <span className="ml-2 font-mono bg-amber-100 px-2 py-0.5 rounded text-amber-900">{initialData.protocoloOriginal}</span>
+                                </div>
+                            )}
+                            {initialData.nomeUsuario && (
+                                <div>
+                                    <span className="font-semibold text-amber-800">Nome:</span>
+                                    <span className="ml-2 text-amber-900">{initialData.nomeUsuario}</span>
+                                </div>
+                            )}
+                            {initialData.usuario && (
+                                <div>
+                                    <span className="font-semibold text-amber-800">CPF/Usuário:</span>
+                                    <span className="ml-2 font-mono text-amber-900">{initialData.usuario}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
                 <fieldset className="border p-4 rounded-md border-gray-300">
                     <legend className="px-2 font-bold text-gray-700">DADOS INICIAIS</legend>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex flex-col">
-                            <label className="text-sm font-semibold">Protocolo Geral:</label>
+                            <label className="text-sm font-semibold">Protocolo Secretaria da Fazenda:</label>
                             <input type="text" name="protocolo" value={formData.protocolo} onChange={handleInputChange} placeholder="ex: 252 - Prefeitura" className="border p-2 rounded" />
                         </div>
                         <div className="flex flex-col">
                             <label className="text-sm font-semibold">Usuário:</label>
                             <select name="usuario" value={formData.usuario} onChange={handleInputChange} className="border p-2 rounded">
                                 <option value="">Selecione</option>
-                                <option value="GLEITON APARECIDO SOARES DE SOUZA">GLEITON APARECIDO SOARES DE SOUZA</option>
-                                <option value="VANDER DE JESUS MAGALHAES NOBRE">VANDER DE JESUS MAGALHAES NOBRE</option>
-                                <option value="JOÃO MARTINS GUEDES">JOÃO MARTINS GUEDES</option>
-                                <option value="JHESSYK DAIENY REIS BRITO RABELO">JHESSYK DAIENY REIS BRITO RABELO</option>
+                                {users.map((user) => (
+                                    <option key={user.id} value={`${user.nome} ${user.sobrenome || ''}`.trim()}>
+                                        {`${user.nome} ${user.sobrenome || ''}`.trim()}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="flex flex-col">
@@ -137,6 +187,7 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                         <button type="button" onClick={() => applyBold(adquirenteRef, 'adquirente')} className="bg-gray-200 p-1 rounded hover:bg-gray-300 flex items-center gap-1 text-xs">
                             <FaBold /> Negrito
                         </button>
+                        <span className="text-xs text-gray-500">* Selecione o texto e clique para formatar</span>
                     </div>
                     <textarea
                         ref={adquirenteRef}
@@ -146,6 +197,7 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                         placeholder="Nome e dados completos do adquirente"
                         className="w-full border p-2 rounded h-32"
                     />
+                    <div className="text-right text-xs text-gray-500">Caracteres: {formData.adquirente.length} / 1050</div>
                 </fieldset>
 
                 <fieldset className="border p-4 rounded-md border-gray-300">
@@ -166,8 +218,8 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                 </fieldset>
 
                 <fieldset className="border p-4 rounded-md border-gray-300">
-                    <legend className="px-2 font-bold text-gray-700 uppercase">Área do Imóvel</legend>
-                    <input type="text" name="areaTerreno" value={formData.areaTerreno} onChange={handleInputChange} placeholder="ex: 360m²" className="w-full border p-2 rounded" />
+                    <legend className="px-2 font-bold text-gray-700 uppercase">Área Negociada - Ha (hectares)</legend>
+                    <input type="text" name="areaTerreno" value={formData.areaTerreno} onChange={handleInputChange} placeholder="ex: 15.65.25ha" className="w-full border p-2 rounded" />
                 </fieldset>
 
                 <fieldset className="border p-4 rounded-md border-gray-300">
@@ -190,6 +242,7 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <fieldset className="border p-4 rounded-md border-gray-300 text-sm">
                         <legend className="px-2 font-bold text-gray-700 uppercase">Natureza</legend>
+                        <span title={`*Pedido: ${formData.natureza}`}>ℹ️</span>
                         <select name="natureza" value={formData.natureza} onChange={handleInputChange} className="w-full border p-2 rounded" required>
                             <option value="selecione">Selecione</option>
                             <option value="COMPRA E VENDA">COMPRA E VENDA</option>
@@ -216,13 +269,12 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                         <legend className="px-2 font-bold text-gray-700 uppercase">Qualidade</legend>
                         <select name="qualidadeImovel" value={formData.qualidadeImovel} onChange={handleInputChange} className="w-full border p-2 rounded" required>
                             <option value="selecione">Selecione</option>
-                            <option value="OTIMO">OTIMO</option>
-                            <option value="MUITOBOM">MUITO BOM</option>
-                            <option value="BOM">BOM</option>
-                            <option value="REGULAR">REGULAR</option>
-                            <option value="RUIM">RUIM</option>
-                            <option value="PESSIMO">PÉSSIMO</option>
-                            <option value="NAOPOSSUIIMOVEL">NÃO POSSUI IMÓVEL</option>
+                            <option value="Não Possui">Não Possui</option>
+                            <option value="Excelente">Excelente</option>
+                            <option value="Boa">Boa</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Ruim">Ruim</option>
+                            <option value="Péssima">Péssima</option>
                         </select>
                     </fieldset>
 
@@ -255,13 +307,13 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                         />
                     </fieldset>
 
-                    <fieldset className="border p-4 rounded-md border-gray-300 bg-indigo-50">
-                        <legend className="px-2 font-bold text-indigo-800 uppercase">Valor da Transação</legend>
+                    <fieldset className="border p-4 rounded-md border-gray-300 bg-blue-50">
+                        <legend className="px-2 font-bold text-blue-800 uppercase">Valor da Transação</legend>
                         <input type="number" step="0.01" name="valorTransacao" value={formData.valorTransacao} onChange={handleInputChange} placeholder="Ex: 10000.12" className="w-full border p-2 rounded font-bold" />
                         <div className="mt-3 space-y-2">
-                            <div className="flex justify-between p-2 bg-indigo-100 rounded border border-indigo-200">
-                                <span className="font-semibold text-indigo-900">ITBI (2%):</span>
-                                <span className="font-bold text-indigo-900">{formData.valorItbi.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                            <div className="flex justify-between p-2 bg-blue-100 rounded border border-blue-200">
+                                <span className="font-semibold text-blue-900">ITBI (2%):</span>
+                                <span className="font-bold text-blue-900">{formData.valorItbi.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                             </div>
                             <div className="flex justify-between p-2 bg-amber-100 rounded border border-amber-200">
                                 <span className="font-semibold text-amber-900">Taxa de Expediente (UFM × 2):</span>
@@ -276,7 +328,7 @@ export default function ItbiUrbanoForm({ initialData }: { initialData?: any }) {
                 </div>
 
                 <div className="flex justify-center pt-6">
-                    <button type="submit" className="bg-indigo-600 text-white px-10 py-3 rounded-lg font-bold hover:bg-indigo-700 transition shadow-md uppercase tracking-wider">
+                    <button type="submit" className="bg-green-600 text-white px-10 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-md uppercase tracking-wider">
                         {initialData?.id ? 'Atualizar e Salvar' : 'Calcular e Salvar ITBI'}
                     </button>
                 </div>
