@@ -33,6 +33,7 @@ const MenuLateral = () => {
         { nome: 'Mapa Urbano Lagoa', link: '/dashboard/mapa-completo-lagoa-dos-patos-mg' },
         { nome: 'Mapa Rural Lagoa', link: '/dashboard/mapa-rural-lagoa-dos-patos-mg' },
         { nome: 'Números Independencia', link: '/dashboard/numeros-independencia' },
+         { nome: 'NCM', link: '/dashboard/ncm' },
         { nome: 'Valor Terra nua', link: '/dashboard/avaliacao-venal-rural/configuracao-vtn' },
 
 

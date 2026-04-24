@@ -11,6 +11,13 @@ export const vtnYears = sqliteTable('vtn_years', {
     reserva: real('reserva').notNull(),
 });
 
+export const ncms = sqliteTable('ncms', {
+    id: integer('id').primaryKey(),
+    codigo: text('codigo').notNull(),
+    descricao: text('descricao').notNull(),
+});
+
+
 export const ruralValuations = sqliteTable('rural_valuations', {
     id: integer('id').primaryKey({ autoIncrement: true }),
     // Dados Iniciais
